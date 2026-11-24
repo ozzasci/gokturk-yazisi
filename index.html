@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Göktürk (Orhun) Yazısı Öğrenme Uygulaması</title>
+
+  <!-- Google Fonts: Inter (Arayüz) ve Noto Sans Old Turkic (Göktürk Tamgaları) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Old+Turkic&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            orkhun: ['"Noto Sans Old Turkic"', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0b0d11;
+      background-image:
+        radial-gradient(ellipse at top, rgba(217, 119, 6, 0.12), transparent 55%),
+        radial-gradient(ellipse at bottom right, rgba(56, 189, 248, 0.08), transparent 50%);
+      min-height: 100vh;
+    }
+
+    /* Göktürk Tamgaları İçin Genel Stil */
+    .font-orkhun {
+      font-family: 'Noto Sans Old Turkic', sans-serif;
+      line-height: 1.75;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+      max-width: 100%;
+    }
+
+    /* Yazıt Okuma Atölyesi Taşmasız Orhun Metin Alanı */
+    .orkhun-inscription-box {
+      direction: rtl;
+      text-align: right;
+      height: auto;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+      font-family: 'Noto Sans Old Turkic', sans-serif;
+      font-size: var(--inscription-font-size, 1.5rem);
+      line-height: 2.15;
+    }
+
+    .safe-wrap {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+      max-width: 100%;
+    }
+
+    /* Bengü Taş (Orhun Yazıtı) Kart Dokusu */
+    .bengu-stone {
+      background: linear-gradient(155deg, #1b1e24 0%, #121418 100%);
+      border: 1px solid rgba(217, 119, 6, 0.24);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        inset 0 -2px 12px rgba(0, 0, 0, 0.65),
+        0 10px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .carved-gold {
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9), 0 0 16px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Dikey Bengü Taş Görünümü */
+    .vertical-stone {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 0.14em;
+      max-height: 360px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Çalışma Modu Bulanıklaştırma Katmanı */
+    .blurred-layer {
+      filter: blur(7px);
+      user-select: none;
+      cursor: pointer;
+      transition: filter 0.2s ease;
+    }
+    .blurred-layer:hover {
+      filter: blur(4px);
+    }
+
+    /* Kaydırma Çubuğu */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #101318;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #333945;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4b5563;
+    }
+  </style>
+</head>
+
+<body class="text-stone-100 font-sans antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+  <!-- ÜST BAŞLIK & NAVİGASYON -->
+  <header class="sticky top-0 z-40 bg-stone-950/90 backdrop-blur-md border-b border-stone-800">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500/20 to-stone-800 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-lg">
+          <span class="font-orkhun text-2xl text-amber-300" title="Türk">𐱅𐰇𐰼𐰜</span>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-xl font-extrabold tracking-tight text-stone-100 leading-tight">
+            Göktürk (Orhun) Yazısı <span class="text-amber-400">Öğrenme Uygulaması</span>
+          </h1>
+          <p class="text-xs text-stone-400">
+            Hazırlayan ve Geliştiren: <strong class="text-stone-200 font-semibold">Oğuz Bulut</strong> — Orhun Yazıtları etkileşimli çalışma platformu
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-stone-900 border border-amber-500/30 text-amber-300">
+          <span class="font-orkhun text-sm" dir="rtl">𐱅𐰭𐰼𐰃</span>
+          <span>Sağdan Sola Yazım (RTL)</span>
+        </span>
+        <!-- Doğrudan numara eklemek için: https://wa.me/905XXXXXXXXX -->
+        <a
+          href="https://api.whatsapp.com/send?text=Merhaba%20O%C4%9Fuz%20Bulut%2C%20G%C3%B6kt%C3%BCrk%20Yaz%C4%B1s%C4%B1%20%C3%96%C4%9Frenme%20Uygulamas%C4%B1%20hakk%C4%B1nda%20ula%C5%9F%C4%B1yorum."
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Eski Türkçede ulak, haberci ve doğrudan ileti gönderme"
+          class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-emerald-600/25 via-emerald-500/20 to-amber-500/20 hover:from-emerald-500/35 hover:to-amber-500/30 text-emerald-200 border border-emerald-500/45 shadow-md shadow-emerald-950/40 transition-all"
+        >
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-orkhun text-sm text-amber-300 leading-none" dir="rtl">𐰖𐰞𐰉𐰲 : 𐰽𐰉 𐰃𐰠𐱅</span>
+          <span class="text-stone-400">·</span>
+          <span>Yalabaç · Sab İlet</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 6 Sekmeli Ana Menü -->
+    <nav class="max-w-6xl mx-auto px-4 pb-2.5 overflow-x-auto" aria-label="Bölümler">
+      <div class="flex items-center gap-1.5 min-w-max">
+        <button type="button" data-tab="alfabe" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 bg-amber-500/15 text-amber-300 border border-amber-500/40">
+          <span class="font-orkhun text-base leading-none">𐰀</span> Alfabe & Tamgalar
+        </button>
+        <button type="button" data-tab="atolye" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/70 border border-transparent">
+          <span>✍️</span> Yazım Atölyesi
+        </button>
+        <button type="button" data-tab="imla" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/70 border border-transparent">
+          <span>📐</span> İmlâ & Sayı Sistemi
+        </button>
+        <button type="button" data-tab="yazitlar" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/70 border border-transparent">
+          <span>🗿</span> Yazıt Okuma
+        </button>
+        <button type="button" data-tab="quiz" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/70 border border-transparent">
+          <span>🎯</span> Alıştırma & Sınav
+        </button>
+        <button type="button" data-tab="sozluk" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-stone-400 hover:text-stone-200 hover:bg-stone-800/70 border border-transparent">
+          <span>📖</span> Sözlük
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ANA İÇERİK -->
+  <main class="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+
+    <!-- ========================================================= -->
+    <!-- 1. SEKME: ALFABE & TAMGALAR                               -->
+    <!-- ========================================================= -->
+    <section id="tab-alfabe" class="tab-panel space-y-6">
+      <div class="bengu-stone rounded-2xl p-5 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-amber-400">Göktürk Alfabesi ve Tamgalar</h2>
+          <p class="text-sm text-stone-300 mt-1 max-w-2xl">
+            38 temel Göktürk harfi, Yenisey yazıtlarındaki kapalı <strong>ė (𐰂)</strong> ünlüsü ve sözcük ayırma tamgası (<strong>:</strong>).
+            Herhangi bir tamgaya tıklayarak kalın/ince uyumunu, kılavuzdaki <strong>köken hikâyesini</strong> ve örnek sözcükleri görebilirsiniz.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-1.5" id="alphabet-filters">
+          <button type="button" data-filter="all" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-stone-950">Tümü</button>
+          <button type="button" data-filter="unlu" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-stone-300 hover:bg-stone-700">Ünlüler (5)</button>
+          <button type="button" data-filter="kalin-ince" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-stone-300 hover:bg-stone-700">Kalın-İnce (20)</button>
+          <button type="button" data-filter="ortak" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-stone-300 hover:bg-stone-700">Ortak (5)</button>
+          <button type="button" data-filter="cift-unsuz" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-stone-300 hover:bg-stone-700">Çift Ünsüz (5)</button>
+          <button type="button" data-filter="cift-sesli" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-stone-300 hover:bg-stone-700">Çift Sesli (4)</button>
+          <button type="button" data-filter="koken" class="alpha-filter px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25">✨ Köken Hikâyeliler</button>
+        </div>
+      </div>
+
+      <div id="alphabet-container" class="space-y-8"></div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 2. SEKME: YAZIM ATÖLYESİ                                  -->
+    <!-- ========================================================= -->
+    <section id="tab-atolye" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Sol: Türkçe Metin Girişi -->
+        <div class="lg:col-span-5 bg-stone-900/80 border border-stone-800 rounded-2xl p-5 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-bold text-amber-400">Türkçe Metin Girişi</h2>
+            <button type="button" id="clear-converter-btn" class="text-xs px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">Temizle</button>
+          </div>
+
+          <textarea
+            id="latin-input"
+            rows="4"
+            placeholder="Türkçe bir kelime veya cümle yazın... (Örn: Bilge Kağan, Tengri, Ötüken)"
+            class="w-full rounded-xl bg-stone-950 border border-stone-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 outline-none p-3.5 text-base text-stone-100 placeholder-stone-500 resize-none"
+          >Bilge Kağan Türk Budun</textarea>
+
+          <!-- Hızlı Örnekler -->
+          <div>
+            <p class="text-xs text-stone-400 mb-2">Hızlı Örnekler:</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Türk">Türk</button>
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Bilge Kağan">Bilge Kağan</button>
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Ötüken">Ötüken</button>
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Bengü Taş">Bengü Taş</button>
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Tengri">Tengri</button>
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Kül Tigin">Kül Tigin</button>
+              <button type="button" class="quick-sample px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-text="Kutlug bolsun">Kutlug bolsun</button>
+            </div>
+          </div>
+
+          <!-- Klasik Orhun İmlâsı Anahtarı -->
+          <div class="pt-3 border-t border-stone-800 space-y-2">
+            <label class="flex items-start gap-3 cursor-pointer select-none">
+              <input type="checkbox" id="classic-mode-toggle" checked class="mt-1 w-4 h-4 rounded accent-amber-500 cursor-pointer" />
+              <div>
+                <span class="text-sm font-semibold text-stone-200">Klasik Orhun İmlâsı</span>
+                <p class="text-xs text-stone-400 mt-0.5">
+                  Açıkken ilk ve orta hecedeki <em>a/e</em> ünlülerini düşürür, sözcük sonu ünlülerini korur ve sözcük aralarına iki nokta (<strong>:</strong>) koyar.
+                </p>
+              </div>
+            </label>
+            <p class="text-[11px] text-stone-500 leading-relaxed">
+              Not: Göktürkçede bulunmayan <em>c, f, ğ, h, j, v</em> sesleri en yakın tarihi karşılıklarına (<em>ç, p, g, k, ş, b</em>) uyarlanır.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sağ: Bengü Taş Görünümü -->
+        <div class="lg:col-span-7 bengu-stone rounded-2xl p-5 sm:p-6 flex flex-col justify-between gap-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-700/70 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow shadow-amber-500/50"></span>
+              <h3 class="text-sm sm:text-base font-bold text-amber-300 tracking-wide uppercase">Bengü Taş Görünümü</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" id="toggle-vertical-btn" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 transition">
+                Dikey Yazıt Modu
+              </button>
+              <button type="button" id="copy-orkhun-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-stone-950 transition">
+                📋 Kopyala
+              </button>
+            </div>
+          </div>
+
+          <div id="orkhun-output-wrap" class="min-h-[160px] h-auto flex items-center justify-center p-4 sm:p-5 rounded-xl bg-stone-950/75 border border-stone-800 w-full max-w-full overflow-x-auto">
+            <div id="orkhun-output" dir="rtl" class="font-orkhun carved-gold text-3xl sm:text-4xl md:text-5xl text-amber-200 tracking-wider text-right w-full max-w-full"></div>
+          </div>
+
+          <!-- Harf Harf Çözümleme -->
+          <div class="bg-stone-950/60 border border-stone-800/80 rounded-xl p-3">
+            <p class="text-[11px] uppercase tracking-wider text-stone-400 mb-2">Tamga Çözümlemesi (Sağdan Sola Okunuş):</p>
+            <div id="glyph-breakdown" class="flex flex-wrap gap-1.5 text-xs"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sanal Göktürk Klavyesi -->
+      <div class="bg-stone-900/80 border border-stone-800 rounded-2xl p-5 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 class="text-lg font-bold text-amber-400">Sanal Göktürk Klavyesi</h3>
+            <p class="text-xs text-stone-400">Tamgalara tıklayarak doğrudan Göktürk harfleriyle yazın.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="vk-copy" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30">Metni Kopyala</button>
+            <button type="button" id="vk-backspace" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-stone-200 border border-stone-700 hover:bg-stone-700">⌫ Sil</button>
+            <button type="button" id="vk-clear" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-stone-800 text-rose-300 border border-stone-700 hover:bg-stone-700">Temizle</button>
+          </div>
+        </div>
+
+        <input
+          id="vk-input"
+          type="text"
+          dir="rtl"
+          placeholder="Tamgalara tıklayın..."
+          class="w-full font-orkhun text-2xl sm:text-3xl bg-stone-950 border border-stone-700 rounded-xl px-4 py-3 text-amber-200 outline-none focus:border-amber-400"
+        />
+
+        <div id="virtual-keyboard" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 3. SEKME: İMLÂ & SAYI SİSTEMİ                             -->
+    <!-- ========================================================= -->
+    <section id="tab-imla" class="tab-panel hidden space-y-8">
+      <!-- Etkileşimli Sayı Çevirici -->
+      <div class="bengu-stone rounded-2xl p-5 sm:p-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-800 pb-4">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-widest text-amber-400">Etkileşimli Araç</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-stone-100 mt-0.5">Göktürk Sayı Sistemi Çevirici (1–9999)</h2>
+            <p class="text-xs sm:text-sm text-stone-400 mt-1">
+              Bir sayı girin; hem <strong>Üst Onluk (Klasik)</strong> hem de <strong>Artukı</strong> kuralına göre Latin okunuşunu ve Göktürkçe yazılışını görün.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <input
+              id="number-input"
+              type="number"
+              min="1"
+              max="9999"
+              value="25"
+              class="w-32 text-center text-xl font-bold bg-stone-950 border border-amber-500/50 rounded-xl px-3 py-2 text-amber-300 outline-none focus:ring-2 focus:ring-amber-500/40"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5 mt-4">
+          <span class="text-xs text-stone-400 mr-1">Kılavuz Örnekleri:</span>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="17">17</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="25">25</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="27">27</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="32">32</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="81">81</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="448">448</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="634">634</button>
+          <button type="button" class="num-preset px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700" data-num="3715">3715</button>
+        </div>
+
+        <div id="number-result" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5"></div>
+        <div id="number-explanation" class="mt-4 p-4 rounded-xl bg-stone-950/75 border border-stone-800 text-sm text-stone-300 leading-relaxed"></div>
+      </div>
+
+      <!-- 11 Temel İmlâ Kuralı -->
+      <div class="space-y-4">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-amber-400">Göktürk Yazısında 11 Temel İmlâ Kuralı</h2>
+          <p class="text-sm text-stone-400 mt-1">Kılavuzdaki sistemli yazım kuralları ve örnekleri.</p>
+        </div>
+        <div id="imla-rules-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4. SEKME: YAZIT OKUMA ATÖLYESİ                            -->
+    <!-- ========================================================= -->
+    <section id="tab-yazitlar" class="tab-panel hidden space-y-6">
+      <div class="bengu-stone rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-amber-400">Orhun Yazıtları Okuma Atölyesi</h2>
+          <p class="text-sm text-stone-300 mt-1">
+            Kül Tigin, Bilge Kağan ve Tonyukuk yazıtlarından 8 temel pasaj. Kendinizi sınamak için Latin veya Günümüz Türkçesi katmanlarını gizleyebilir, Orhun yazı boyutunu ayarlayabilirsiniz.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <!-- Yazı Boyutu Kontrolü (%75 - %145) -->
+          <div class="inline-flex items-center gap-1 bg-stone-950 border border-stone-700 rounded-xl p-1" aria-label="Orhun Yazı Boyutu">
+            <button type="button" id="font-dec-btn" title="Yazıyı Küçült" class="px-2.5 py-1 rounded-lg text-xs font-bold text-stone-200 hover:bg-stone-800 hover:text-amber-300 transition">A−</button>
+            <span id="font-size-label" class="px-2 text-xs font-semibold text-amber-300 select-none">100%</span>
+            <button type="button" id="font-inc-btn" title="Yazıyı Büyüt" class="px-2.5 py-1 rounded-lg text-xs font-bold text-stone-200 hover:bg-stone-800 hover:text-amber-300 transition">A+</button>
+          </div>
+          <button type="button" id="toggle-all-latin" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-800 hover:bg-stone-700 text-sky-300 border border-stone-700 transition">
+            👁️ Latin Okunuşu Gizle
+          </button>
+          <button type="button" id="toggle-all-modern" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-800 hover:bg-stone-700 text-amber-300 border border-stone-700 transition">
+            👁️ Günümüz Türkçesini Gizle
+          </button>
+        </div>
+      </div>
+
+      <div id="inscriptions-container" class="space-y-6"></div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 5. SEKME: ALIŞTIRMA & SINAV MODU                          -->
+    <!-- ========================================================= -->
+    <section id="tab-quiz" class="tab-panel hidden space-y-6">
+      <div class="bg-stone-900/80 border border-stone-800 rounded-2xl p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-400">Alıştırma & Sınav Modu</h2>
+            <p class="text-sm text-stone-400">4 ayrı kategoride 10 soruluk etkileşimli testlerle bilginizi sınayın.</p>
+          </div>
+          <div class="flex items-center gap-2.5 text-xs sm:text-sm">
+            <div class="px-3 py-1.5 rounded-xl bg-stone-950 border border-stone-800">
+              Skor: <strong id="quiz-score" class="text-amber-400">0</strong> / 100
+            </div>
+            <div class="px-3 py-1.5 rounded-xl bg-stone-950 border border-stone-800">
+              Seri: <strong id="quiz-streak" class="text-sky-400">0</strong> 🔥
+            </div>
+            <button type="button" id="quiz-restart-top" class="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 text-xs font-semibold transition">
+              🔄 Yeniden Başla
+            </button>
+          </div>
+        </div>
+
+        <div id="quiz-mode-selector" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <button type="button" data-mode="tamga" class="quiz-mode-btn p-4 rounded-xl text-left border transition-all bg-amber-500/15 border-amber-500/50">
+            <div class="font-orkhun text-2xl text-amber-300 mb-1">𐱅 𐰇 𐰼 𐰜</div>
+            <div class="font-bold text-sm text-stone-100">1. Tamga Tanıma</div>
+            <div class="text-xs text-stone-400 mt-0.5">Tamgayı gör, Latin sesini ve kalın/ince değerini bul.</div>
+          </button>
+          <button type="button" data-mode="kelime" class="quiz-mode-btn p-4 rounded-xl text-left border transition-all bg-stone-950/60 border-stone-800 hover:border-stone-600">
+            <div class="font-orkhun text-2xl text-sky-300 mb-1">𐱅𐰭𐰼𐰃</div>
+            <div class="font-bold text-sm text-stone-100">2. Kelime Okuma</div>
+            <div class="text-xs text-stone-400 mt-0.5">Sağdan sola yazılmış Göktürkçe sözcükleri oku.</div>
+          </button>
+          <button type="button" data-mode="sayi" class="quiz-mode-btn p-4 rounded-xl text-left border transition-all bg-stone-950/60 border-stone-800 hover:border-stone-600">
+            <div class="text-xl text-emerald-400 mb-1 font-extrabold">25 → ?</div>
+            <div class="font-bold text-sm text-stone-100">3. Göktürk Sayıları</div>
+            <div class="text-xs text-stone-400 mt-0.5">Üst onluk ve artukı sayılarını doğru çöz.</div>
+          </button>
+          <button type="button" data-mode="sozluk" class="quiz-mode-btn p-4 rounded-xl text-left border transition-all bg-stone-950/60 border-stone-800 hover:border-stone-600">
+            <div class="text-2xl text-violet-400 mb-1">📖</div>
+            <div class="font-bold text-sm text-stone-100">4. Sözlük Testi</div>
+            <div class="text-xs text-stone-400 mt-0.5">Göktürkçe sözcüğün günümüz Türkçesi anlamını bul.</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Aktif Soru Kartı -->
+      <div class="bengu-stone rounded-2xl p-6 sm:p-8 max-w-3xl mx-auto">
+        <div class="flex items-center justify-between text-xs text-stone-400 mb-2">
+          <span id="quiz-progress-label">Soru 1 / 10</span>
+          <span id="quiz-mode-label" class="text-amber-400 font-semibold">Tamga Tanıma</span>
+        </div>
+        <div class="w-full h-2 bg-stone-800 rounded-full overflow-hidden mb-6">
+          <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-sky-400 transition-all duration-300" style="width: 10%"></div>
+        </div>
+
+        <div id="quiz-body" class="text-center space-y-4"></div>
+        <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6"></div>
+        <div id="quiz-feedback" class="hidden mt-5 p-4 rounded-xl border text-sm leading-relaxed"></div>
+
+        <div class="mt-6 flex justify-end">
+          <button type="button" id="quiz-next-btn" class="hidden px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm transition">
+            Sonraki Soru →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 6. SEKME: ARANABİLİR SÖZLÜK                               -->
+    <!-- ========================================================= -->
+    <section id="tab-sozluk" class="tab-panel hidden space-y-5">
+      <div class="bg-stone-900/80 border border-stone-800 rounded-2xl p-5 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-amber-400">Göktürkçe — Türkiye Türkçesi Sözlük</h2>
+            <p class="text-sm text-stone-400 mt-0.5">Kılavuzun 31–33. sayfalarındaki temel yazıt sözcükleri (Göktürkçe yazım, Latin okunuş ve Türkçe anlam).</p>
+          </div>
+          <span id="dict-count" class="text-xs px-3 py-1 rounded-full bg-stone-950 border border-amber-500/30 text-amber-300 font-semibold self-start sm:self-auto"></span>
+        </div>
+
+        <div class="relative">
+          <input
+            id="dict-search"
+            type="text"
+            placeholder="Göktürkçe kelime veya Türkçe anlam ara... (Örn: bodun, düşman, yazmak, tengri)"
+            class="w-full rounded-xl bg-stone-950 border border-stone-700 focus:border-amber-400 outline-none pl-10 pr-4 py-3 text-sm text-stone-100 placeholder-stone-500"
+          />
+          <span class="absolute left-3.5 top-3 text-stone-500">🔍</span>
+        </div>
+
+        <div id="dict-alpha-bar" class="flex flex-wrap gap-1"></div>
+      </div>
+
+      <div id="dict-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+    </section>
+
+  </main>
+
+  <!-- TAMGA DETAY MODALI -->
+  <div id="tamga-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="bengu-stone rounded-2xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+      <button type="button" id="close-modal-btn" aria-label="Kapat" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 flex items-center justify-center">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- BİLDİRİM TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-4 py-2.5 rounded-xl bg-amber-500 text-stone-950 font-bold text-sm shadow-xl"></div>
+
+  <!-- ALT BİLGİ -->
+  <footer class="border-t border-stone-800/80 mt-12 py-8 text-center text-xs text-stone-400 px-4 bg-stone-950/60">
+    <div class="max-w-4xl mx-auto space-y-3">
+      <p class="font-orkhun text-lg text-amber-400/90" dir="rtl">𐰸𐰆𐱃𐰞𐰆𐰍:𐰉𐰆𐰞𐰽𐰆𐰣</p>
+      <p class="text-stone-300 font-medium">
+        Kutlug bolsun! — Hazırlayan ve Geliştiren: <strong class="text-amber-300 font-semibold">Oğuz Bulut</strong>
+      </p>
+
+      <div class="pt-1 flex justify-center">
+        <!-- Doğrudan numara eklemek için: https://wa.me/905XXXXXXXXX -->
+        <a
+          href="https://api.whatsapp.com/send?text=Merhaba%20O%C4%9Fuz%20Bulut%2C%20G%C3%B6kt%C3%BCrk%20Yaz%C4%B1s%C4%B1%20%C3%96%C4%9Frenme%20Uygulamas%C4%B1%20hakk%C4%B1nda%20ula%C5%9F%C4%B1yorum."
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Eski Türkçede ulak, haberci ve doğrudan ileti gönderme"
+          class="inline-flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-950/90 via-stone-900 to-amber-950/60 hover:from-emerald-900/70 hover:to-amber-900/50 border border-emerald-500/40 hover:border-amber-400/50 text-emerald-200 shadow-lg transition-all"
+        >
+          <span class="font-orkhun text-base text-amber-300 leading-none" dir="rtl">𐰖𐰞𐰉𐰲 : 𐰽𐰉 𐰃𐰠𐱅</span>
+          <span class="font-semibold text-emerald-200">Yalabaç · Sab İlet</span>
+          <span class="text-[11px] text-stone-400">(Eski Türkçede ulak, haberci ve doğrudan ileti gönderme)</span>
+        </a>
+      </div>
+
+      <p class="pt-2 text-[11px] text-stone-500 border-t border-stone-800/70 max-w-xl mx-auto">
+        © 2026 Oğuz Bulut — Tüm Hakları Saklıdır. İzinsiz kopyalanamaz ve çoğaltılamaz.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- UYGULAMA MANTIĞI (JAVASCRIPT)                             -->
+  <!-- ========================================================= -->
+  <script>
+    'use strict';
+
+    /* -----------------------------------------------------------
+       1. ALFABE VERİSİ (38 HARF + KAPALI Ė 𐰂 + AYIRMA TAMGASI :)
+       ----------------------------------------------------------- */
+    const ALPHABET_DATA = [
+      // ÜNLÜLER (5)
+      { glyph: '𐰀', latin: 'A / E', cat: 'unlu', harmony: 'Ünlü', desc: 'Hem kalın "a" hem ince "e" sesini karşılar. Sözcük sonlarında her zaman yazılır; ilk ve orta hecelerde çoğunlukla düşer.', examples: [{ o: '𐰉𐰆𐰨𐰀', l: 'bunça', m: 'bunca' }, { o: '𐰋𐰃𐰼𐰠𐰀', l: 'birle', m: 'ile' }] },
+      { glyph: '𐰃', latin: 'I / İ', cat: 'unlu', harmony: 'Ünlü', desc: 'Hem kalın "ı" hem ince "i" sesini karşılar. Okunuşu yanındaki kalın veya ince ünsüzlerden anlaşılır.', examples: [{ o: '𐱅𐰃𐰏𐰤', l: 'tigin', m: 'prens' }, { o: '𐰋𐰃𐰠𐰏', l: 'bilig', m: 'bilgi, akıl' }] },
+      { glyph: '𐰆', latin: 'O / U', cat: 'unlu', harmony: 'Kalın Ünlü', desc: 'Kalın yuvarlak "o" ve "u" ünlülerini karşılar. İkisi de kalın olduğundan sözcüğün anlamına göre seslendirilir.', examples: [{ o: '𐰉𐰆𐰑𐰣', l: 'bodun', m: 'ulus, millet' }, { o: '𐰆𐰍𐰔', l: 'oguz', m: 'Oğuz' }] },
+      { glyph: '𐰇', latin: 'Ö / Ü', cat: 'unlu', harmony: 'İnce Ünlü', desc: 'İnce yuvarlak "ö" ve "ü" ünlülerini karşılar. Kül/Köl Tigin gibi adlarda okunuş farklılıkları buradan doğar.', examples: [{ o: '𐱅𐰇𐰼𐰜', l: 'türük', m: 'Türk' }, { o: '𐰇𐱅𐰜𐰤', l: 'ötüken', m: 'Ötüken' }] },
+      { glyph: '𐰂', latin: 'Ė (Kapalı e)', cat: 'unlu', harmony: 'İnce Ünlü', desc: 'Orhun Yazıtları\'nda geçmemekle birlikte Yenisey Yazıtları\'nda birkaç sözcükte kapalı "ė" sesini belirtmek için kullanılmıştır.', examples: [{ o: '𐰋𐰂𐱁', l: 'bėş', m: 'beş' }, { o: '𐰘𐰂𐰼', l: 'yėr', m: 'yer' }] },
+
+      // KALIN - İNCE ÜNSÜZLER (10 ÇİFT / 20 HARF)
+      { glyph: '𐰉', latin: 'B (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "b" sesini karşılar (ab/ba).', examples: [{ o: '𐰉𐰆𐰑𐰣', l: 'bodun', m: 'millet' }, { o: '𐰉𐰺𐰴', l: 'bark', m: 'ev, türbe' }] },
+      { glyph: '𐰋', latin: 'B (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "b" sesini karşılar (eb/be).', origin: 'Türkler için "ev" niteliği taşıyan bir otağa (çadıra) benzemektedir. Eski Türkçede "eb" sözcüğü sonradan "ev" biçimine dönüşmüştür; harf bu otağ görüntüsünden oluşmuştur.', examples: [{ o: '𐰋𐰃𐰠𐰏', l: 'bilig', m: 'bilgi, akıl' }, { o: '𐰋𐰭𐰏𐰇', l: 'bengü', m: 'ebedî' }] },
+
+      { glyph: '𐰑', latin: 'D (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "d" sesini karşılar (ad/da).', examples: [{ o: '𐰉𐰆𐰑𐰣', l: 'bodun', m: 'millet' }, { o: '𐰃𐰑𐰸', l: 'ıduk', m: 'kutlu, mübarek' }] },
+      { glyph: '𐰓', latin: 'D (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "d" sesini karşılar (ed/de).', examples: [{ o: '𐰓𐰏𐰇', l: 'edgü', m: 'iyi' }, { o: '𐰋𐰓𐰔', l: 'bediz', m: 'süs, resim' }] },
+
+      { glyph: '𐰍', latin: 'G / Ğ (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "g/ğ" sesini karşılar (ag/ga).', origin: 'Ayakta duran bir kişinin iki bacağı arasındaki boşluğu ("ağ") andırmaktadır. Divânu Lugâti\'t-Türk\'te "ağ", iki bacak arasındaki boşluk olarak tanımlanır.', examples: [{ o: '𐰴𐰍𐰣', l: 'kagan', m: 'kağan' }, { o: '𐰖𐰍𐰃', l: 'yagı', m: 'düşman' }] },
+      { glyph: '𐰏', latin: 'G (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "g" sesini karşılar (eg/ge).', examples: [{ o: '𐰋𐰃𐰠𐰏𐰀', l: 'bilge', m: 'bilge' }, { o: '𐱅𐰃𐰏𐰤', l: 'tigin', m: 'prens' }] },
+
+      { glyph: '𐰴', latin: 'K (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "k" sesini karşılar (ak/ka).', examples: [{ o: '𐰴𐰍𐰣', l: 'kagan', m: 'kağan' }, { o: '𐰴𐱃𐰆𐰣', l: 'katun', m: 'hatun' }] },
+      { glyph: '𐰚', latin: 'K (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "k" sesini karşılar (ek/ke).', examples: [{ o: '𐰚𐰃𐱁𐰃', l: 'kişi', m: 'kişi, insan' }, { o: '𐰚𐰼𐰏𐰚', l: 'kergek', m: 'gerek' }] },
+
+      { glyph: '𐰞', latin: 'L (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "l" sesini karşılar (al/la).', examples: [{ o: '𐰞𐱃𐰆𐰣', l: 'altun', m: 'altın' }, { o: '𐰉𐰞𐰶', l: 'balık', m: 'şehir' }] },
+      { glyph: '𐰠', latin: 'L (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "l" sesini karşılar (el/le).', examples: [{ o: '𐰚𐰇𐰠', l: 'kül', m: 'Kül (Tigin)' }, { o: '𐰃𐰠', l: 'il', m: 'devlet, yurt' }] },
+
+      { glyph: '𐰣', latin: 'N (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "n" sesini karşılar (an/na).', examples: [{ o: '𐰴𐰍𐰣', l: 'kagan', m: 'kağan' }, { o: '𐰞𐱃𐰆𐰣', l: 'altun', m: 'altın' }] },
+      { glyph: '𐰤', latin: 'N (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "n" sesini karşılar (en/ne).', origin: 'İki basamaktan oluşan bir merdivene benzemektedir. Merdiven "inme" aracıdır; bugün "in-" biçiminde kullandığımız eylem Eski Türkçede "en-" şeklindedir.', examples: [{ o: '𐱅𐰇𐰤', l: 'tün', m: 'gece' }, { o: '𐰢𐰤', l: 'men', m: 'ben' }] },
+
+      { glyph: '𐰺', latin: 'R (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "r" sesini karşılar (ar/ra).', examples: [{ o: '𐰉𐰺𐰴', l: 'bark', m: 'ev, türbe' }, { o: '𐱃𐰺𐰴𐰣', l: 'tarkan', m: 'tarkan' }] },
+      { glyph: '𐰼', latin: 'R (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "r" sesini karşılar (er/re).', origin: 'Ayakta duran bir askere benzemektedir. Asker sözcüğünün Eski Türkçedeki karşılığı "er"dir; tamga bu "er" görüntüsünden oluşmuştur.', examples: [{ o: '𐱅𐰭𐰼𐰃', l: 'tengri', m: 'Tanrı, gök' }, { o: '𐱅𐰇𐰼𐰜', l: 'türük', m: 'Türk' }] },
+
+      { glyph: '𐰽', latin: 'S (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "s" sesini karşılar (as/sa).', origin: 'Asılmış bir cismi andırmaktadır. Sağ yana uzanan kısım nesnenin bağlı olduğu yeri, aşağı inen kısım asılmış nesneyi gösterir ("as-" eylemi).', examples: [{ o: '𐰽𐰆𐰉', l: 'sub', m: 'su' }, { o: '𐰽𐰴𐰣', l: 'sakın-', m: 'düşünmek' }] },
+      { glyph: '𐰾', latin: 'S (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "s" sesini karşılar (es/se). Yazıtlarda bazen "ş" yerine de kullanılabilir.', origin: 'Göktürk döneminin en önemli savaş aletlerinden ince ve uzun "süngü"ye benzemektedir; süngü sözcüğünün başındaki "s" sesinden doğmuştur.', examples: [{ o: '𐰾𐰚𐰔', l: 'sekiz', m: 'sekiz' }, { o: '𐰾𐰇𐰠𐰀', l: 'süle-', m: 'akın etmek' }] },
+
+      { glyph: '𐱃', latin: 'T (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "t" sesini karşılar (at/ta).', origin: 'Türk yaşantısındaki "at"a veya kutsal sayılan "dağ"a (tağ) benzemektedir. Tepesindeki yukarı bakan ok, atın başını veya dağın doruğunu andırır.', examples: [{ o: '𐱃𐱁', l: 'taş', m: 'taş' }, { o: '𐱃𐰉𐰍𐰲', l: 'tabgaç', m: 'Çin' }] },
+      { glyph: '𐱅', latin: 'T (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "t" sesini karşılar (et/te).', examples: [{ o: '𐱅𐰇𐰼𐰜', l: 'türük', m: 'Türk' }, { o: '𐱅𐰃𐰏𐰤', l: 'tigin', m: 'prens' }] },
+
+      { glyph: '𐰖', latin: 'Y (Kalın)', cat: 'kalin-ince', harmony: 'Kalın (a, ı, o, u)', desc: 'Kalın ünlülü hecelerdeki "y" sesini karşılar (ay/ya).', origin: 'Türk savaş sanatının vazgeçilmez parçası olan "yay"ın gerilmemiş hâlini andırır; "yay" sözcüğünden hareketle oluşmuştur.', examples: [{ o: '𐰖𐰍𐰃', l: 'yagı', m: 'düşman' }, { o: '𐰖𐱁', l: 'yaş', m: 'yaş' }] },
+      { glyph: '𐰘', latin: 'Y (İnce)', cat: 'kalin-ince', harmony: 'İnce (e, i, ö, ü)', desc: 'İnce ünlülü hecelerdeki "y" sesini karşılar (ey/ye).', examples: [{ o: '𐰘𐰃𐰼', l: 'yir', m: 'yer' }, { o: '𐰘𐰃𐰏𐰼𐰢𐰃', l: 'yigirmi', m: 'yirmi' }] },
+
+      // BÜTÜN ÜNLÜLERLE KULLANILANLAR (5)
+      { glyph: '𐰲', latin: 'Ç', cat: 'ortak', harmony: 'Ortak (Kalın & İnce)', desc: 'Kalınlık-incelik ayrımı olmadan bütün ünlülerle kullanılır.', examples: [{ o: '𐰇𐰲𐰤', l: 'üçün', m: 'için' }, { o: '𐰲𐰍𐰪', l: 'çıgany', m: 'yoksul' }] },
+      { glyph: '𐰢', latin: 'M', cat: 'ortak', harmony: 'Ortak (Kalın & İnce)', desc: 'Kalınlık-incelik ayrımı olmadan bütün ünlülerle kullanılır.', examples: [{ o: '𐰆𐰢𐰖', l: 'umay', m: 'Umay' }, { o: '𐰢𐰤', l: 'men', m: 'ben' }] },
+      { glyph: '𐰯', latin: 'P', cat: 'ortak', harmony: 'Ortak (Kalın & İnce)', desc: 'Kalınlık-incelik ayrımı olmadan bütün ünlülerle kullanılır.', origin: 'Bir "ip"i andırmaktadır. Bu tamganın doğrudan "ip" sözcüğünden hareketle oluştuğu söylenebilir.', examples: [{ o: '𐰸𐰆𐰯', l: 'kop', m: 'hep, tamamen' }, { o: '𐰴𐰯𐰍', l: 'kapıg', m: 'kapı' }] },
+      { glyph: '𐱁', latin: 'Ş', cat: 'ortak', harmony: 'Ortak (Kalın & İnce)', desc: 'Bütün ünlülerle kullanılan "ş" tamgasıdır. Yazıtlarda ince "s" (𐰾) ile yer değiştirebilir.', examples: [{ o: '𐱃𐱁', l: 'taş', m: 'taş' }, { o: '𐰋𐰃𐱁', l: 'biş', m: 'beş' }] },
+      { glyph: '𐰔', latin: 'Z', cat: 'ortak', harmony: 'Ortak (Kalın & İnce)', desc: 'Kalınlık-incelik ayrımı olmadan bütün ünlülerle kullanılır.', examples: [{ o: '𐰆𐰍𐰔', l: 'oguz', m: 'Oğuz' }, { o: '𐰋𐰓𐰔', l: 'bediz', m: 'süs, resim' }] },
+
+      // ÇİFT ÜNSÜZLER (5)
+      { glyph: '𐰡', latin: 'LD / LT', cat: 'cift-unsuz', harmony: 'Çift Ünsüz', desc: 'Sözcük içindeki "ld" veya "lt" çift ünsüzünü tek tamgada gösterir.', examples: [{ o: '𐰉𐰆𐰡𐰃', l: 'boltı', m: 'oldu' }, { o: '𐰴𐰡𐰃', l: 'kaltı', m: 'kaldı' }] },
+      { glyph: '𐰨', latin: 'NÇ', cat: 'cift-unsuz', harmony: 'Çift Ünsüz', desc: 'Sözcük içindeki "nç" çift ünsüzünü tek tamgada karşılar.', examples: [{ o: '𐰼𐰃𐰨', l: 'erinç', m: 'elbette' }, { o: '𐰉𐰆𐰨𐰀', l: 'bunça', m: 'bunca' }] },
+      { glyph: '𐰦', latin: 'ND / NT', cat: 'cift-unsuz', harmony: 'Çift Ünsüz', desc: 'Sözcük içindeki "nd" veya "nt" çift ünsüzünü tek tamgada karşılar.', origin: 'Eski Türk töresinde yemin ("ant içmek") töreninde içine kımız ve birer damla kan konulan "ant kabına (tasa)" benzemektedir.', examples: [{ o: '𐰉𐰆𐰦𐰀', l: 'bunta', m: 'burada' }, { o: '𐰜𐰇𐰦𐰔', l: 'küntüz', m: 'gündüz' }] },
+      { glyph: '𐰭', latin: 'NG (Ñ)', cat: 'cift-unsuz', harmony: 'Çift Ünsüz', desc: 'Eski Türkçedeki genizsil damak "ŋ / ng" sesini karşılar (Tengri, bengü, köngül).', examples: [{ o: '𐱅𐰭𐰼𐰃', l: 'tengri', m: 'Tanrı' }, { o: '𐰉𐰆𐰭', l: 'bung', m: 'sıkıntı, keder' }] },
+      { glyph: '𐰪', latin: 'NY (Ń)', cat: 'cift-unsuz', harmony: 'Çift Ünsüz', desc: 'Damaksıl "ny / ń" sesini karşılar (kony, çıgany, Tonyukuk).', examples: [{ o: '𐰸𐰆𐰪', l: 'kony', m: 'koyun' }, { o: '𐰲𐰍𐰪', l: 'çıgany', m: 'yoksul' }] },
+
+      // ÇİFT SESLİLER (4)
+      { glyph: '𐰶', latin: 'IK / KI', cat: 'cift-sesli', harmony: 'Çift Sesli (Kalın)', desc: 'Hem "ı" ünlüsünü hem kalın "k" ünsüzünü tek tamgada taşır. Yanına ayrıca "𐰃" yazılmaz.', examples: [{ o: '𐰉𐰞𐰶', l: 'balık', m: 'şehir' }, { o: '𐰶𐰺𐰶𐰔', l: 'kırkız', m: 'Kırgız' }] },
+      { glyph: '𐰱', latin: 'İÇ / Çİ', cat: 'cift-sesli', harmony: 'Çift Sesli (İnce)', desc: '"iç" veya "çi" hecesini tek tamgada karşılar.', examples: [{ o: '𐰱𐰼𐰀', l: 'içre', m: 'içeri' }, { o: '𐰋𐰃𐰱𐰤', l: 'biçin', m: 'maymun' }] },
+      { glyph: '𐰸', latin: 'OK / UK / KO / KU', cat: 'cift-sesli', harmony: 'Çift Sesli (Kalın)', desc: '"ok, uk, ko, ku" seslerini tek başına karşılar. Yanında "𐰆" ünlüsü de varsa uzun ünlüyü gösterir.', origin: 'Türk savaş sanatının temelindeki yayın tamamlayıcısı olan, aşağı doğru bakan bir "ok"tur. Hem şekil hem ses bakımından doğrudan "ok"u karşılar.', examples: [{ o: '𐰖𐰸', l: 'yok', m: 'yok' }, { o: '𐱃𐰆𐰪𐰸𐰸', l: 'tonyukuk', m: 'Tonyukuk' }] },
+      { glyph: '𐰜', latin: 'ÖK / ÜK / KÖ / KÜ', cat: 'cift-sesli', harmony: 'Çift Sesli (İnce)', desc: '"ök, ük, kö, kü" seslerini tek tamgada karşılar. Yanına ayrıca "𐰇" yazılmaz.', examples: [{ o: '𐱅𐰇𐰼𐰜', l: 'türük', m: 'Türk' }, { o: '𐰜𐰇𐰭𐰠', l: 'köngül', m: 'gönül' }] },
+
+      // SÖZCÜK AYIRMA TAMGASI
+      { glyph: ':', latin: 'Ayırma Tamgası', cat: 'ayirma', harmony: 'Noktalama', desc: 'Göktürk yazısındaki tek noktalama işaretidir. Taşa kazınan sözcükleri veya sözcük gruplarını birbirinden ayırmak için boşluk yerine kullanılır.', examples: [{ o: '𐰋𐰭𐰏𐰇:𐱃𐱁', l: 'bengü : taş', m: 'ebedî taş' }] }
+    ];
+
+    /* -----------------------------------------------------------
+       2. LATİN -> GÖKTÜRKÇE ÇEVİRİCİ MOTORU
+       ----------------------------------------------------------- */
+    const BACK_VOWELS = new Set(['a', 'ı', 'o', 'u', 'â', 'û']);
+    const FRONT_VOWELS = new Set(['e', 'i', 'ö', 'ü', 'ė', 'î']);
+    const ALL_VOWELS = new Set([...BACK_VOWELS, ...FRONT_VOWELS]);
+
+    const CONSONANT_MAP = {
+      b: { back: '𐰉', front: '𐰋' },
+      d: { back: '𐰑', front: '𐰓' },
+      g: { back: '𐰍', front: '𐰏' },
+      ğ: { back: '𐰍', front: '𐰏' },
+      k: { back: '𐰴', front: '𐰚' },
+      h: { back: '𐰴', front: '𐰚' },
+      l: { back: '𐰞', front: '𐰠' },
+      n: { back: '𐰣', front: '𐰤' },
+      r: { back: '𐰺', front: '𐰼' },
+      s: { back: '𐰽', front: '𐰾' },
+      t: { back: '𐱃', front: '𐱅' },
+      y: { back: '𐰖', front: '𐰘' },
+      ç: { back: '𐰲', front: '𐰲' },
+      c: { back: '𐰲', front: '𐰲' },
+      m: { back: '𐰢', front: '𐰢' },
+      p: { back: '𐰯', front: '𐰯' },
+      f: { back: '𐰯', front: '𐰯' },
+      ş: { back: '𐱁', front: '𐱁' },
+      j: { back: '𐱁', front: '𐱁' },
+      z: { back: '𐰔', front: '𐰔' },
+      v: { back: '𐰉', front: '𐰋' },
+      ñ: { back: '𐰭', front: '𐰭' },
+      ŋ: { back: '𐰭', front: '𐰭' },
+      ń: { back: '𐰪', front: '𐰪' }
+    };
+
+    const VOWEL_MAP = {
+      a: '𐰀', e: '𐰀', â: '𐰀',
+      ı: '𐰃', i: '𐰃', î: '𐰃',
+      o: '𐰆', u: '𐰆', û: '𐰆',
+      ö: '𐰇', ü: '𐰇',
+      ė: '𐰂'
+    };
+
+    const CLASSIC_EXCEPTIONS = {
+      'türk': '𐱅𐰇𐰼𐰜',
+      'türük': '𐱅𐰇𐰼𐰜',
+      'tengri': '𐱅𐰭𐰼𐰃',
+      'bilge': '𐰋𐰃𐰠𐰏𐰀',
+      'kagan': '𐰴𐰍𐰣',
+      'kağan': '𐰴𐰍𐰣',
+      'ötüken': '𐰇𐱅𐰜𐰤',
+      'bengü': '𐰋𐰭𐰏𐰇',
+      'tigin': '𐱅𐰃𐰏𐰤',
+      'kül': '𐰚𐰇𐰠',
+      'köl': '𐰚𐰇𐰠',
+      'tonyukuk': '𐱃𐰆𐰪𐰸𐰸',
+      'bodun': '𐰉𐰆𐰑𐰣',
+      'budun': '𐰉𐰆𐰑𐰣',
+      'ilteriş': '𐰃𐰠𐱅𐰼𐰾',
+      'yollug': '𐰖𐰆𐰞𐰍',
+      'üçün': '𐰇𐰲𐰤',
+      'altun': '𐰞𐱃𐰆𐰣',
+      'edgü': '𐰓𐰏𐰇',
+      'köngül': '𐰜𐰇𐰭𐰠',
+      'kutlug': '𐰸𐰆𐱃𐰞𐰆𐰍'
+    };
+
+    function toTurkishLower(str) {
+      return String(str || '').replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+    }
+
+    function detectHarmonyAt(word, idx) {
+      for (let i = idx; i < word.length; i++) {
+        if (BACK_VOWELS.has(word[i])) return 'back';
+        if (FRONT_VOWELS.has(word[i])) return 'front';
+      }
+      for (let i = idx - 1; i >= 0; i--) {
+        if (BACK_VOWELS.has(word[i])) return 'back';
+        if (FRONT_VOWELS.has(word[i])) return 'front';
+      }
+      return 'back';
+    }
+
+    function transliterateWord(rawWord, classicMode = true) {
+      const clean = toTurkishLower(rawWord).replace(/[^a-zçğıöşüâîûėñŋń]/g, '');
+      if (!clean) return '';
+
+      if (classicMode && CLASSIC_EXCEPTIONS[clean]) {
+        return CLASSIC_EXCEPTIONS[clean];
+      }
+
+      let result = '';
+      let lastWrittenVowelGlyph = null;
+      let i = 0;
+
+      while (i < clean.length) {
+        const two = clean.slice(i, i + 2);
+        const ch = clean[i];
+        const isLast = i === clean.length - 1;
+        const isFirst = i === 0;
+
+        // Çift sesli tamgalar
+        if (two === 'ok' || two === 'uk' || two === 'ko' || two === 'ku') {
+          result += '𐰸';
+          lastWrittenVowelGlyph = '𐰆';
+          i += 2;
+          continue;
+        }
+        if (two === 'ök' || two === 'ük' || two === 'kö' || two === 'kü') {
+          result += '𐰜';
+          lastWrittenVowelGlyph = '𐰇';
+          i += 2;
+          continue;
+        }
+        if (two === 'ık' || two === 'kı') {
+          result += '𐰶';
+          lastWrittenVowelGlyph = '𐰃';
+          i += 2;
+          continue;
+        }
+        if (two === 'iç' || two === 'çi') {
+          result += '𐰱';
+          lastWrittenVowelGlyph = '𐰃';
+          i += 2;
+          continue;
+        }
+
+        // Çift ünsüz tamgalar
+        if (two === 'nt' || two === 'nd') {
+          result += '𐰦';
+          i += 2;
+          continue;
+        }
+        if (two === 'nç') {
+          result += '𐰨';
+          i += 2;
+          continue;
+        }
+        if (two === 'lt' || two === 'ld') {
+          result += '𐰡';
+          i += 2;
+          continue;
+        }
+        if (two === 'ng') {
+          result += '𐰭';
+          i += 2;
+          continue;
+        }
+        if (two === 'ny') {
+          result += '𐰪';
+          i += 2;
+          continue;
+        }
+
+        // Ünlüler
+        if (ALL_VOWELS.has(ch)) {
+          const vGlyph = VOWEL_MAP[ch];
+          if (classicMode) {
+            if (isLast) {
+              result += vGlyph;
+              lastWrittenVowelGlyph = vGlyph;
+            } else if (ch === 'a' || ch === 'e') {
+              if (clean.length === 1) result += vGlyph;
+              lastWrittenVowelGlyph = vGlyph;
+            } else if (vGlyph === lastWrittenVowelGlyph && !isFirst) {
+              // Ardışık aynı ünlülerde ikincisi düşer
+            } else {
+              result += vGlyph;
+              lastWrittenVowelGlyph = vGlyph;
+            }
+          } else {
+            result += vGlyph;
+            lastWrittenVowelGlyph = vGlyph;
+          }
+          i += 1;
+          continue;
+        }
+
+        // Tekil ünsüzler
+        if (CONSONANT_MAP[ch]) {
+          const harm = detectHarmonyAt(clean, i);
+          const glyph = CONSONANT_MAP[ch][harm];
+          if (classicMode && i + 1 < clean.length && clean[i + 1] === ch) {
+            result += glyph;
+            i += 2;
+            continue;
+          }
+          result += glyph;
+          i += 1;
+          continue;
+        }
+
+        i += 1;
+      }
+
+      return result;
+    }
+
+    function transliterateText(text, classicMode = true) {
+      const tokens = String(text || '').trim().split(/\s+/).filter(Boolean);
+      const converted = tokens.map(w => transliterateWord(w, classicMode)).filter(Boolean);
+      return converted.join(classicMode ? ':' : ' ');
+    }
+
+    // Taşmayı önleyen satır kırılım yardımcıları
+    function formatOrkhunHTML(str) {
+      return String(str || '').replace(/:/g, ':<wbr>');
+    }
+
+    function formatOrkhunText(str) {
+      return String(str || '').replace(/:/g, ':\u200B');
+    }
+
+    /* -----------------------------------------------------------
+       3. 11 TEMEL GÖKTÜRK İMLÂ KURALI (KILAVUZ s.11-12)
+       ----------------------------------------------------------- */
+    const IMLA_RULES = [
+      { no: 1, title: 'Sözcük Sonu Ünlüleri Zorunludur', body: 'Sözcüğün sonundaki ünlüler her durumda yazılmak zorundadır. İlk hecede düşebilen a–e ünlüsü bile sözcük sonunda mutlaka gösterilir.', exO: '𐰉𐰆𐰨𐰀 · 𐱅𐰭𐰼𐰃', exL: 'bunça · Tengri' },
+      { no: 2, title: 'İlk ve Orta Hecede A–E Yazılmaz', body: 'Ünsüzler zaten kalınlık/incelik değerini taşıdığı için ilk ve orta hecelerde "𐰀" (a/e) yazılmaz. Yazılmışsa uzun ünlüyü (āt, tām) gösterir.', exO: '𐰴𐰍𐰣 · 𐰞𐱃𐰆𐰣', exL: 'kagan · altun' },
+      { no: 3, title: 'Ardışık Aynı Ünlülerden İlki Yazılır', body: 'Art arda gelen iki hecede aynı ünlü varsa genellikle yalnızca ilk hecedeki ünlü yazılır, ikincisi gösterilmez.', exO: '𐰇𐰲𐰤 · 𐱅𐰃𐰏𐰤', exL: 'üçün · Tigin' },
+      { no: 4, title: 'Çift Seslilerde Ünlü Tekrarlanmaz', body: 'İçinde hem ünlü hem ünsüz barındıran 𐰶 (ık), 𐰱 (iç), 𐰸 (ok/uk) ve 𐰜 (ök/ük) tamgaları kullanıldığında yanlarına ayrıca ünlü yazılmaz.', exO: '𐱅𐰇𐰼𐰜 · 𐰉𐰞𐰶', exL: 'Türük · balık' },
+      { no: 5, title: 'Düz Ünlüden Sonraki Yuvarlak Ünlü Yazılır', body: 'İlk hecedeki düz ünlüden (a, e, ı, i) sonra gelen yuvarlak ünlüler (o, u, ö, ü) genellikle yazıda gösterilir.', exO: '𐰞𐱃𐰆𐰣 · 𐰚𐰠𐰇𐰼𐱅𐰢', exL: 'altun · kelürtüm' },
+      { no: 6, title: 'Yuvarlak Ünlüden Sonraki Düz Ünlü Yazılır', body: 'İlk hecedeki yuvarlak ünlüden (o, u, ö, ü) sonra gelen düz ünlüler (ı, i) genellikle yazıda gösterilir.', exO: '𐰆𐰍𐰞𐰃𐱃𐰃 · 𐰾𐰇𐰲𐰃𐰏', exL: 'oglıtı · süçig' },
+      { no: 7, title: 'Yuvarlaktan Sonra Yuvarlak Yazılmaz', body: 'İlk hecedeki yuvarlak ünlüden sonra ikinci hecede tekrar yuvarlak ünlü gelirse ikincisi genellikle yazılmaz.', exO: '𐰉𐰆𐰑𐰣 · 𐰜𐰇𐰭𐰠', exL: 'bodun · köngül' },
+      { no: 8, title: 'İnce "S" (𐰾) ve "Ş" (𐱁) Geçişkenliği', body: 'İnce ünlülü sözcüklerde "𐰾" (s) harfinin bazen "𐱁" (ş) yerine, bazen de bunun tersinin kullanıldığı görülür.', exO: '𐰃𐰠𐱅𐰼𐰾 · 𐰚𐰃𐰾𐰃', exL: 'İlteriş · kişi' },
+      { no: 9, title: '𐰸 + 𐰆 Yan Yanaysa Uzun Ünlüdür', body: '"ok/uk/ko/ku" sesini veren 𐰸 harfi ile 𐰆 (o/u) ünlüsü yan yana yazılmışsa ilk hecedeki ünlünün uzun olduğu anlaşılır.', exO: '𐰸𐰆𐰯 · 𐰸𐰆𐱃', exL: 'kōp · kūt' },
+      { no: 10, title: 'İkiz Ünsüzler Tek Harfle Gösterilebilir', body: 'Bir sözcük içinde yan yana gelen ikiz veya benzer ünsüzler, taş yazımında tek harfle gösterilebilir.', exO: '𐰉𐰞𐰶𐰀 · 𐰖𐰆𐰞𐰍', exL: 'balıkka · Yollug' },
+      { no: 11, title: 'Sözcük Ayırma Tamgası (:)', body: 'Boşluk yerine her sözcük veya sözcük grubundan sonra iki nokta (:) kullanılır. Göktürk yazısındaki tek noktalama işaretidir.', exO: '𐰋𐰃𐰠𐰏𐰀:𐰴𐰍𐰣', exL: 'Bilge : Kagan' }
+    ];
+
+    /* -----------------------------------------------------------
+       4. YAZIT OKUMA ATÖLYESİ — 8 PASAJ (KILAVUZ s.25-30)
+       ----------------------------------------------------------- */
+    const INSCRIPTIONS = [
+      {
+        source: 'Bilge Kağan Yazıtı — Doğu Yüzü',
+        title: '1. Milleti İçin Gece Uyumadan Çalışmak',
+        orkhun: '𐰤𐰭:𐰖𐰞𐰽𐰍:𐰉𐰆𐰑𐰦𐰀:𐰇𐰔𐰀:𐰆𐰞𐰺𐰢𐰑𐰢:𐰱𐰼𐰀:𐱁𐰽𐰔:𐱃𐱁𐰺𐰀:𐱃𐰆𐰣𐰽𐰔:𐰖𐰉𐰔:𐰖𐰉𐰞𐰴:𐰉𐰆𐰑𐰦𐰀:𐰇𐰔𐰀:𐰆𐰞𐰺𐱃𐰢:𐱅𐰇𐰼𐰜:𐰉𐰆𐰑𐰣:𐰇𐰲𐰤:𐱅𐰇𐰤:𐰆𐰑𐰢𐰑𐰢:𐰜𐰇𐰦𐰔:𐰆𐰞𐰺𐰢𐰑𐰢',
+        latin: 'Neng yılsıg bodunta üze olurmadım. İçre aşsız taşra tonsuz yabız yablak bodunta üze olurtum. Türük bodun üçün tün udımadım, küntüz olurmadım.',
+        modern: 'Zengin milletin üzerine kağan olmadım. Tam tersine karnı aç, sırtı çıplak, kötü ve perişan durumdaki milletin üzerine kağan oldum. Türk ulusu için gece uyumadım, gündüz oturmadım.'
+      },
+      {
+        source: 'Bilge Kağan Yazıtı — Doğu Yüzü',
+        title: '2. Şantung Ovası\'ndan Demir Kapı\'ya Seferler',
+        orkhun: '𐰲𐰢:𐰴𐰍𐰣:𐰋𐰃𐰼𐰠𐰀:𐰃𐰠𐰏𐰼𐰇:𐰖𐱁𐰞:𐰇𐰏𐰔:𐱁𐰦𐰆𐰭:𐰖𐰔𐰶𐰀:𐱅𐰏𐰃:𐰾𐰇𐰠𐰓𐰢𐰔:𐰸𐰆𐰺𐰍𐰺𐰆:𐱅𐰢𐰼:𐰴𐰯𐰍𐰴𐰀:𐱅𐰏𐰃:𐰾𐰇𐰠𐰓𐰢𐰔:𐰋𐰃𐱁:𐰆𐱃𐰔:𐰾𐰇𐰠𐰓𐰢𐰔:𐰇𐰲:𐰘𐰃𐰏𐰼𐰢𐰃:𐰾𐰇𐰭𐱁𐰓𐰢𐰔',
+        latin: 'Eçim kagan birle ilgerü Yaşıl Ögüz Şantung yazıka tegi süledimiz. Kurıgaru Temir Kapıgka tegi süledimiz. Kögmen aşa Kırkız yiringe tegi süledimiz. Biş otuz süledimiz. Üç yigirmi süngüşdimiz.',
+        modern: 'Amcam kağan ile birlikte doğuda Yeşil Irmağa ve Şantung Ovası\'na kadar akın düzenledik. Batıda Demir Kapı\'ya kadar akın düzenledik. Kögmen\'i aşarak Kırgız ülkesine kadar asker sevk ettik. Toplam yirmi beş kere sefer ettik; on üç kez savaştık.'
+      },
+      {
+        source: 'Kül Tigin Yazıtı — Kuzeydoğu Yüzü',
+        title: '3. Kül Tigin\'in Vefatı ve Yoğ Töreni',
+        orkhun: '𐰚𐰇𐰠:𐱅𐰃𐰏𐰤:𐰸𐰆𐰪:𐰖𐰞𐰴𐰀:𐰘𐰃𐱅𐰃:𐰘𐰃𐰏𐰼𐰢𐰃𐰚𐰀:𐰆𐰲𐰑𐰃:𐱃𐰸𐰔𐰨:𐰖:𐰘𐰃𐱅𐰃:𐰆𐱃𐰔𐰴𐰀:𐰖𐰆𐰍:𐰼𐱅𐰇𐰼𐱅𐰢𐰔:𐰉𐰺𐰴𐰣:𐰋𐰓𐰔𐰤:𐰋𐰃𐱅𐰏:𐱃𐱁𐰣:𐰋𐰃𐰱𐰤:𐰖𐰞𐰴𐰀:𐰘𐰃𐱅𐰨:𐰖:𐰘𐰃𐱅𐰃:𐰆𐱃𐰔𐰴𐰀:𐰸𐰆𐰯:𐰞𐰴𐰑𐰢𐰔',
+        latin: 'Kül Tigin, kony yılka yiti yigirmike uçdı. Tokuzunç ay yiti otuzka yog ertürtimiz, barkın bedizin bitig taşın biçin yılka yitinç ay yiti otuzka kop alkdımız.',
+        modern: 'Kül Tigin koyun yılının on yedinci gününde vefat etti. Dokuzuncu ayın yirmi yedisinde yas töreni düzenledik. Türbesini, resimlerini, heykellerini ve yazıtını da Maymun yılının yedinci ayının yirmi yedisinde tamamen bitirdik.'
+      },
+      {
+        source: 'Bilge Kağan Yazıtı — Doğu Yüzü',
+        title: '4. Yoksul Milleti Zengin, Az Milleti Çok Kılmak',
+        orkhun: '𐱅𐰭𐰼𐰃:𐰖𐰺𐰞𐰴𐰑𐰸:𐰇𐰲𐰤:𐰸𐰆𐱃𐰢:𐰇𐰠𐰏𐰢:𐰉𐰺:𐰇𐰲𐰤:𐰇𐰠𐱅𐰲𐰃:𐰉𐰆𐰑𐰣𐰍:𐱅𐰃𐰼𐰏𐰼𐰇:𐰃𐰏𐱅𐰢:𐰖𐰞𐰭:𐰉𐰆𐰑𐰣𐰍:𐱃𐰆𐰣𐰞𐰍:𐰶𐰞𐱃𐰢:𐰲𐰍𐰪:𐰉𐰆𐰑𐰣𐰍:𐰉𐰖:𐰶𐰞𐱃𐰢:𐰔:𐰉𐰆𐰑𐰣𐰍:𐰇𐰜𐱁:𐰶𐰞𐱃𐰢',
+        latin: 'Tengri yarlıkaduk üçün kutum ülügüm bar üçün, ölteçi bodunug tirgürü igittim. Yalang bodunug tonlug kıltım. Çıgany bodunug bay kıltım. Az bodunug üküş kıltım.',
+        modern: 'Tanrı buyurduğu için, ben de kutlu ve bahtlı olduğum için ölmek üzere olan milleti diriltip doyurdum. Çıplak milleti giyimli kıldım; yoksul milleti zengin kıldım. Az milleti çok kıldım.'
+      },
+      {
+        source: 'Kül Tigin Yazıtı — Kuzey Yüzü',
+        title: '5. Kül Tigin\'in Ardından Yas',
+        orkhun: '𐰃𐰤𐰢:𐰚𐰇𐰠:𐱅𐰃𐰏𐰤:𐰚𐰼𐰏𐰚:𐰉𐰆𐰡𐰃:𐰇𐰔𐰢:𐰽𐰴𐰦𐰢:𐰜𐰇𐰼𐰼:𐰜𐰇𐰔𐰢:𐰜𐰇𐰼𐰢𐰔:𐱅𐰏:𐰋𐰃𐰠𐰼:𐰋𐰃𐰠𐰏𐰢:𐰋𐰃𐰠𐰢𐰔:𐱅𐰏:𐰉𐰆𐰡𐰃:𐰇𐰓:𐱅𐰭𐰼𐰃:𐰖𐰽𐰺:𐰚𐰃𐱁𐰃:𐰆𐰍𐰞𐰃:𐰸𐰆𐰯:𐰇𐰠𐰏𐰠𐰃:𐱅𐰇𐰼𐰢𐱁',
+        latin: 'İnim Kül Tigin kergek boltı özüm sakıntım. Körür közüm körmez teg bilir biligim bilmez teg boltı. Öd Tengri yasar kişi oglı kop ölgeli törimiş.',
+        modern: 'Kardeşim Kül Tigin vefat etti, kendim yas tuttum. Gören gözlerim görmez oldu, eren aklım ermez oldu. Zamanı Tanrı tayin eder; insanoğlu hep ölmek için yaratılmış.'
+      },
+      {
+        source: 'Kül Tigin Yazıtı — Doğu Yüzü',
+        title: '6. Yaratılış ve İlk Kağanlar',
+        orkhun: '𐰇𐰔𐰀:𐰜𐰇𐰚:𐱅𐰭𐰼𐰃:𐰽𐰺𐰀:𐰖𐰍𐰔:𐰘𐰃𐰼:𐰶𐰞𐰣𐱃𐰸𐰑𐰀:𐰚𐰃𐰤:𐰺𐰀:𐰚𐰃𐱁𐰃:𐰆𐰍𐰞𐰃:𐰶𐰞𐰣𐰢𐱁:𐰚𐰃𐱁𐰃:𐰆𐰍𐰞𐰣𐰑𐰀:𐰇𐰔𐰀:𐰲𐰇𐰢:𐰯𐰢:𐰉𐰆𐰢𐰣:𐰴𐰍𐰣:𐰃𐰾𐱅𐰢𐰃:𐰴𐰍𐰣:𐰆𐰞𐰺𐰢𐱁',
+        latin: 'Üze kök tengri asra yağız yir kılındukda ikin ara kişi oglı kılınmış. Kişi oglında üze eçüm apam Bumın Kagan İstemi Kagan olurmış. Olurupan Türk budunung ilin törüsin tuta birmiş, iti birmiş.',
+        modern: 'Üstte mavi gök, altta yağız yer kılındıkta, ikisi arasında insanoğlu kılınmış. İnsanoğlunun üzerine ecdadım Bumın Kağan, İstemi Kağan oturmuş. Oturarak Türk milletinin ilini töresini tutu vermiş, düzenleyi vermiş.'
+      },
+      {
+        source: 'Kül Tigin Yazıtı — Doğu Yüzü',
+        title: '7. Türk ve Oğuz Beylerine Sesleniş',
+        orkhun: '𐱅𐰇𐰼𐰜:𐰆𐰍𐰔:𐰋𐰏𐰠𐰼𐰃:𐰉𐰆𐰑𐰣:𐱁𐰓𐰭:𐰇𐰔𐰀:𐱅𐰭𐰼𐰃:𐰉𐰽𐰢𐰽𐰺:𐰽𐰺𐰀:𐰘𐰃𐰼:𐱅𐰠𐰤𐰢𐰾𐰼:𐱅𐰇𐰼𐰜:𐰉𐰆𐰑𐰣:𐰃𐰠𐰭𐰤:𐱅𐰇𐰼𐰭𐰤:𐰚𐰢:𐰺𐱃𐱃𐰃:𐰆𐰑𐰲𐰃:𐰼𐱅𐰃:𐱅𐰇𐰼𐰜:𐰉𐰆𐰑𐰣:𐰼𐱅𐰤:𐰇𐰜𐰤',
+        latin: 'Türk Oğuz begleri budun eşiding. Üze tengri basmasar, asra yir telinmeser, Türk budun, ilingin törüngin kim artatı udaçı erti? Türk budun ertin, ökün!',
+        modern: 'Türk, Oğuz beyleri, milleti, işitin: Üstte gök basmasa, altta yer delinmese, Türk milleti, ilini töreni kim bozabilecekti? Türk milleti, vazgeç, pişman ol!'
+      },
+      {
+        source: 'Tonyukuk Yazıtı — I. Taş',
+        title: '8. Bilge Tonyukuk\'un Tanıtımı ve Demir Kapı',
+        orkhun: '𐰋𐰃𐰠𐰏𐰀:𐱃𐰆𐰪𐰸𐰸:𐰋𐰤:𐰇𐰔𐰢:𐱃𐰉𐰍𐰲:𐰃𐰠𐰭𐰀:𐰶𐰞𐰦𐰢:𐱅𐰇𐰼𐰜:𐰉𐰆𐰑𐰣:𐱃𐰉𐰍𐰲𐰴𐰀:𐰜𐰇𐰼𐰼:𐰼𐱅𐰃:𐱅𐰇𐰼𐰜:𐰉𐰆𐰑𐰣:𐱅𐰢𐰼:𐰴𐰯𐰍𐰴𐰀:𐱅𐰏𐰢𐱁:𐰃𐰓𐰃:𐰖𐰸:𐰼𐰢𐱁',
+        latin: 'Bilge Tonyukuk ben özüm Tabgaç ilinge kılıntım. Türk bodun Tabgaçka körür erti. Türk bodun Temir Kapıgka Tinsi Oglı aytıgma tagka tegmiş idi yok ermiş.',
+        modern: 'Ben Bilge Tonyukuk\'um; Çin ülkesinde doğdum. Ben doğduğumda Türk ulusu Çin\'in egemenliği altında idi. Türk ulusunun Demir Kapı\'ya, "Göğün Oğlu" denilen dağlara ulaşmışlığı hiç yok imiş.'
+      }
+    ];
+
+    /* -----------------------------------------------------------
+       5. SÖZLÜK VERİ TABANI (KILAVUZ s.31-33 — 100+ KELİME)
+       ----------------------------------------------------------- */
+    const DICTIONARY = [
+      { w: 'alk-', m: 'bitirmek, tamamlamak, bitmek, tükenmek, sona ermek' },
+      { w: 'altun', m: 'altın' },
+      { w: 'ança', m: 'öyle, öylece, şöyle, o kadar, çok, karşılıksız' },
+      { w: 'ançula-', m: 'takdim etmek, arz etmek, sunmak' },
+      { w: 'apa', m: 'ecdat, büyük baba' },
+      { w: 'artuk', m: 'fazla, ziyade, artık' },
+      { w: 'aşsız', m: 'yemeksiz, aç' },
+      { w: 'balık', m: 'şehir; çamur, balçık, bataklık' },
+      { w: 'bark', m: 'ev, mezar, türbe, abide' },
+      { w: 'bay', m: 'zengin' },
+      { w: 'baz', m: 'yabancı, tâbi' },
+      { w: 'bediz', m: 'resim, heykel, nakış, şekil, süs' },
+      { w: 'bedizçi', m: 'ressam, nakkaş' },
+      { w: 'bengü', m: 'ebedî, daimî, sonsuz' },
+      { w: 'bilig', m: 'bilgi, fikir, düşünce, zekâ' },
+      { w: 'birle', m: 'ile' },
+      { w: 'biti-', m: 'yazmak' },
+      { w: 'bitig', m: 'yazı, yazma, kitabe, kitap' },
+      { w: 'bodun', m: 'budun, ulus, millet, kavim' },
+      { w: 'bulung', m: 'taraf, yan, köşe' },
+      { w: 'bunça', m: 'bunca, bu kadar, böyle' },
+      { w: 'bung', m: 'keder, sıkıntı, dert, zahmet, eziyet' },
+      { w: 'çıgany', m: 'yoksul, fakir' },
+      { w: 'eçi', m: 'amca, ağabey' },
+      { w: 'edgü', m: 'iyi' },
+      { w: 'erinç', m: 'olacak, olmalı, tabiî, elbette, -dır/-dir' },
+      { w: 'ertür-', m: 'erdirmek, yaptırmak' },
+      { w: 'ıduk', m: 'mukaddes, kutlu, mübarek' },
+      { w: 'ıgar', m: 'ağır, değerli, önemli, hürmetli' },
+      { w: 'ırak', m: 'uzak' },
+      { w: 'igit-', m: 'beslemek, bakmak, yetiştirmek, büyütmek' },
+      { w: 'illig', m: 'illi, vatanlı, ülkeli, devletli' },
+      { w: 'ilsire-', m: 'ilsizleşmek, devletsizleşmek, esaret altına girmek' },
+      { w: 'ini', m: 'küçük kardeş' },
+      { w: 'kagan', m: 'hakan, hükümdar, kağan' },
+      { w: 'kaganlıg', m: 'bağımsız, müstakil, kağanı olan' },
+      { w: 'kagansırat-', m: 'kağansızlaştırmak, esaret altına almak' },
+      { w: 'kang', m: 'baba, peder' },
+      { w: 'kapıg', m: 'kapı' },
+      { w: 'kazgan-', m: 'kazanmak, toplamak, biriktirmek, fethetmek' },
+      { w: 'kedimlig', m: 'giyimli, giyim kuşamı olan, zırhlı' },
+      { w: 'kelür-', m: 'getirmek' },
+      { w: 'kergek bol-', m: 'yok olmak, ölmek, vefat etmek' },
+      { w: 'kılın-', m: 'yaratılmak, yapılmak, meydana gelmek' },
+      { w: 'Kırkız', m: 'Kırgız' },
+      { w: 'kisre', m: 'sonra, ondan sonra' },
+      { w: 'kony', m: 'koyun' },
+      { w: 'kop', m: 'çok, hep, pek, tamamen' },
+      { w: 'Kögmen', m: 'Kögmen Dağı, ormanı, Sayan Dağı' },
+      { w: 'köngül', m: 'gönül, kalp, yürek, fikir, düşünce, ülkü' },
+      { w: 'kurıgaru', m: 'batı, batıya doğru' },
+      { w: 'kut', m: 'devlet, ikbal, saadet, baht, talih' },
+      { w: 'kutay', m: 'ipek, ipekli' },
+      { w: 'kü', m: 'ses, ün, şan, şöhret, san' },
+      { w: 'küntüz', m: 'gündüz' },
+      { w: 'men', m: 'ben' },
+      { w: 'neng', m: 'nesne, şey, mal, eşya; hiç, asla' },
+      { w: 'olur-', m: 'oturmak, tahta oturmak, kağan olmak' },
+      { w: 'ot', m: 'ateş' },
+      { w: 'ög', m: 'anne, üvey anne' },
+      { w: 'ögüz', m: 'ırmak, nehir, deniz' },
+      { w: 'ökün-', m: 'pişman olmak, eseflenmek, kendine gelmek' },
+      { w: 'ötün-', m: 'arz etmek, rica etmek, dilek dilemek' },
+      { w: 'sakın-', m: 'düşünmek, endişelenmek, yas tutmak' },
+      { w: 'sıgıt', m: 'ağlama, feryat figan etmek, matem' },
+      { w: 'sökür-', m: 'diz çöktürmek, dize getirmek' },
+      { w: 'sub', m: 'su, nehir' },
+      { w: 'süçig', m: 'tatlı, lezzetli' },
+      { w: 'süle-', m: 'ordu sevk etmek, akın düzenlemek, sefere çıkmak' },
+      { w: 'süngük', m: 'kemik' },
+      { w: 'süngüş-', m: 'mızraklaşmak, çarpışmak, savaşmak' },
+      { w: 'şad', m: 'Türk devletinin batı kısmının başkanı, yabgu' },
+      { w: 'Şantung', m: 'Şantung Ovası' },
+      { w: 'Tabgaç', m: 'Çin, Çinli' },
+      { w: 'teg', m: 'gibi' },
+      { w: 'Tengri', m: 'Gök, Tanrı, ilâh, Gök Tanrısı' },
+      { w: 'tigin', m: 'Kağan\'ın oğullarına verilen unvan, prens' },
+      { w: 'tirgür-', m: 'yaşatmak, diriltmek, canlandırmak' },
+      { w: 'tiyin', m: 'diye, diyerek' },
+      { w: 'tiz', m: 'diz' },
+      { w: 'tokı-', m: 'vurmak, dövmek, çarpmak, yontmak' },
+      { w: 'tonsuz', m: 'elbisesiz, çıplak' },
+      { w: 'torug', m: 'doru, doru rengi' },
+      { w: 'toruk', m: 'zayıf, bitkin, takatsiz, kuvvetsiz' },
+      { w: 'törü', m: 'töre, kanun, nizam, örf ve adet, devlet nizamı' },
+      { w: 'tün', m: 'gece' },
+      { w: 'uça bar-', m: 'vefat etmek, ölmek, kergek bolmak' },
+      { w: 'udı-', m: 'uyumak' },
+      { w: 'Umay', m: 'bir Tanrıça adı' },
+      { w: 'üçün', m: 'için, dolayı, yüzünden' },
+      { w: 'üküş', m: 'çok, fazla' },
+      { w: 'ülüg', m: 'kısmet, pay, nasip, şans' },
+      { w: 'yabız', m: 'yavuz, fena, kötü, perişan' },
+      { w: 'yablak', m: 'kötü, fena, perişan' },
+      { w: 'yadag', m: 'yaya' },
+      { w: 'yagı', m: 'düşman' },
+      { w: 'yarlıka-', m: 'buyurmak, lütfetmek, bağışlamak, korumak' },
+      { w: 'yaşıl', m: 'yeşil' },
+      { w: 'yeltür-', m: 'koşturmak' },
+      { w: 'yış', m: 'orman, ormanlık dağ' },
+      { w: 'yig', m: 'iyi' },
+      { w: 'yog', m: 'matem, yas, ölü yemeği, cenaze töreni' },
+      { w: 'yügürt-', m: 'koşturmak, akıtmak' }
+    ];
+
+    /* -----------------------------------------------------------
+       6. GÖKTÜRK SAYI SİSTEMİ MOTORU (1–9999)
+       ----------------------------------------------------------- */
+    const UNITS_OT = ['', 'bir', 'eki', 'üç', 'tört', 'biş', 'altı', 'yiti', 'sekiz', 'tokuz'];
+    const TENS_OT = ['', 'on', 'yigirmi', 'otuz', 'kırk', 'elli', 'altmış', 'yitmiş', 'sekiz on', 'toksan'];
+
+    function numberToOldTurkic(n) {
+      const num = Math.max(1, Math.min(9999, Math.floor(Number(n) || 1)));
+      const thousands = Math.floor(num / 1000);
+      const hundreds = Math.floor((num % 1000) / 100);
+      const tens = Math.floor((num % 100) / 10);
+      const ones = num % 10;
+
+      const prefixParts = [];
+      if (thousands > 0) prefixParts.push(thousands === 1 ? 'bing' : `${UNITS_OT[thousands]} bing`);
+      if (hundreds > 0) prefixParts.push(hundreds === 1 ? 'yüz' : `${UNITS_OT[hundreds]} yüz`);
+      const prefix = prefixParts.join(' ');
+      const rem = num % 100;
+
+      let upperForm = '';
+      let artukiForm = '';
+      let explanation = '';
+
+      if (rem === 0) {
+        upperForm = prefix;
+        artukiForm = prefix;
+        explanation = `<strong>${num}</strong> tam yüzlük/binlik bir sayıdır. Göktürkçede yüzlük ve binlikler günümüz Türkçesindeki gibi doğrudan söylenir.`;
+      } else if (rem < 10) {
+        upperForm = prefix ? `${prefix} artukı ${UNITS_OT[ones]}` : UNITS_OT[ones];
+        artukiForm = upperForm;
+        explanation = prefix
+          ? `Yüzlük/binlik kısımdan sonra birlik sayı <strong>artukı</strong> ("artı") bağlacıyla eklenir: <em>${upperForm}</em>.`
+          : `Tek basamaklı <strong>${num}</strong> sayısı doğrudan <em>${UNITS_OT[ones]}</em> şeklinde söylenir.`;
+      } else if (ones === 0) {
+        upperForm = prefix ? `${prefix} artukı ${TENS_OT[tens]}` : TENS_OT[tens];
+        artukiForm = upperForm;
+        explanation = `Tam onluk olan <strong>${rem}</strong> sayısı <em>${TENS_OT[tens]}</em> biçiminde söylenir.`;
+      } else if (tens === 9) {
+        const tail = `toksan artukı ${UNITS_OT[ones]}`;
+        upperForm = prefix ? `${prefix} artukı ${tail}` : tail;
+        artukiForm = upperForm;
+        explanation = `90'dan büyük iki basamaklı sayılarda <strong>toksan artukı + birlik</strong> kalıbı kullanılır: <em>${tail}</em>.`;
+      } else {
+        const nextTenWord = TENS_OT[tens + 1];
+        const classicTail = `${UNITS_OT[ones]} ${nextTenWord}`;
+        const artukiTail = `${TENS_OT[tens]} artukı ${UNITS_OT[ones]}`;
+
+        upperForm = prefix ? `${prefix} artukı ${classicTail}` : classicTail;
+        artukiForm = prefix ? `${prefix} artukı ${artukiTail}` : artukiTail;
+
+        explanation = `
+          <strong>Üst Onluk (Klasik) Kuralı:</strong> <strong>${rem}</strong> sayısı ${tens * 10} ile ${(tens + 1) * 10} arasındadır.
+          Birlik sayı (<em>${UNITS_OT[ones]}</em>) bir üst onluğun (<em>${nextTenWord}</em> = ${(tens + 1) * 10}) <strong>önüne</strong> gelir →
+          <span class="text-amber-300 font-semibold">${classicTail}</span>.<br/>
+          <strong>Artukı Yöntemi:</strong> Onluktan sonra <em>artukı</em> ("artı") bağlacı getirilerek
+          <span class="text-sky-300 font-semibold">${artukiTail}</span> şeklinde de ifade edilir.
+        `;
+      }
+
+      return {
+        num,
+        upperForm,
+        upperOrkhun: transliterateText(upperForm, true),
+        artukiForm,
+        artukiOrkhun: transliterateText(artukiForm, true),
+        explanation
+      };
+    }
+
+    /* -----------------------------------------------------------
+       7. YARDIMCILAR (TOAST & KOPYALAMA)
+       ----------------------------------------------------------- */
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.add('hidden'), 2200);
+    }
+
+    function copyToClipboard(text) {
+      if (!text) return;
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Göktürkçe metin panoya kopyalandı!');
+      } catch (e) {
+        showToast('Kopyalama sırasında bir hata oluştu.');
+      }
+    }
+
+    /* -----------------------------------------------------------
+       8. SEKME YÖNETİMİ
+       ----------------------------------------------------------- */
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        tabButtons.forEach(b => {
+          b.classList.remove('bg-amber-500/15', 'text-amber-300', 'border-amber-500/40');
+          b.classList.add('text-stone-400', 'border-transparent');
+        });
+        btn.classList.add('bg-amber-500/15', 'text-amber-300', 'border-amber-500/40');
+        btn.classList.remove('text-stone-400', 'border-transparent');
+
+        tabPanels.forEach(p => p.classList.add('hidden'));
+        document.getElementById(`tab-${target}`).classList.remove('hidden');
+      });
+    });
+
+    /* -----------------------------------------------------------
+       9. SEKME 1: ALFABE & TAMGA MODALI
+       ----------------------------------------------------------- */
+    function renderAlphabet(filter = 'all') {
+      const container = document.getElementById('alphabet-container');
+      container.innerHTML = '';
+
+      const groups = [
+        { key: 'unlu', title: 'Ünlüler (5 Harf)', badge: 'text-sky-300 bg-sky-500/15 border-sky-500/30' },
+        { key: 'kalin-ince', title: 'Kalın – İnce Ünsüzler (10 Çift / 20 Harf)', badge: 'text-amber-300 bg-amber-500/15 border-amber-500/30' },
+        { key: 'ortak', title: 'Bütün Ünlülerle Kullanılanlar (5 Harf)', badge: 'text-emerald-300 bg-emerald-500/15 border-emerald-500/30' },
+        { key: 'cift-unsuz', title: 'Çift Ünsüzler (5 Harf)', badge: 'text-violet-300 bg-violet-500/15 border-violet-500/30' },
+        { key: 'cift-sesli', title: 'Çift Sesliler (4 Harf)', badge: 'text-rose-300 bg-rose-500/15 border-rose-500/30' },
+        { key: 'ayirma', title: 'Sözcük Ayırma Tamgası', badge: 'text-stone-300 bg-stone-700/40 border-stone-600' }
+      ];
+
+      groups.forEach(g => {
+        if (filter !== 'all' && filter !== 'koken' && filter !== g.key) return;
+        let items = ALPHABET_DATA.filter(x => x.cat === g.key);
+        if (filter === 'koken') items = items.filter(x => Boolean(x.origin));
+        if (!items.length) return;
+
+        const section = document.createElement('div');
+        section.className = 'space-y-3';
+        section.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <h3 class="text-base sm:text-lg font-bold text-stone-200">${g.title}</h3>
+            <span class="text-[11px] px-2 py-0.5 rounded-full border ${g.badge}">${items.length} tamga</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3"></div>
+        `;
+
+        const grid = section.querySelector('.grid');
+        items.forEach(item => {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'group relative p-3.5 rounded-2xl bg-stone-900/80 hover:bg-stone-800/90 border border-stone-800 hover:border-amber-500/50 transition-all flex flex-col items-center text-center';
+          card.innerHTML = `
+            ${item.origin ? '<span title="Köken hikâyesi var" class="absolute top-2 right-2 text-xs text-amber-400">✨</span>' : ''}
+            <div class="font-orkhun text-4xl sm:text-5xl text-amber-300 group-hover:text-sky-300 transition-colors my-1">${item.glyph}</div>
+            <div class="font-bold text-sm text-stone-100 mt-1">${item.latin}</div>
+            <div class="text-[11px] text-stone-400 mt-0.5">${item.harmony}</div>
+          `;
+          card.addEventListener('click', () => openTamgaModal(item));
+          grid.appendChild(card);
+        });
+
+        container.appendChild(section);
+      });
+    }
+
+    function openTamgaModal(item) {
+      const modal = document.getElementById('tamga-modal');
+      const content = document.getElementById('modal-content');
+
+      const examplesHtml = (item.examples || []).map(ex => `
+        <div class="flex items-center justify-between px-3.5 py-2 rounded-xl bg-stone-950/75 border border-stone-800">
+          <div>
+            <span class="font-semibold text-stone-100 text-sm">${ex.l}</span>
+            <span class="text-xs text-stone-400 ml-2">(${ex.m})</span>
+          </div>
+          <span class="font-orkhun text-xl text-amber-300" dir="rtl">${ex.o}</span>
+        </div>
+      `).join('');
+
+      content.innerHTML = `
+        <div class="flex items-center gap-4 pb-4 border-b border-stone-700/60">
+          <div class="w-20 h-20 rounded-2xl bg-stone-950 border border-amber-500/40 flex items-center justify-center shrink-0">
+            <span class="font-orkhun text-5xl text-amber-300 carved-gold">${item.glyph}</span>
+          </div>
+          <div>
+            <span class="text-xs uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">${item.harmony}</span>
+            <h3 class="text-2xl font-bold text-stone-100 mt-1.5">${item.latin}</h3>
+          </div>
+        </div>
+
+        <div class="mt-4 space-y-4 text-sm text-stone-300 leading-relaxed">
+          <p>${item.desc}</p>
+          ${item.origin ? `
+            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
+              <div class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">✨ Köken Hikâyesi (Kılavuz)</div>
+              <p class="text-amber-100/90 text-xs sm:text-sm leading-relaxed">${item.origin}</p>
+            </div>
+          ` : ''}
+          ${examplesHtml ? `
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2">Örnek Sözcükler</div>
+              <div class="space-y-2">${examplesHtml}</div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    document.getElementById('close-modal-btn').addEventListener('click', () => {
+      const modal = document.getElementById('tamga-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    });
+    document.getElementById('tamga-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'tamga-modal') {
+        e.target.classList.add('hidden');
+        e.target.classList.remove('flex');
+      }
+    });
+
+    document.querySelectorAll('.alpha-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.alpha-filter').forEach(b => {
+          b.classList.remove('bg-amber-500', 'text-stone-950', 'font-semibold');
+          if (b.dataset.filter !== 'koken') {
+            b.classList.add('bg-stone-800', 'text-stone-300');
+          }
+        });
+        btn.classList.add('bg-amber-500', 'text-stone-950', 'font-semibold');
+        btn.classList.remove('bg-stone-800', 'text-stone-300');
+        renderAlphabet(btn.dataset.filter);
+      });
+    });
+
+    /* -----------------------------------------------------------
+       10. SEKME 2: YAZIM ATÖLYESİ & SANAL KLAVYE
+       ----------------------------------------------------------- */
+    const latinInput = document.getElementById('latin-input');
+    const classicToggle = document.getElementById('classic-mode-toggle');
+    const orkhunOutput = document.getElementById('orkhun-output');
+    const glyphBreakdown = document.getElementById('glyph-breakdown');
+
+    const GLYPH_TO_LATIN = {};
+    ALPHABET_DATA.forEach(a => { GLYPH_TO_LATIN[a.glyph] = a.latin; });
+
+    function updateConverter() {
+      const rawText = latinInput.value;
+      const classic = classicToggle.checked;
+      const converted = transliterateText(rawText, classic);
+      const displayVal = converted || '𐱅𐰇𐰼𐰜';
+
+      orkhunOutput.dataset.raw = displayVal;
+      orkhunOutput.textContent = formatOrkhunText(displayVal);
+
+      glyphBreakdown.innerHTML = '';
+      Array.from(converted).slice(0, 60).forEach(ch => {
+        if (ch === ' ') return;
+        const label = GLYPH_TO_LATIN[ch] || ch;
+        const chip = document.createElement('span');
+        chip.className = 'inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-stone-900 border border-stone-800 text-stone-300';
+        chip.innerHTML = `<span class="font-orkhun text-base text-amber-300">${ch}</span><span class="text-[10px] text-stone-400">${label}</span>`;
+        glyphBreakdown.appendChild(chip);
+      });
+    }
+
+    latinInput.addEventListener('input', updateConverter);
+    classicToggle.addEventListener('change', updateConverter);
+    document.getElementById('clear-converter-btn').addEventListener('click', () => {
+      latinInput.value = '';
+      updateConverter();
+    });
+    document.querySelectorAll('.quick-sample').forEach(btn => {
+      btn.addEventListener('click', () => {
+        latinInput.value = btn.dataset.text;
+        updateConverter();
+      });
+    });
+    document.getElementById('copy-orkhun-btn').addEventListener('click', () => {
+      copyToClipboard(orkhunOutput.dataset.raw || orkhunOutput.textContent.replace(/\u200B/g, ''));
+    });
+
+    let isVertical = false;
+    document.getElementById('toggle-vertical-btn').addEventListener('click', (e) => {
+      isVertical = !isVertical;
+      if (isVertical) {
+        orkhunOutput.classList.add('vertical-stone');
+        orkhunOutput.classList.remove('w-full', 'text-right');
+        e.target.textContent = 'Yatay (Sağdan Sola) Mod';
+      } else {
+        orkhunOutput.classList.remove('vertical-stone');
+        orkhunOutput.classList.add('w-full', 'text-right');
+        e.target.textContent = 'Dikey Yazıt Modu';
+      }
+    });
+
+    function buildVirtualKeyboard() {
+      const vk = document.getElementById('virtual-keyboard');
+      const vkInput = document.getElementById('vk-input');
+
+      const rows = [
+        { label: 'Ünlüler', items: ALPHABET_DATA.filter(x => x.cat === 'unlu') },
+        { label: 'Kalın & İnce Ünsüzler', items: ALPHABET_DATA.filter(x => x.cat === 'kalin-ince') },
+        { label: 'Ortak, Çift Ünsüz, Çift Sesli & Ayırma', items: ALPHABET_DATA.filter(x => ['ortak', 'cift-unsuz', 'cift-sesli', 'ayirma'].includes(x.cat)) }
+      ];
+
+      rows.forEach(row => {
+        const wrap = document.createElement('div');
+        wrap.innerHTML = `<div class="text-[11px] text-stone-400 mb-1.5">${row.label}</div><div class="flex flex-wrap gap-1.5"></div>`;
+        const group = wrap.querySelector('.flex');
+        row.items.forEach(item => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'px-2.5 py-1.5 rounded-xl bg-stone-950 hover:bg-stone-800 border border-stone-800 hover:border-amber-500/50 transition flex flex-col items-center min-w-[48px]';
+          b.innerHTML = `
+            <span class="font-orkhun text-xl text-amber-300 leading-none">${item.glyph}</span>
+            <span class="text-[9px] text-stone-400 mt-1">${item.latin.split(' ')[0]}</span>
+          `;
+          b.addEventListener('click', () => {
+            vkInput.value += item.glyph;
+            vkInput.focus();
+          });
+          group.appendChild(b);
+        });
+        vk.appendChild(wrap);
+      });
+
+      document.getElementById('vk-backspace').addEventListener('click', () => {
+        const arr = Array.from(vkInput.value);
+        arr.pop();
+        vkInput.value = arr.join('');
+      });
+      document.getElementById('vk-clear').addEventListener('click', () => { vkInput.value = ''; });
+      document.getElementById('vk-copy').addEventListener('click', () => copyToClipboard(vkInput.value));
+    }
+
+    /* -----------------------------------------------------------
+       11. SEKME 3: İMLÂ KURALLARI & SAYI ÇEVİRİCİ
+       ----------------------------------------------------------- */
+    function renderImlaRules() {
+      const grid = document.getElementById('imla-rules-grid');
+      grid.innerHTML = IMLA_RULES.map(r => `
+        <article class="p-4 sm:p-5 rounded-2xl bg-stone-900/80 border border-stone-800 flex flex-col justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2.5 mb-1.5">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-bold flex items-center justify-center border border-amber-500/30">${r.no}</span>
+              <h3 class="font-bold text-stone-100 text-sm sm:text-base">${r.title}</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-stone-400 leading-relaxed">${r.body}</p>
+          </div>
+          <div class="flex items-center justify-between px-3.5 py-2 rounded-xl bg-stone-950/75 border border-stone-800">
+            <span class="text-xs text-sky-300 font-medium">${r.exL}</span>
+            <span class="font-orkhun text-xl text-amber-300" dir="rtl">${r.exO}</span>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function updateNumberConverter() {
+      const input = document.getElementById('number-input');
+      const resBox = document.getElementById('number-result');
+      const expBox = document.getElementById('number-explanation');
+
+      const data = numberToOldTurkic(input.value);
+      resBox.innerHTML = `
+        <div class="p-4 rounded-xl bg-stone-950/85 border border-amber-500/30 space-y-2">
+          <div class="text-[11px] uppercase tracking-wider text-amber-400 font-bold">Üst Onluk (Klasik) Yöntemi</div>
+          <div class="text-lg sm:text-xl font-bold text-stone-100">${data.upperForm}</div>
+          <div class="font-orkhun text-2xl sm:text-3xl text-amber-200 pt-1" dir="rtl">${formatOrkhunHTML(data.upperOrkhun)}</div>
+        </div>
+        <div class="p-4 rounded-xl bg-stone-950/85 border border-sky-500/30 space-y-2">
+          <div class="text-[11px] uppercase tracking-wider text-sky-400 font-bold">Artukı Bağlaçlı Yöntem</div>
+          <div class="text-lg sm:text-xl font-bold text-stone-100">${data.artukiForm}</div>
+          <div class="font-orkhun text-2xl sm:text-3xl text-sky-200 pt-1" dir="rtl">${formatOrkhunHTML(data.artukiOrkhun)}</div>
+        </div>
+      `;
+      expBox.innerHTML = data.explanation;
+    }
+
+    document.getElementById('number-input').addEventListener('input', updateNumberConverter);
+    document.querySelectorAll('.num-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('number-input').value = btn.dataset.num;
+        updateNumberConverter();
+      });
+    });
+
+    /* -----------------------------------------------------------
+       12. SEKME 4: YAZIT OKUMA ATÖLYESİ (8 PASAJ, TAŞMASIZ)
+       ----------------------------------------------------------- */
+    let hideAllLatin = false;
+    let hideAllModern = false;
+    let inscriptionFontScale = 100;
+
+    function applyInscriptionFontScale() {
+      const baseRem = 1.5 * (inscriptionFontScale / 100);
+      const container = document.getElementById('inscriptions-container');
+      if (container) {
+        container.style.setProperty('--inscription-font-size', `${baseRem.toFixed(2)}rem`);
+      }
+      document.getElementById('font-size-label').textContent = `${inscriptionFontScale}%`;
+    }
+
+    document.getElementById('font-dec-btn').addEventListener('click', () => {
+      inscriptionFontScale = Math.max(75, inscriptionFontScale - 10);
+      applyInscriptionFontScale();
+    });
+    document.getElementById('font-inc-btn').addEventListener('click', () => {
+      inscriptionFontScale = Math.min(145, inscriptionFontScale + 10);
+      applyInscriptionFontScale();
+    });
+
+    function renderInscriptions() {
+      const container = document.getElementById('inscriptions-container');
+      container.innerHTML = INSCRIPTIONS.map((ins, idx) => `
+        <article class="bengu-stone rounded-2xl p-4 sm:p-6 space-y-4 h-auto overflow-visible">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-700/60 pb-3">
+            <div class="min-w-0">
+              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">${ins.source}</span>
+              <h3 class="text-base sm:text-lg font-bold text-stone-100 safe-wrap">${ins.title}</h3>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" onclick="toggleSingleLayer('latin-${idx}')" class="px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-sky-300 border border-stone-700">Latin Göster/Gizle</button>
+              <button type="button" onclick="toggleSingleLayer('modern-${idx}')" class="px-2.5 py-1 rounded-lg text-xs bg-stone-800 hover:bg-stone-700 text-amber-300 border border-stone-700">Türkçe Göster/Gizle</button>
+            </div>
+          </div>
+
+          <div class="p-4 sm:p-5 rounded-xl bg-stone-950/80 border border-stone-800 h-auto w-full max-w-full">
+            <div class="text-[11px] uppercase tracking-wider text-stone-500 mb-2">Orhun Yazısı (Sağdan Sola)</div>
+            <p class="orkhun-inscription-box carved-gold text-amber-200" dir="rtl">${formatOrkhunHTML(ins.orkhun)}</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <div class="p-4 rounded-xl bg-stone-900/85 border border-stone-800 min-w-0 h-auto">
+              <div class="text-[11px] uppercase tracking-wider text-sky-400 font-semibold mb-1.5">Latin Okunuşu</div>
+              <p id="latin-${idx}" onclick="this.classList.toggle('blurred-layer')" class="latin-layer safe-wrap text-sm text-stone-200 leading-relaxed ${hideAllLatin ? 'blurred-layer' : ''}">${ins.latin}</p>
+            </div>
+            <div class="p-4 rounded-xl bg-stone-900/85 border border-stone-800 min-w-0 h-auto">
+              <div class="text-[11px] uppercase tracking-wider text-amber-400 font-semibold mb-1.5">Günümüz Türkçesi</div>
+              <p id="modern-${idx}" onclick="this.classList.toggle('blurred-layer')" class="modern-layer safe-wrap text-sm text-stone-300 leading-relaxed ${hideAllModern ? 'blurred-layer' : ''}">${ins.modern}</p>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      applyInscriptionFontScale();
+    }
+
+    window.toggleSingleLayer = function (id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('blurred-layer');
+    };
+
+    document.getElementById('toggle-all-latin').addEventListener('click', (e) => {
+      hideAllLatin = !hideAllLatin;
+      document.querySelectorAll('.latin-layer').forEach(el => el.classList.toggle('blurred-layer', hideAllLatin));
+      e.target.textContent = hideAllLatin ? '👁️ Latin Okunuşu Göster' : '👁️ Latin Okunuşu Gizle';
+    });
+
+    document.getElementById('toggle-all-modern').addEventListener('click', (e) => {
+      hideAllModern = !hideAllModern;
+      document.querySelectorAll('.modern-layer').forEach(el => el.classList.toggle('blurred-layer', hideAllModern));
+      e.target.textContent = hideAllModern ? '👁️ Günümüz Türkçesini Göster' : '👁️ Günümüz Türkçesini Gizle';
+    });
+
+    /* -----------------------------------------------------------
+       13. SEKME 5: ALIŞTIRMA & SINAV MODU (4 MOD x 10 SORU)
+       ----------------------------------------------------------- */
+    const WORD_QUIZ_POOL = [
+      { l: 'Tengri', m: 'Gök, Tanrı' },
+      { l: 'Bilig', m: 'Bilgi, akıl' },
+      { l: 'Bodun', m: 'Ulus, millet' },
+      { l: 'Kagan', m: 'Hükümdar, kağan' },
+      { l: 'Tigin', m: 'Prens' },
+      { l: 'Edgü', m: 'İyi' },
+      { l: 'Altun', m: 'Altın' },
+      { l: 'Ötüken', m: 'Kutsal başkent' },
+      { l: 'Tonyukuk', m: 'Bilge vezir' },
+      { l: 'İlteriş', m: 'Devleti derleyen' },
+      { l: 'Yablak', m: 'Kötü, fena' },
+      { l: 'Umay', m: 'Tanrıça adı' },
+      { l: 'Bitig', m: 'Yazı, kitabe' },
+      { l: 'Balık', m: 'Şehir' },
+      { l: 'Tabgaç', m: 'Çin, Çinli' },
+      { l: 'Kırkız', m: 'Kırgız' },
+      { l: 'Şad', m: 'Batı başkanı' },
+      { l: 'Tört', m: 'Dört' },
+      { l: 'Biş', m: 'Beş' },
+      { l: 'Tokuz', m: 'Dokuz' },
+      { l: 'Sub', m: 'Su, nehir' },
+      { l: 'Yagı', m: 'Düşman' },
+      { l: 'Bark', m: 'Ev, türbe' },
+      { l: 'Köngül', m: 'Gönül, kalp' },
+      { l: 'Bengü', m: 'Ebedî, sonsuz' }
+    ];
+
+    const NUMBER_QUIZ_POOL = [
+      { q: 'yiti yigirmi', a: '17', exp: '20 (yigirmi) − 10 + 7 (yiti) = 17' },
+      { q: 'biş otuz', a: '25', exp: '30 (otuz) − 10 + 5 (biş) = 25' },
+      { q: 'bir toksan', a: '81', exp: '90 (toksan) − 10 + 1 (bir) = 81' },
+      { q: 'tört kırk', a: '34', exp: '40 (kırk) − 10 + 4 (tört) = 34' },
+      { q: 'sekiz elli', a: '48', exp: '50 (elli) − 10 + 8 (sekiz) = 48' },
+      { q: 'üç yigirmi', a: '13', exp: '20 (yigirmi) − 10 + 3 (üç) = 13' },
+      { q: 'yiti otuz', a: '27', exp: '30 (otuz) − 10 + 7 (yiti) = 27' },
+      { q: 'otuz artukı eki', a: '32', exp: '30 (otuz) + 2 (eki) = 32' },
+      { q: 'altı yüz artukı tört kırk', a: '634', exp: '600 + (40 − 10 + 4) = 634' },
+      { q: 'tört yüz artukı sekiz elli', a: '448', exp: '400 + (50 − 10 + 8) = 448' },
+      { q: 'tokuz otuz', a: '29', exp: '30 (otuz) − 10 + 9 (tokuz) = 29' },
+      { q: 'altı yigirmi', a: '16', exp: '20 (yigirmi) − 10 + 6 (altı) = 16' }
+    ];
+
+    let quizState = {
+      mode: 'tamga',
+      questions: [],
+      index: 0,
+      score: 0,
+      streak: 0,
+      answered: false
+    };
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function generateQuiz(mode) {
+      quizState.mode = mode;
+      quizState.index = 0;
+      quizState.score = 0;
+      quizState.streak = 0;
+      quizState.answered = false;
+
+      const questions = [];
+
+      if (mode === 'tamga') {
+        const pool = shuffle(ALPHABET_DATA.filter(x => x.glyph !== ':'));
+        pool.slice(0, 10).forEach(item => {
+          const distractors = shuffle(pool.filter(x => x.latin !== item.latin)).slice(0, 3).map(x => x.latin);
+          questions.push({
+            promptHtml: `<div class="text-xs text-stone-400">Bu Göktürk tamgasının Latin karşılığı nedir?</div>
+                         <div class="font-orkhun text-6xl sm:text-7xl text-amber-300 carved-gold my-2">${item.glyph}</div>`,
+            options: shuffle([item.latin, ...distractors]),
+            answer: item.latin,
+            explanation: `<strong>${item.glyph}</strong> tamgası <strong>${item.latin}</strong> (${item.harmony}) sesini karşılar. ${item.origin ? item.origin : ''}`
+          });
+        });
+      } else if (mode === 'kelime') {
+        const pool = shuffle(WORD_QUIZ_POOL);
+        pool.slice(0, 10).forEach(item => {
+          const orkhun = transliterateWord(item.l, true);
+          const distractors = shuffle(pool.filter(x => x.l !== item.l)).slice(0, 3).map(x => x.l);
+          questions.push({
+            promptHtml: `<div class="text-xs text-stone-400">Sağdan sola yazılmış bu Göktürkçe sözcük hangisidir?</div>
+                         <div class="font-orkhun text-5xl sm:text-6xl text-amber-300 carved-gold my-2" dir="rtl">${orkhun}</div>`,
+            options: shuffle([item.l, ...distractors]),
+            answer: item.l,
+            explanation: `Doğru okunuş: <strong>${item.l}</strong> (Anlamı: <em>${item.m}</em>).`
+          });
+        });
+      } else if (mode === 'sayi') {
+        const pool = shuffle(NUMBER_QUIZ_POOL).slice(0, 10);
+        pool.forEach(item => {
+          const wrongPool = shuffle(NUMBER_QUIZ_POOL.filter(x => x.a !== item.a)).slice(0, 3).map(x => x.a);
+          const orkhun = transliterateText(item.q, true);
+          questions.push({
+            promptHtml: `<div class="text-xs text-stone-400">Bu Göktürkçe sayı kaçı ifade eder?</div>
+                         <div class="text-2xl sm:text-3xl font-extrabold text-amber-300 mt-1">${item.q}</div>
+                         <div class="font-orkhun text-3xl text-sky-300 mt-1" dir="rtl">${formatOrkhunHTML(orkhun)}</div>`,
+            options: shuffle([item.a, ...wrongPool]),
+            answer: item.a,
+            explanation: `<strong>${item.q}</strong> = <strong>${item.a}</strong> (${item.exp}).`
+          });
+        });
+      } else if (mode === 'sozluk') {
+        const pool = shuffle(DICTIONARY);
+        pool.slice(0, 10).forEach(item => {
+          const orkhun = transliterateText(item.w.replace(/-/g, ''), true);
+          const distractors = shuffle(pool.filter(x => x.w !== item.w)).slice(0, 3).map(x => x.m);
+          questions.push({
+            promptHtml: `<div class="text-xs text-stone-400">Bu Göktürkçe sözcüğün günümüz Türkçesi anlamı nedir?</div>
+                         <div class="text-3xl font-extrabold text-stone-100 mt-1">${item.w}</div>
+                         <div class="font-orkhun text-3xl text-amber-300 mt-1" dir="rtl">${formatOrkhunHTML(orkhun)}</div>`,
+            options: shuffle([item.m, ...distractors]),
+            answer: item.m,
+            explanation: `<strong>${item.w}</strong>: ${item.m}.`
+          });
+        });
+      }
+
+      quizState.questions = questions;
+      updateQuizStats();
+      renderQuizQuestion();
+    }
+
+    function updateQuizStats() {
+      document.getElementById('quiz-score').textContent = quizState.score;
+      document.getElementById('quiz-streak').textContent = quizState.streak;
+    }
+
+    function renderQuizQuestion() {
+      const modeNames = {
+        tamga: 'Tamga Tanıma',
+        kelime: 'Kelime Okuma',
+        sayi: 'Göktürk Sayıları',
+        sozluk: 'Sözlük Testi'
+      };
+      const body = document.getElementById('quiz-body');
+      const opts = document.getElementById('quiz-options');
+      const fb = document.getElementById('quiz-feedback');
+      const nextBtn = document.getElementById('quiz-next-btn');
+
+      fb.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+      quizState.answered = false;
+
+      if (quizState.index >= quizState.questions.length) {
+        document.getElementById('quiz-progress-label').textContent = 'Tamamlandı!';
+        document.getElementById('quiz-progress-bar').style.width = '100%';
+        body.innerHTML = `
+          <div class="py-4 space-y-3">
+            <div class="font-orkhun text-4xl text-amber-400" dir="rtl">𐰸𐰆𐱃𐰞𐰆𐰍:𐰉𐰆𐰞𐰽𐰆𐰣</div>
+            <h3 class="text-2xl font-bold text-stone-100">Sınav Tamamlandı!</h3>
+            <p class="text-stone-300">10 sorudan <strong class="text-sky-400 text-lg">${quizState.score / 10}</strong> doğru cevap verdiniz. Toplam Skor: <strong class="text-amber-400">${quizState.score} / 100</strong></p>
+            <button type="button" onclick="generateQuiz('${quizState.mode}')" class="mt-3 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm transition">
+              🔄 Yeniden Başla
+            </button>
+          </div>
+        `;
+        opts.innerHTML = '';
+        return;
+      }
+
+      const q = quizState.questions[quizState.index];
+      document.getElementById('quiz-progress-label').textContent = `Soru ${quizState.index + 1} / ${quizState.questions.length}`;
+      document.getElementById('quiz-mode-label').textContent = modeNames[quizState.mode];
+      document.getElementById('quiz-progress-bar').style.width = `${((quizState.index + 1) / quizState.questions.length) * 100}%`;
+
+      body.innerHTML = q.promptHtml;
+      opts.innerHTML = '';
+
+      q.options.forEach(opt => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'quiz-opt-btn p-3.5 rounded-xl bg-stone-900/90 hover:bg-stone-800 border border-stone-700 hover:border-amber-400/60 text-sm font-medium text-stone-100 transition text-left';
+        b.textContent = opt;
+        b.addEventListener('click', () => handleQuizAnswer(b, opt, q));
+        opts.appendChild(b);
+      });
+    }
+
+    function handleQuizAnswer(clickedBtn, selected, q) {
+      if (quizState.answered) return;
+      quizState.answered = true;
+
+      const isCorrect = selected === q.answer;
+      document.querySelectorAll('.quiz-opt-btn').forEach(b => {
+        b.disabled = true;
+        if (b.textContent === q.answer) {
+          b.classList.remove('bg-stone-900/90', 'border-stone-700');
+          b.classList.add('bg-emerald-500/20', 'border-emerald-400', 'text-emerald-200');
+        } else if (b === clickedBtn && !isCorrect) {
+          b.classList.remove('bg-stone-900/90', 'border-stone-700');
+          b.classList.add('bg-rose-500/20', 'border-rose-400', 'text-rose-200');
+        }
+      });
+
+      const fb = document.getElementById('quiz-feedback');
+      fb.classList.remove('hidden', 'bg-emerald-500/10', 'border-emerald-500/40', 'text-emerald-200', 'bg-rose-500/10', 'border-rose-500/40', 'text-rose-200');
+
+      if (isCorrect) {
+        quizState.score += 10;
+        quizState.streak += 1;
+        fb.classList.add('bg-emerald-500/10', 'border-emerald-500/40', 'text-emerald-200');
+        fb.innerHTML = `✅ <strong>Doğru!</strong> ${q.explanation}`;
+      } else {
+        quizState.streak = 0;
+        fb.classList.add('bg-rose-500/10', 'border-rose-500/40', 'text-rose-200');
+        fb.innerHTML = `❌ <strong>Yanlış.</strong> ${q.explanation}`;
+      }
+
+      updateQuizStats();
+      const nextBtn = document.getElementById('quiz-next-btn');
+      nextBtn.textContent = quizState.index === quizState.questions.length - 1 ? 'Sonucu Gör →' : 'Sonraki Soru →';
+      nextBtn.classList.remove('hidden');
+    }
+
+    document.getElementById('quiz-next-btn').addEventListener('click', () => {
+      quizState.index += 1;
+      renderQuizQuestion();
+    });
+    document.getElementById('quiz-restart-top').addEventListener('click', () => generateQuiz(quizState.mode));
+
+    document.querySelectorAll('.quiz-mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.quiz-mode-btn').forEach(b => {
+          b.classList.remove('bg-amber-500/15', 'border-amber-500/50');
+          b.classList.add('bg-stone-950/60', 'border-stone-800');
+        });
+        btn.classList.add('bg-amber-500/15', 'border-amber-500/50');
+        btn.classList.remove('bg-stone-950/60', 'border-stone-800');
+        generateQuiz(btn.dataset.mode);
+      });
+    });
+
+    /* -----------------------------------------------------------
+       14. SEKME 6: ARANABİLİR SÖZLÜK
+       ----------------------------------------------------------- */
+    let activeDictLetter = 'ALL';
+
+    function buildDictAlphaBar() {
+      const bar = document.getElementById('dict-alpha-bar');
+      const letters = ['ALL', 'A', 'B', 'Ç', 'E', 'I', 'İ', 'K', 'M', 'N', 'O', 'Ö', 'S', 'Ş', 'T', 'U', 'Ü', 'Y'];
+      bar.innerHTML = letters.map(l => `
+        <button type="button" data-letter="${l}" class="dict-letter-btn px-2.5 py-1 rounded-lg text-xs font-semibold transition ${l === 'ALL' ? 'bg-amber-500 text-stone-950' : 'bg-stone-800 text-stone-300 hover:bg-stone-700'}">
+          ${l === 'ALL' ? 'Tümü' : l}
+        </button>
+      `).join('');
+
+      bar.querySelectorAll('.dict-letter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeDictLetter = btn.dataset.letter;
+          bar.querySelectorAll('.dict-letter-btn').forEach(b => {
+            b.classList.remove('bg-amber-500', 'text-stone-950');
+            b.classList.add('bg-stone-800', 'text-stone-300');
+          });
+          btn.classList.add('bg-amber-500', 'text-stone-950');
+          btn.classList.remove('bg-stone-800', 'text-stone-300');
+          renderDictionary();
+        });
+      });
+    }
+
+    function renderDictionary() {
+      const query = toTurkishLower(document.getElementById('dict-search').value.trim());
+      const grid = document.getElementById('dict-grid');
+      const countEl = document.getElementById('dict-count');
+
+      const filtered = DICTIONARY.filter(item => {
+        const wLower = toTurkishLower(item.w);
+        const mLower = toTurkishLower(item.m);
+        const matchesQuery = !query || wLower.includes(query) || mLower.includes(query);
+        const firstChar = wLower.charAt(0).toLocaleUpperCase('tr-TR');
+        const matchesLetter = activeDictLetter === 'ALL' || firstChar === activeDictLetter;
+        return matchesQuery && matchesLetter;
+      });
+
+      countEl.textContent = `${filtered.length} / ${DICTIONARY.length} sözcük`;
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-10 text-stone-400 text-sm">Aramanızla eşleşen sözcük bulunamadı.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const orkhun = transliterateText(item.w.replace(/-/g, ''), true);
+        return `
+          <div class="p-4 rounded-2xl bg-stone-900/80 border border-stone-800 hover:border-amber-500/40 transition flex flex-col justify-between gap-2">
+            <div class="flex items-start justify-between gap-2">
+              <span class="font-bold text-base text-amber-300">${item.w}</span>
+              <span class="font-orkhun text-xl text-sky-300 shrink-0" dir="rtl">${formatOrkhunHTML(orkhun)}</span>
+            </div>
+            <p class="text-xs sm:text-sm text-stone-300 leading-relaxed">${item.m}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('dict-search').addEventListener('input', renderDictionary);
+
+    /* -----------------------------------------------------------
+       15. BAŞLATMA
+       ----------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAlphabet('all');
+      updateConverter();
+      buildVirtualKeyboard();
+      renderImlaRules();
+      updateNumberConverter();
+      renderInscriptions();
+      generateQuiz('tamga');
+      buildDictAlphaBar();
+      renderDictionary();
+    });
+  </script>
+</body>
+</html>
