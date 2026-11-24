@@ -1248,8 +1248,53 @@
       ].sort((a, b) => b.puan - a.puan));
     }
 
+    async function applyLoggedInUser(user) {
+      if (!user) return;
+      const fallbackName = user.displayName || (user.email ? user.email.split("@")[0] : "Tamgacı");
+      currentUser = {
+        uid: user.uid,
+        rumuz: fallbackName,
+        puan: currentUser.puan || 0,
+        dogru: currentUser.dogru || 0,
+        cozulen: currentUser.cozulen || 0,
+        isGuest: false
+      };
+
+      // Arayüzü hemen aç ve üst çubuğu güncelle (veritabanı gecikse bile ekran takılmasın)
+      updateUserUI();
+      saveLocalProfile();
+      document.getElementById("authModal").classList.remove("open");
+      document.getElementById("authMsg").textContent = "";
+
+      if (fbDb) {
+        try {
+          const snap = await fbDb.ref("kullanicilar/" + user.uid).once("value");
+          if (snap.exists()) {
+            const d = snap.val();
+            currentUser.rumuz = d.rumuz || fallbackName;
+            currentUser.puan = d.puan || 0;
+            currentUser.dogru = d.dogru || 0;
+            currentUser.cozulen = d.cozulen || 0;
+          } else {
+            await fbDb.ref("kullanicilar/" + user.uid).set({
+              rumuz: currentUser.rumuz,
+              puan: 0,
+              dogru: 0,
+              cozulen: 0,
+              rutbe: "Acemi Yazıcı"
+            });
+          }
+          updateUserUI();
+          saveLocalProfile();
+        } catch (e) {
+          console.warn("Kullanıcı profili okuma uyarısı:", e.message);
+        }
+      }
+    }
+
     function initFirebase() {
       const statusBadge = document.getElementById("dbStatusBadge");
+      const msg = document.getElementById("authMsg");
       try {
         if (!firebase.apps.length) {
           firebase.initializeApp(FIREBASE_CONFIG);
@@ -1257,40 +1302,27 @@
         fbAuth = firebase.auth();
         fbDb = firebase.database();
 
-        fbAuth.getRedirectResult().catch(() => {});
-
-        fbAuth.onAuthStateChanged(async (user) => {
-          if (user) {
-            const fallbackName = user.displayName || (user.email ? user.email.split("@")[0] : "Tamgacı");
-            currentUser = {
-              uid: user.uid,
-              rumuz: fallbackName,
-              puan: currentUser.puan || 0,
-              dogru: currentUser.dogru || 0,
-              cozulen: currentUser.cozulen || 0,
-              isGuest: false
-            };
-            try {
-              const snap = await fbDb.ref("kullanicilar/" + user.uid).once("value");
-              if (snap.exists()) {
-                const d = snap.val();
-                currentUser.rumuz = d.rumuz || fallbackName;
-                currentUser.puan = d.puan || 0;
-                currentUser.dogru = d.dogru || 0;
-                currentUser.cozulen = d.cozulen || 0;
+        // Redirect dönüşünü yakala ve hata varsa kullanıcıya göster
+        fbAuth.getRedirectResult()
+          .then((result) => {
+            if (result && result.user) {
+              applyLoggedInUser(result.user);
+            }
+          })
+          .catch((err) => {
+            if (err && err.code) {
+              msg.style.color = "var(--danger)";
+              if (err.code === "auth/unauthorized-domain") {
+                msg.textContent = "Hata: Alan adınız (github.io) Firebase Authorized Domains listesinde ekli değil!";
               } else {
-                await fbDb.ref("kullanicilar/" + user.uid).set({
-                  rumuz: currentUser.rumuz,
-                  puan: 0,
-                  dogru: 0,
-                  cozulen: 0,
-                  rutbe: "Acemi Yazıcı"
-                });
+                msg.textContent = "Google doğrulama hatası: " + err.message;
               }
-            } catch (e) {}
-            updateUserUI();
-            saveLocalProfile();
-            document.getElementById("authModal").classList.remove("open");
+            }
+          });
+
+        fbAuth.onAuthStateChanged((user) => {
+          if (user) {
+            applyLoggedInUser(user);
           }
         });
 
@@ -1347,7 +1379,8 @@
       msg.style.color = "var(--turquoise)";
       msg.textContent = "Giriş yapılıyor...";
       try {
-        await fbAuth.signInWithEmailAndPassword(rumuzToEmail(rumuz), padPassword(pin));
+        const cred = await fbAuth.signInWithEmailAndPassword(rumuzToEmail(rumuz), padPassword(pin));
+        await applyLoggedInUser(cred.user);
       } catch (e) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Giriş başarısız. İlk kez geliyorsanız 'Yeni Kayıt Ol' düğmesine basın.";
@@ -1385,7 +1418,7 @@
           });
         }
         currentUser.rumuz = rumuz;
-        updateUserUI();
+        await applyLoggedInUser(cred.user);
       } catch (e) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Kayıt hatası: " + (e.code === "auth/email-already-in-use" ? "Bu rumuz zaten kayıtlı, Giriş Yap'ı deneyin." : e.message);
@@ -1399,15 +1432,28 @@
         msg.textContent = "Bulut kimlik doğrulama şu an kullanılamıyor.";
         return;
       }
+      msg.style.color = "var(--turquoise)";
+      msg.textContent = "Google penceresi açılıyor, lütfen bekleyin...";
       const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
       try {
-        await fbAuth.signInWithPopup(provider);
+        const result = await fbAuth.signInWithPopup(provider);
+        if (result && result.user) {
+          await applyLoggedInUser(result.user);
+        }
       } catch (e) {
         if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
+          msg.textContent = "Google giriş sayfasına yönlendiriliyorsunuz...";
           fbAuth.signInWithRedirect(provider);
+        } else if (e.code === "auth/unauthorized-domain") {
+          msg.style.color = "var(--danger)";
+          msg.textContent = "Hata: 'github.io' alan adını Firebase Console > Authentication > Authorized domains listesine ekleyin.";
+        } else if (e.code === "auth/popup-closed-by-user") {
+          msg.style.color = "var(--text-muted)";
+          msg.textContent = "Giriş penceresi kapatıldı. Tekrar deneyebilirsiniz.";
         } else {
           msg.style.color = "var(--danger)";
-          msg.textContent = "Google girişi açılamadı (" + e.code + "). Konuk olarak devam edebilirsiniz.";
+          msg.textContent = "Google girişi hatası (" + e.code + "). Konuk olarak devam edebilirsiniz.";
         }
       }
     });
