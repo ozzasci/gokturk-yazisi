@@ -1,0 +1,30 @@
+{
+  "name": "Göktürk Yazısı Öğrenme Kılavuzu",
+  "short_name": "Göktürk Yazısı",
+  "description": "Orhun (Göktürk) alfabesi, yazım atölyesi, sayı sistemi, yazıt okuma ve sınav uygulaması — Oğuz Bulut",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c1526",
+  "theme_color": "#0c1526",
+  "lang": "tr",
+  "categories": [
+    "education",
+    "books"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
