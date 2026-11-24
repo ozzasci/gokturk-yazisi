@@ -1,6 +1,4 @@
-wa_url = "https://wa.me/905309082276?text=Esenlikler%20O%C4%9Fuz%20Bey%2C%20G%C3%B6kt%C3%BCrk%20(Orhun)%20Yaz%C4%B1s%C4%B1%20%C3%96%C4%9Frenme%20Uygulamas%C4%B1%20hakk%C4%B1nda%20yaz%C4%B1yorum."
-
-html_content = f"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -29,7 +27,7 @@ html_content = f"""<!DOCTYPE html>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
   <style>
-    :root {{
+    :root {
       --bg-deep: #09101e;
       --bg-navy: #0c1526;
       --bg-card: #121f38;
@@ -49,37 +47,37 @@ html_content = f"""<!DOCTYPE html>
       --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       --radius: 14px;
       --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-    }}
+    }
 
-    * {{
+    * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-    }}
+    }
 
-    body {{
+    body {
       background: radial-gradient(circle at top right, #16284c 0%, var(--bg-deep) 55%, #060b14 100%);
       color: var(--text-main);
       font-family: var(--font-sans);
       min-height: 100vh;
       line-height: 1.6;
       overflow-x: hidden;
-    }}
+    }
 
-    .runic {{
+    .runic {
       font-family: var(--font-runic);
       direction: rtl;
       unicode-bidi: isolate;
       letter-spacing: 0.04em;
-    }}
+    }
 
-    .runic-ltr {{
+    .runic-ltr {
       font-family: var(--font-runic);
       letter-spacing: 0.03em;
-    }}
+    }
 
     /* Header */
-    header {{
+    header {
       background: rgba(12, 21, 38, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--gold-dim);
@@ -87,9 +85,9 @@ html_content = f"""<!DOCTYPE html>
       top: 0;
       z-index: 50;
       padding: 0.85rem 1.25rem;
-    }}
+    }
 
-    .header-inner {{
+    .header-inner {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
@@ -97,15 +95,15 @@ html_content = f"""<!DOCTYPE html>
       align-items: center;
       justify-content: space-between;
       gap: 0.75rem;
-    }}
+    }
 
-    .brand {{
+    .brand {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-    }}
+    }
 
-    .brand-emblem {{
+    .brand-emblem {
       width: 44px;
       height: 44px;
       border-radius: 12px;
@@ -119,29 +117,29 @@ html_content = f"""<!DOCTYPE html>
       font-size: 1.15rem;
       box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
       flex-shrink: 0;
-    }}
+    }
 
-    .brand-text h1 {{
+    .brand-text h1 {
       font-family: var(--font-display);
       font-size: 1.12rem;
       color: var(--gold-light);
       letter-spacing: 0.03em;
       line-height: 1.2;
-    }}
+    }
 
-    .brand-text p {{
+    .brand-text p {
       font-size: 0.76rem;
       color: var(--text-muted);
-    }}
+    }
 
-    .header-actions {{
+    .header-actions {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 0.5rem;
-    }}
+    }
 
-    .btn {{
+    .btn {
       border: 1px solid var(--gold-dim);
       background: var(--bg-card);
       color: var(--text-main);
@@ -155,38 +153,38 @@ html_content = f"""<!DOCTYPE html>
       gap: 0.4rem;
       transition: all 0.2s ease;
       text-decoration: none;
-    }}
+    }
 
-    .btn:hover {{
+    .btn:hover {
       border-color: var(--gold);
       background: var(--bg-card-2);
       transform: translateY(-1px);
-    }}
+    }
 
-    .btn-gold {{
+    .btn-gold {
       background: linear-gradient(135deg, #d4af37, #b58d1e);
       color: #09101e;
       border-color: var(--gold-light);
       font-weight: 700;
-    }}
+    }
 
-    .btn-gold:hover {{
+    .btn-gold:hover {
       background: linear-gradient(135deg, #f3d46b, #d4af37);
       color: #09101e;
-    }}
+    }
 
-    .btn-turquoise {{
+    .btn-turquoise {
       border-color: rgba(45, 212, 191, 0.4);
       background: rgba(45, 212, 191, 0.12);
       color: var(--turquoise);
-    }}
+    }
 
-    .btn-turquoise:hover {{
+    .btn-turquoise:hover {
       background: rgba(45, 212, 191, 0.22);
       border-color: var(--turquoise);
-    }}
+    }
 
-    .user-badge {{
+    .user-badge {
       background: rgba(212, 175, 55, 0.12);
       border: 1px solid var(--gold-dim);
       padding: 0.35rem 0.75rem;
@@ -196,33 +194,33 @@ html_content = f"""<!DOCTYPE html>
       align-items: center;
       gap: 0.45rem;
       cursor: pointer;
-    }}
+    }
 
-    .user-badge .rank-pill {{
+    .user-badge .rank-pill {
       background: var(--gold);
       color: #09101e;
       font-weight: 700;
       padding: 0.1rem 0.45rem;
       border-radius: 999px;
       font-size: 0.7rem;
-    }}
+    }
 
     /* Navigation Tabs */
-    .nav-wrap {{
+    .nav-wrap {
       max-width: 1200px;
       margin: 1rem auto 0;
       padding: 0 1rem;
-    }}
+    }
 
-    .tabs {{
+    .tabs {
       display: flex;
       gap: 0.45rem;
       overflow-x: auto;
       padding-bottom: 0.35rem;
       scrollbar-width: thin;
-    }}
+    }
 
-    .tab-btn {{
+    .tab-btn {
       background: rgba(18, 31, 56, 0.75);
       border: 1px solid rgba(148, 163, 184, 0.18);
       color: var(--text-muted);
@@ -236,51 +234,51 @@ html_content = f"""<!DOCTYPE html>
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-    }}
+    }
 
-    .tab-btn:hover {{
+    .tab-btn:hover {
       color: var(--text-main);
       border-color: var(--gold-dim);
-    }}
+    }
 
-    .tab-btn.active {{
+    .tab-btn.active {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(18, 31, 56, 0.95));
       border-color: var(--gold);
       color: var(--gold-light);
       box-shadow: 0 4px 14px rgba(212, 175, 55, 0.15);
-    }}
+    }
 
     /* Main Container */
-    main {{
+    main {
       max-width: 1200px;
       margin: 1rem auto 3rem;
       padding: 0 1rem;
-    }}
+    }
 
-    .panel {{
+    .panel {
       display: none;
       animation: fadeIn 0.25s ease;
-    }}
+    }
 
-    .panel.active {{
+    .panel.active {
       display: block;
-    }}
+    }
 
-    @keyframes fadeIn {{
-      from {{ opacity: 0; transform: translateY(6px); }}
-      to {{ opacity: 1; transform: translateY(0); }}
-    }}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    .card {{
+    .card {
       background: var(--bg-card);
       border: 1px solid rgba(212, 175, 55, 0.18);
       border-radius: var(--radius);
       padding: 1.25rem;
       box-shadow: var(--shadow);
       margin-bottom: 1.15rem;
-    }}
+    }
 
-    .card-header {{
+    .card-header {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -289,26 +287,26 @@ html_content = f"""<!DOCTYPE html>
       margin-bottom: 1rem;
       padding-bottom: 0.75rem;
       border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-    }}
+    }
 
-    .card-title {{
+    .card-title {
       font-family: var(--font-display);
       font-size: 1.08rem;
       color: var(--gold-light);
       display: flex;
       align-items: center;
       gap: 0.5rem;
-    }}
+    }
 
     /* Filter Pills */
-    .filter-row {{
+    .filter-row {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
       margin-bottom: 1rem;
-    }}
+    }
 
-    .pill {{
+    .pill {
       background: var(--bg-navy);
       border: 1px solid rgba(148, 163, 184, 0.2);
       color: var(--text-muted);
@@ -318,22 +316,22 @@ html_content = f"""<!DOCTYPE html>
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
-    }}
+    }
 
-    .pill.active, .pill:hover {{
+    .pill.active, .pill:hover {
       border-color: var(--gold);
       color: var(--gold-light);
       background: rgba(212, 175, 55, 0.14);
-    }}
+    }
 
     /* Alphabet Grid */
-    .tamga-grid {{
+    .tamga-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
       gap: 0.7rem;
-    }}
+    }
 
-    .tamga-card {{
+    .tamga-card {
       background: linear-gradient(180deg, #162644 0%, #0e182c 100%);
       border: 1px solid rgba(212, 175, 55, 0.2);
       border-radius: 12px;
@@ -342,35 +340,35 @@ html_content = f"""<!DOCTYPE html>
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
-    }}
+    }
 
-    .tamga-card:hover, .tamga-card.selected {{
+    .tamga-card:hover, .tamga-card.selected {
       border-color: var(--gold-light);
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
-    }}
+    }
 
-    .tamga-char {{
+    .tamga-char {
       font-family: var(--font-runic);
       font-size: 2.05rem;
       color: var(--gold-light);
       line-height: 1.25;
       margin-bottom: 0.25rem;
-    }}
+    }
 
-    .tamga-latin {{
+    .tamga-latin {
       font-weight: 700;
       font-size: 0.92rem;
       color: var(--text-main);
-    }}
+    }
 
-    .tamga-type {{
+    .tamga-type {
       font-size: 0.68rem;
       color: var(--turquoise);
       margin-top: 0.15rem;
-    }}
+    }
 
-    .tamga-detail-box {{
+    .tamga-detail-box {
       background: linear-gradient(135deg, #17294a, #0e182b);
       border: 1px solid var(--gold);
       border-radius: 12px;
@@ -380,9 +378,9 @@ html_content = f"""<!DOCTYPE html>
       flex-wrap: wrap;
       align-items: center;
       gap: 1.1rem;
-    }}
+    }
 
-    .tamga-detail-glyph {{
+    .tamga-detail-glyph {
       font-family: var(--font-runic);
       font-size: 3.3rem;
       color: var(--gold-light);
@@ -395,22 +393,22 @@ html_content = f"""<!DOCTYPE html>
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-    }}
+    }
 
     /* Translator / Workshop */
-    .workshop-grid {{
+    .workshop-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
-    }}
+    }
 
-    @media (max-width: 820px) {{
-      .workshop-grid {{
+    @media (max-width: 820px) {
+      .workshop-grid {
         grid-template-columns: 1fr;
-      }}
-    }}
+      }
+    }
 
-    textarea, input[type="text"], input[type="password"], input[type="number"], select {{
+    textarea, input[type="text"], input[type="password"], input[type="number"], select {
       width: 100%;
       background: var(--bg-navy);
       border: 1px solid rgba(148, 163, 184, 0.25);
@@ -421,13 +419,13 @@ html_content = f"""<!DOCTYPE html>
       font-size: 0.95rem;
       outline: none;
       transition: border-color 0.2s;
-    }}
+    }
 
-    textarea:focus, input:focus, select:focus {{
+    textarea:focus, input:focus, select:focus {
       border-color: var(--gold);
-    }}
+    }
 
-    .stone-output {{
+    .stone-output {
       background: radial-gradient(circle at center, #1c2536 0%, #0f1520 100%);
       border: 2px solid #475569;
       box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.75);
@@ -443,9 +441,9 @@ html_content = f"""<!DOCTYPE html>
       line-height: 1.85;
       overflow-wrap: anywhere;
       word-break: break-word;
-    }}
+    }
 
-    .stone-output.vertical-mode {{
+    .stone-output.vertical-mode {
       writing-mode: vertical-rl;
       text-orientation: upright;
       direction: ltr;
@@ -455,35 +453,35 @@ html_content = f"""<!DOCTYPE html>
       overflow-x: auto;
       margin: 0 auto;
       width: 100%;
-    }}
+    }
 
-    .switch-row {{
+    .switch-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 0.85rem;
       margin: 0.75rem 0;
       font-size: 0.84rem;
-    }}
+    }
 
-    .switch-label {{
+    .switch-label {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
       cursor: pointer;
       color: var(--text-main);
-    }}
+    }
 
-    .vk-grid {{
+    .vk-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
       margin-top: 0.85rem;
       padding-top: 0.85rem;
       border-top: 1px solid rgba(148, 163, 184, 0.14);
-    }}
+    }
 
-    .vk-key {{
+    .vk-key {
       background: var(--bg-navy);
       border: 1px solid rgba(212, 175, 55, 0.25);
       color: var(--gold-light);
@@ -495,46 +493,46 @@ html_content = f"""<!DOCTYPE html>
       align-items: center;
       min-width: 44px;
       transition: all 0.15s;
-    }}
+    }
 
-    .vk-key:hover {{
+    .vk-key:hover {
       background: rgba(212, 175, 55, 0.2);
       border-color: var(--gold);
-    }}
+    }
 
-    .vk-key span:first-child {{
+    .vk-key span:first-child {
       font-family: var(--font-runic);
       font-size: 1.2rem;
-    }}
+    }
 
-    .vk-key span:last-child {{
+    .vk-key span:last-child {
       font-size: 0.62rem;
       color: var(--text-muted);
-    }}
+    }
 
     /* Rules & Numbers */
-    .rules-list {{
+    .rules-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
       gap: 0.85rem;
-    }}
+    }
 
-    .rule-item {{
+    .rule-item {
       background: var(--bg-navy);
       border: 1px solid rgba(148, 163, 184, 0.16);
       border-left: 3px solid var(--gold);
       border-radius: 10px;
       padding: 0.9rem;
       font-size: 0.88rem;
-    }}
+    }
 
-    .rule-item strong {{
+    .rule-item strong {
       color: var(--gold-light);
       display: block;
       margin-bottom: 0.3rem;
-    }}
+    }
 
-    .num-result-box {{
+    .num-result-box {
       background: var(--bg-navy);
       border: 1px solid var(--gold-dim);
       border-radius: 12px;
@@ -543,28 +541,28 @@ html_content = f"""<!DOCTYPE html>
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 0.85rem;
-    }}
+    }
 
     /* Inscriptions Reading Workshop */
-    .inscription-card {{
+    .inscription-card {
       background: linear-gradient(180deg, #13213c 0%, #0c1628 100%);
       border: 1px solid rgba(212, 175, 55, 0.25);
       border-radius: 14px;
       padding: 1.15rem;
       margin-bottom: 1rem;
       height: auto;
-    }}
+    }
 
-    .inscription-meta {{
+    .inscription-meta {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
       margin-bottom: 0.75rem;
-    }}
+    }
 
-    .inscription-badge {{
+    .inscription-badge {
       background: rgba(212, 175, 55, 0.16);
       color: var(--gold-light);
       border: 1px solid var(--gold-dim);
@@ -572,9 +570,9 @@ html_content = f"""<!DOCTYPE html>
       border-radius: 999px;
       font-size: 0.76rem;
       font-weight: 700;
-    }}
+    }
 
-    .inscription-runic {{
+    .inscription-runic {
       background: rgba(7, 12, 23, 0.75);
       border: 1px solid rgba(148, 163, 184, 0.18);
       border-radius: 10px;
@@ -589,9 +587,9 @@ html_content = f"""<!DOCTYPE html>
       word-break: break-word;
       margin-bottom: 0.75rem;
       height: auto;
-    }}
+    }
 
-    .inscription-latin {{
+    .inscription-latin {
       background: rgba(45, 212, 191, 0.07);
       border-left: 3px solid var(--turquoise);
       padding: 0.7rem 0.9rem;
@@ -601,9 +599,9 @@ html_content = f"""<!DOCTYPE html>
       margin-bottom: 0.6rem;
       overflow-wrap: anywhere;
       word-break: break-word;
-    }}
+    }
 
-    .inscription-tr {{
+    .inscription-tr {
       background: rgba(255, 255, 255, 0.03);
       border-left: 3px solid var(--gold);
       padding: 0.7rem 0.9rem;
@@ -612,26 +610,26 @@ html_content = f"""<!DOCTYPE html>
       color: var(--text-muted);
       overflow-wrap: anywhere;
       word-break: break-word;
-    }}
+    }
 
-    .hidden-layer {{
+    .hidden-layer {
       display: none !important;
-    }}
+    }
 
     /* Quiz & Leaderboard */
-    .quiz-grid {{
+    .quiz-grid {
       display: grid;
       grid-template-columns: 1.4fr 1fr;
       gap: 1rem;
-    }}
+    }
 
-    @media (max-width: 860px) {{
-      .quiz-grid {{
+    @media (max-width: 860px) {
+      .quiz-grid {
         grid-template-columns: 1fr;
-      }}
-    }}
+      }
+    }
 
-    .quiz-option {{
+    .quiz-option {
       width: 100%;
       text-align: left;
       background: var(--bg-navy);
@@ -646,26 +644,26 @@ html_content = f"""<!DOCTYPE html>
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }}
+    }
 
-    .quiz-option:hover:not(:disabled) {{
+    .quiz-option:hover:not(:disabled) {
       border-color: var(--gold);
       background: var(--bg-card-2);
-    }}
+    }
 
-    .quiz-option.correct {{
+    .quiz-option.correct {
       border-color: var(--success);
       background: rgba(74, 222, 128, 0.16);
       color: #bbf7d0;
-    }}
+    }
 
-    .quiz-option.wrong {{
+    .quiz-option.wrong {
       border-color: var(--danger);
       background: rgba(248, 113, 113, 0.16);
       color: #fecaca;
-    }}
+    }
 
-    .lb-row {{
+    .lb-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -675,21 +673,21 @@ html_content = f"""<!DOCTYPE html>
       margin-bottom: 0.45rem;
       border: 1px solid rgba(148, 163, 184, 0.12);
       font-size: 0.85rem;
-    }}
+    }
 
-    .lb-row.top-1 {{
+    .lb-row.top-1 {
       border-color: var(--gold);
       background: rgba(212, 175, 55, 0.12);
-    }}
+    }
 
     /* Dictionary */
-    .dict-grid {{
+    .dict-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 0.65rem;
-    }}
+    }
 
-    .dict-item {{
+    .dict-item {
       background: var(--bg-navy);
       border: 1px solid rgba(148, 163, 184, 0.15);
       border-radius: 10px;
@@ -697,35 +695,35 @@ html_content = f"""<!DOCTYPE html>
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
-    }}
+    }
 
-    .dict-top {{
+    .dict-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
-    }}
+    }
 
-    .dict-latin {{
+    .dict-latin {
       font-weight: 700;
       color: var(--gold-light);
       font-size: 0.95rem;
-    }}
+    }
 
-    .dict-runic {{
+    .dict-runic {
       font-family: var(--font-runic);
       font-size: 1.25rem;
       color: var(--turquoise);
       direction: rtl;
-    }}
+    }
 
-    .dict-meaning {{
+    .dict-meaning {
       font-size: 0.83rem;
       color: var(--text-muted);
-    }}
+    }
 
     /* Modals (Auth Gate & PWA Install) */
-    .modal-backdrop {{
+    .modal-backdrop {
       position: fixed;
       inset: 0;
       background: rgba(4, 8, 16, 0.86);
@@ -735,13 +733,13 @@ html_content = f"""<!DOCTYPE html>
       align-items: center;
       justify-content: center;
       padding: 1rem;
-    }}
+    }
 
-    .modal-backdrop.open {{
+    .modal-backdrop.open {
       display: flex;
-    }}
+    }
 
-    .bengu-gate {{
+    .bengu-gate {
       background: linear-gradient(180deg, #132240 0%, #0b1324 100%);
       border: 2px solid var(--gold);
       border-radius: 18px;
@@ -750,64 +748,64 @@ html_content = f"""<!DOCTYPE html>
       padding: 1.5rem;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
       position: relative;
-    }}
+    }
 
-    .bengu-gate h2 {{
+    .bengu-gate h2 {
       font-family: var(--font-display);
       color: var(--gold-light);
       text-align: center;
       font-size: 1.25rem;
       margin-bottom: 0.3rem;
-    }}
+    }
 
-    .bengu-gate .sub {{
+    .bengu-gate .sub {
       text-align: center;
       font-size: 0.82rem;
       color: var(--text-muted);
       margin-bottom: 1.1rem;
-    }}
+    }
 
-    .form-group {{
+    .form-group {
       margin-bottom: 0.75rem;
-    }}
+    }
 
-    .form-group label {{
+    .form-group label {
       display: block;
       font-size: 0.78rem;
       color: var(--text-muted);
       margin-bottom: 0.25rem;
-    }}
+    }
 
-    .auth-msg {{
+    .auth-msg {
       font-size: 0.8rem;
       margin-top: 0.5rem;
       text-align: center;
       min-height: 1.2em;
-    }}
+    }
 
     /* Footer */
-    footer {{
+    footer {
       border-top: 1px solid var(--gold-dim);
       background: rgba(9, 16, 30, 0.95);
       padding: 1.35rem 1rem;
       text-align: center;
       font-size: 0.82rem;
       color: var(--text-muted);
-    }}
+    }
 
-    .footer-inner {{
+    .footer-inner {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 0.65rem;
-    }}
+    }
 
-    .copyright-line {{
+    .copyright-line {
       color: var(--gold-light);
       font-weight: 600;
-    }}
+    }
   </style>
 </head>
 <body>
@@ -825,7 +823,7 @@ html_content = f"""<!DOCTYPE html>
 
       <div class="header-actions">
         <button class="btn btn-turquoise" id="openInstallBtn" type="button">📲 Telefona Yükle</button>
-        <a class="btn" id="headerContactBtn" href="{wa_url}" target="_blank" rel="noopener">
+        <a class="btn" id="headerContactBtn" href="https://wa.me/905309082276?text=Esenlikler%20O%C4%9Fuz%20Bey%2C%20G%C3%B6kt%C3%BCrk%20(Orhun)%20Yaz%C4%B1s%C4%B1%20%C3%96%C4%9Frenme%20Uygulamas%C4%B1%20hakk%C4%B1nda%20yaz%C4%B1yorum." target="_blank" rel="noopener">
           <span>Yalabaç · Sab İlet</span>
           <span class="runic" style="color:var(--gold-light);font-size:1rem;">𐰖𐰞𐰉𐰲 : 𐰽𐰉 𐰃𐰠𐱅</span>
         </a>
@@ -1043,7 +1041,7 @@ html_content = f"""<!DOCTYPE html>
         Türkçenin ilk yazılı anıtları Orhun (Göktürk) Bengü Taşları esas alınarak hazırlanmıştır.
       </div>
       <div>
-        <a class="btn btn-gold" id="footerContactBtn" href="{wa_url}" target="_blank" rel="noopener">
+        <a class="btn btn-gold" id="footerContactBtn" href="https://wa.me/905309082276?text=Esenlikler%20O%C4%9Fuz%20Bey%2C%20G%C3%B6kt%C3%BCrk%20(Orhun)%20Yaz%C4%B1s%C4%B1%20%C3%96%C4%9Frenme%20Uygulamas%C4%B1%20hakk%C4%B1nda%20yaz%C4%B1yorum." target="_blank" rel="noopener">
           <span>Yalabaç · Sab İlet</span>
           <span class="runic" style="font-size:1.05rem;">𐰖𐰞𐰉𐰲 : 𐰽𐰉 𐰃𐰠𐱅</span>
         </a>
@@ -1125,7 +1123,7 @@ html_content = f"""<!DOCTYPE html>
     /* =====================================================================
        YAPILANDIRMA BLOĞU (Firebase & Yalabaç İletişim Numarası)
        ===================================================================== */
-    const FIREBASE_CONFIG = {{
+    const FIREBASE_CONFIG = {
       apiKey: "AIzaSyCHjdG7qTqLJ6cj7lZrGahsaJ3ELwezGWc",
       authDomain: "gokturk-yazisi.firebaseapp.com",
       databaseURL: "https://gokturk-yazisi-default-rtdb.firebaseio.com",
@@ -1133,432 +1131,432 @@ html_content = f"""<!DOCTYPE html>
       storageBucket: "gokturk-yazisi.firebasestorage.app",
       messagingSenderId: "108218600901",
       appId: "1:108218600901:web:2f9d76099e0b18f79c8fac"
-    }};
+    };
 
     const WHATSAPP_NO = "905309082276";
 
     /* =====================================================================
        İLETİŞİM BAĞLANTILARI (Yalabaç · Sab İlet)
        ===================================================================== */
-    (function setupContactLinks() {{
+    (function setupContactLinks() {
       const msg = encodeURIComponent("Esenlikler Oğuz Bey, Göktürk (Orhun) Yazısı Öğrenme Uygulaması hakkında yazıyorum.");
       const url = WHATSAPP_NO
-        ? `https://wa.me/${{WHATSAPP_NO}}?text=${{msg}}`
-        : `https://wa.me/?text=${{msg}}`;
+        ? `https://wa.me/${WHATSAPP_NO}?text=${msg}`
+        : `https://wa.me/?text=${msg}`;
       document.getElementById("headerContactBtn").href = url;
       document.getElementById("footerContactBtn").href = url;
-    }})();
+    })();
 
     /* =====================================================================
        FIREBASE BAŞLATMA & KULLANICI / LİDERLİK YÖNETİMİ
        ===================================================================== */
     let fbAuth = null;
     let fbDb = null;
-    let currentUser = {{
+    let currentUser = {
       uid: "guest_local",
       rumuz: "Konuk Yazıcı",
       puan: 0,
       dogru: 0,
       cozulen: 0,
       isGuest: true
-    }};
+    };
 
-    function getRank(puan) {{
+    function getRank(puan) {
       if (puan >= 500) return "Baş Bitigçi";
       if (puan >= 300) return "Orhun Kâtibi";
       if (puan >= 150) return "Bilge Tamgacı";
       if (puan >= 50) return "Tamga Talebesi";
       return "Acemi Yazıcı";
-    }}
+    }
 
-    function updateUserUI() {{
+    function updateUserUI() {
       const rank = getRank(currentUser.puan || 0);
       document.getElementById("headerUserName").textContent = currentUser.rumuz || "Konuk Yazıcı";
-      document.getElementById("headerUserRank").textContent = `${{rank}} (${{currentUser.puan || 0}} P)`;
-    }}
+      document.getElementById("headerUserRank").textContent = `${rank} (${currentUser.puan || 0} P)`;
+    }
 
-    function loadLocalProfile() {{
-      try {{
+    function loadLocalProfile() {
+      try {
         const saved = localStorage.getItem("gokturk_user_profile");
-        if (saved) {{
-          currentUser = {{ ...currentUser, ...JSON.parse(saved) }};
+        if (saved) {
+          currentUser = { ...currentUser, ...JSON.parse(saved) };
           updateUserUI();
-        }}
-      }} catch (e) {{}}
-    }}
+        }
+      } catch (e) {}
+    }
 
-    function saveLocalProfile() {{
-      try {{
+    function saveLocalProfile() {
+      try {
         localStorage.setItem("gokturk_user_profile", JSON.stringify(currentUser));
-      }} catch (e) {{}}
-    }}
+      } catch (e) {}
+    }
 
-    async function syncScoreToCloud(addedPoints, isCorrect) {{
+    async function syncScoreToCloud(addedPoints, isCorrect) {
       currentUser.puan = (currentUser.puan || 0) + addedPoints;
       currentUser.cozulen = (currentUser.cozulen || 0) + 1;
       if (isCorrect) currentUser.dogru = (currentUser.dogru || 0) + 1;
       updateUserUI();
       saveLocalProfile();
 
-      if (fbDb && currentUser.uid && !currentUser.isGuest) {{
+      if (fbDb && currentUser.uid && !currentUser.isGuest) {
         const rank = getRank(currentUser.puan);
-        const payload = {{
+        const payload = {
           rumuz: currentUser.rumuz,
           puan: currentUser.puan,
           dogru: currentUser.dogru,
           cozulen: currentUser.cozulen,
           rutbe: rank,
           guncelleme: Date.now()
-        }};
-        try {{
+        };
+        try {
           await fbDb.ref("kullanicilar/" + currentUser.uid).update(payload);
-          await fbDb.ref("liderlik/" + currentUser.uid).set({{
+          await fbDb.ref("liderlik/" + currentUser.uid).set({
             rumuz: currentUser.rumuz,
             puan: currentUser.puan,
             rutbe: rank
-          }});
-        }} catch (err) {{
+          });
+        } catch (err) {
           console.warn("Veritabanı senkronizasyon uyarısı:", err.message);
-        }}
-      }}
+        }
+      }
       renderLocalFallbackLeaderboard();
-    }}
+    }
 
-    function renderLeaderboardRows(items) {{
+    function renderLeaderboardRows(items) {
       const box = document.getElementById("leaderboardList");
-      if (!items || items.length === 0) {{
+      if (!items || items.length === 0) {
         box.innerHTML = `<div style="font-size:0.82rem;color:var(--text-muted);">Henüz kayıtlı puan bulunmuyor. İlk testi çözerek zirveye yerleşin!</div>`;
         return;
-      }}
+      }
       box.innerHTML = items.map((item, idx) => `
-        <div class="lb-row ${{idx === 0 ? "top-1" : ""}}">
+        <div class="lb-row ${idx === 0 ? "top-1" : ""}">
           <div>
-            <strong style="color:${{idx === 0 ? "var(--gold-light)" : "var(--text-main)"}}">#${{idx + 1}} ${{escapeHtml(item.rumuz || "Yazıcı")}}</strong>
-            <span style="font-size:0.74rem;color:var(--turquoise);margin-left:0.4rem;">${{escapeHtml(item.rutbe || getRank(item.puan || 0))}}</span>
+            <strong style="color:${idx === 0 ? "var(--gold-light)" : "var(--text-main)"}">#${idx + 1} ${escapeHtml(item.rumuz || "Yazıcı")}</strong>
+            <span style="font-size:0.74rem;color:var(--turquoise);margin-left:0.4rem;">${escapeHtml(item.rutbe || getRank(item.puan || 0))}</span>
           </div>
-          <strong style="color:var(--gold-light);">${{item.puan || 0}} P</strong>
+          <strong style="color:var(--gold-light);">${item.puan || 0} P</strong>
         </div>
       `).join("");
-    }}
+    }
 
-    function renderLocalFallbackLeaderboard() {{
+    function renderLocalFallbackLeaderboard() {
       if (fbDb) return;
       renderLeaderboardRows([
-        {{ rumuz: currentUser.rumuz, puan: currentUser.puan || 0, rutbe: getRank(currentUser.puan || 0) }},
-        {{ rumuz: "Yollug_Tigin", puan: 420, rutbe: "Orhun Kâtibi" }},
-        {{ rumuz: "Bilge_Tonyukuk", puan: 350, rutbe: "Orhun Kâtibi" }}
+        { rumuz: currentUser.rumuz, puan: currentUser.puan || 0, rutbe: getRank(currentUser.puan || 0) },
+        { rumuz: "Yollug_Tigin", puan: 420, rutbe: "Orhun Kâtibi" },
+        { rumuz: "Bilge_Tonyukuk", puan: 350, rutbe: "Orhun Kâtibi" }
       ].sort((a, b) => b.puan - a.puan));
-    }}
+    }
 
-    function initFirebase() {{
+    function initFirebase() {
       const statusBadge = document.getElementById("dbStatusBadge");
-      try {{
-        if (!firebase.apps.length) {{
+      try {
+        if (!firebase.apps.length) {
           firebase.initializeApp(FIREBASE_CONFIG);
-        }}
+        }
         fbAuth = firebase.auth();
         fbDb = firebase.database();
 
-        fbAuth.getRedirectResult().catch(() => {{}});
+        fbAuth.getRedirectResult().catch(() => {});
 
-        fbAuth.onAuthStateChanged(async (user) => {{
-          if (user) {{
+        fbAuth.onAuthStateChanged(async (user) => {
+          if (user) {
             const fallbackName = user.displayName || (user.email ? user.email.split("@")[0] : "Tamgacı");
-            currentUser = {{
+            currentUser = {
               uid: user.uid,
               rumuz: fallbackName,
               puan: currentUser.puan || 0,
               dogru: currentUser.dogru || 0,
               cozulen: currentUser.cozulen || 0,
               isGuest: false
-            }};
-            try {{
+            };
+            try {
               const snap = await fbDb.ref("kullanicilar/" + user.uid).once("value");
-              if (snap.exists()) {{
+              if (snap.exists()) {
                 const d = snap.val();
                 currentUser.rumuz = d.rumuz || fallbackName;
                 currentUser.puan = d.puan || 0;
                 currentUser.dogru = d.dogru || 0;
                 currentUser.cozulen = d.cozulen || 0;
-              }} else {{
-                await fbDb.ref("kullanicilar/" + user.uid).set({{
+              } else {
+                await fbDb.ref("kullanicilar/" + user.uid).set({
                   rumuz: currentUser.rumuz,
                   puan: 0,
                   dogru: 0,
                   cozulen: 0,
                   rutbe: "Acemi Yazıcı"
-                }});
-              }}
-            }} catch (e) {{}}
+                });
+              }
+            } catch (e) {}
             updateUserUI();
             saveLocalProfile();
             document.getElementById("authModal").classList.remove("open");
-          }}
-        }});
+          }
+        });
 
-        fbDb.ref("liderlik").orderByChild("puan").limitToLast(12).on("value", (snapshot) => {{
+        fbDb.ref("liderlik").orderByChild("puan").limitToLast(12).on("value", (snapshot) => {
           const list = [];
-          snapshot.forEach((child) => {{
+          snapshot.forEach((child) => {
             list.push(child.val());
-          }});
+          });
           list.sort((a, b) => (b.puan || 0) - (a.puan || 0));
           renderLeaderboardRows(list);
           statusBadge.textContent = "● Bulut Bağlı";
           statusBadge.style.color = "var(--turquoise)";
-        }}, () => {{
+        }, () => {
           statusBadge.textContent = "● Yerel Mod";
           statusBadge.style.color = "var(--gold-light)";
           fbDb = null;
           renderLocalFallbackLeaderboard();
-        }});
-      }} catch (err) {{
+        });
+      } catch (err) {
         statusBadge.textContent = "● Yerel Mod";
         fbDb = null;
         renderLocalFallbackLeaderboard();
-      }}
-    }}
+      }
+    }
 
-    function rumuzToEmail(rumuz) {{
+    function rumuzToEmail(rumuz) {
       const slug = rumuz.trim().toLowerCase()
         .replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s")
         .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ç/g, "c")
         .replace(/[^a-z0-9_]/g, "");
       return (slug || "yazici") + "@gokturk-yazisi.local";
-    }}
+    }
 
-    function padPassword(pin) {{
+    function padPassword(pin) {
       return pin.trim() + "_gt2026";
-    }}
+    }
 
-    document.getElementById("loginRumuzBtn").addEventListener("click", async () => {{
+    document.getElementById("loginRumuzBtn").addEventListener("click", async () => {
       const rumuz = document.getElementById("authRumuz").value.trim();
       const pin = document.getElementById("authPin").value.trim();
       const msg = document.getElementById("authMsg");
-      if (!rumuz || pin.length < 4) {{
+      if (!rumuz || pin.length < 4) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Lütfen rumuz ve en az 4 karakterli parola girin.";
         return;
-      }}
-      if (!fbAuth) {{
-        currentUser = {{ uid: "local_" + rumuz, rumuz, puan: currentUser.puan || 0, isGuest: false }};
+      }
+      if (!fbAuth) {
+        currentUser = { uid: "local_" + rumuz, rumuz, puan: currentUser.puan || 0, isGuest: false };
         updateUserUI();
         saveLocalProfile();
         document.getElementById("authModal").classList.remove("open");
         return;
-      }}
+      }
       msg.style.color = "var(--turquoise)";
       msg.textContent = "Giriş yapılıyor...";
-      try {{
+      try {
         await fbAuth.signInWithEmailAndPassword(rumuzToEmail(rumuz), padPassword(pin));
-      }} catch (e) {{
+      } catch (e) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Giriş başarısız. İlk kez geliyorsanız 'Yeni Kayıt Ol' düğmesine basın.";
-      }}
-    }});
+      }
+    });
 
-    document.getElementById("registerRumuzBtn").addEventListener("click", async () => {{
+    document.getElementById("registerRumuzBtn").addEventListener("click", async () => {
       const rumuz = document.getElementById("authRumuz").value.trim();
       const pin = document.getElementById("authPin").value.trim();
       const msg = document.getElementById("authMsg");
-      if (!rumuz || pin.length < 4) {{
+      if (!rumuz || pin.length < 4) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Lütfen rumuz ve en az 4 karakterli parola girin.";
         return;
-      }}
-      if (!fbAuth) {{
-        currentUser = {{ uid: "local_" + rumuz, rumuz, puan: 0, isGuest: false }};
+      }
+      if (!fbAuth) {
+        currentUser = { uid: "local_" + rumuz, rumuz, puan: 0, isGuest: false };
         updateUserUI();
         saveLocalProfile();
         document.getElementById("authModal").classList.remove("open");
         return;
-      }}
+      }
       msg.style.color = "var(--turquoise)";
       msg.textContent = "Kaydınız oluşturuluyor...";
-      try {{
+      try {
         const cred = await fbAuth.createUserWithEmailAndPassword(rumuzToEmail(rumuz), padPassword(pin));
-        await cred.user.updateProfile({{ displayName: rumuz }});
-        if (fbDb) {{
-          await fbDb.ref("kullanicilar/" + cred.user.uid).set({{
+        await cred.user.updateProfile({ displayName: rumuz });
+        if (fbDb) {
+          await fbDb.ref("kullanicilar/" + cred.user.uid).set({
             rumuz,
             puan: 0,
             dogru: 0,
             cozulen: 0,
             rutbe: "Acemi Yazıcı"
-          }});
-        }}
+          });
+        }
         currentUser.rumuz = rumuz;
         updateUserUI();
-      }} catch (e) {{
+      } catch (e) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Kayıt hatası: " + (e.code === "auth/email-already-in-use" ? "Bu rumuz zaten kayıtlı, Giriş Yap'ı deneyin." : e.message);
-      }}
-    }});
+      }
+    });
 
-    document.getElementById("googleLoginBtn").addEventListener("click", async () => {{
+    document.getElementById("googleLoginBtn").addEventListener("click", async () => {
       const msg = document.getElementById("authMsg");
-      if (!fbAuth) {{
+      if (!fbAuth) {
         msg.style.color = "var(--danger)";
         msg.textContent = "Bulut kimlik doğrulama şu an kullanılamıyor.";
         return;
-      }}
+      }
       const provider = new firebase.auth.GoogleAuthProvider();
-      try {{
+      try {
         await fbAuth.signInWithPopup(provider);
-      }} catch (e) {{
-        if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {{
+      } catch (e) {
+        if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
           fbAuth.signInWithRedirect(provider);
-        }} else {{
+        } else {
           msg.style.color = "var(--danger)";
           msg.textContent = "Google girişi açılamadı (" + e.code + "). Konuk olarak devam edebilirsiniz.";
-        }}
-      }}
-    }});
+        }
+      }
+    });
 
-    document.getElementById("guestLoginBtn").addEventListener("click", () => {{
+    document.getElementById("guestLoginBtn").addEventListener("click", () => {
       const rumuz = document.getElementById("authRumuz").value.trim() || "Konuk Yazıcı";
-      currentUser = {{ uid: "guest_local", rumuz, puan: currentUser.puan || 0, isGuest: true }};
+      currentUser = { uid: "guest_local", rumuz, puan: currentUser.puan || 0, isGuest: true };
       updateUserUI();
       saveLocalProfile();
       document.getElementById("authModal").classList.remove("open");
-    }});
+    });
 
-    document.getElementById("userBadgeBtn").addEventListener("click", () => {{
+    document.getElementById("userBadgeBtn").addEventListener("click", () => {
       document.getElementById("authModal").classList.add("open");
-    }});
+    });
 
     /* =====================================================================
        PWA TELEFONA YÜKLEME YÖNETİMİ
        ===================================================================== */
     let deferredPrompt = null;
-    window.addEventListener("beforeinstallprompt", (e) => {{
+    window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
       document.getElementById("nativeInstallBtn").style.display = "inline-flex";
-    }});
+    });
 
-    document.getElementById("openInstallBtn").addEventListener("click", () => {{
+    document.getElementById("openInstallBtn").addEventListener("click", () => {
       document.getElementById("installModal").classList.add("open");
-    }});
+    });
 
-    document.getElementById("closeInstallBtn").addEventListener("click", () => {{
+    document.getElementById("closeInstallBtn").addEventListener("click", () => {
       document.getElementById("installModal").classList.remove("open");
-    }});
+    });
 
-    document.getElementById("nativeInstallBtn").addEventListener("click", async () => {{
+    document.getElementById("nativeInstallBtn").addEventListener("click", async () => {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
       deferredPrompt = null;
       document.getElementById("nativeInstallBtn").style.display = "none";
-    }});
+    });
 
     /* =====================================================================
        SEKMELER ARASI GEÇİŞ
        ===================================================================== */
-    document.querySelectorAll(".tab-btn").forEach((btn) => {{
-      btn.addEventListener("click", () => {{
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
         document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
         btn.classList.add("active");
         document.getElementById(btn.dataset.tab).classList.add("active");
-      }});
-    }});
+      });
+    });
 
-    function escapeHtml(str) {{
+    function escapeHtml(str) {
       return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
-    }}
+    }
 
     /* =====================================================================
        VERİ SETİ 1: 38 HARF + KAPALI ė + AYRAÇ (KÖKEN HİKÂYELERİYLE)
        ===================================================================== */
     const TAMGALAR = [
       // Ünlüler (5)
-      {{ char: "𐰀", latin: "A / E", cat: "unlu", type: "Ünlü (Kalın/İnce)", origin: "Sözcük sonunda her zaman yazılır; ilk ve orta hecede yazılması o ünlünün uzun (ā) olduğunu gösterir.", examples: "𐰀𐱃 (āt: ad), 𐰉𐰆𐰣𐰲𐰀 (bunça), 𐰋𐰃𐰼𐰠𐰀 (birle)" }},
-      {{ char: "𐰃", latin: "I / İ", cat: "unlu", type: "Ünlü (Kalın/İnce)", origin: "Sözcükteki kalın veya ince ünsüzlerin eşliğinde 'ı' ya da 'i' olarak okunur.", examples: "𐰉𐰃𐰠𐰏 (bilig), 𐱃𐰃𐰏𐰤 (tigin), 𐰴𐰃𐰔 (kız)" }},
-      {{ char: "𐰆", latin: "O / U", cat: "unlu", type: "Kalın Yuvarlak Ünlü", origin: "Kalın yuvarlak 'o' ve 'u' seslerini karşılar; bağlama ve sözcük anlamına göre seslendirilir.", examples: "𐰆𐰍𐰔 (Oğuz), 𐰉𐰆𐰑𐰣 (bodun), 𐰆𐰞 (ol)" }},
-      {{ char: "𐰇", latin: "Ö / Ü", cat: "unlu", type: "İnce Yuvarlak Ünlü", origin: "İnce yuvarlak 'ö' ve 'ü' seslerini karşılar. Kül/Köl Tigin gibi adların çift okunuşu bu tamgadan kaynaklanır.", examples: "𐰇𐱅𐰜𐰤 (Ötüken), 𐰇𐰔𐰢 (özüm), 𐰜𐰇𐰤 (kün)" }},
-      {{ char: "𐰂", latin: "Ė (Kapalı e)", cat: "unlu", type: "Kapalı e Ünlüsü", origin: "Orhun Yazıtları'ndan ziyade Yenisey Yazıtları'nda birkaç sözcükte kapalı 'ė' sesini ayırt etmek için kullanılmıştır.", examples: "𐰋𐰂𐰼 (bėr-: vermek), 𐰘𐰂𐰼 (yėr: yer)" }},
+      { char: "𐰀", latin: "A / E", cat: "unlu", type: "Ünlü (Kalın/İnce)", origin: "Sözcük sonunda her zaman yazılır; ilk ve orta hecede yazılması o ünlünün uzun (ā) olduğunu gösterir.", examples: "𐰀𐱃 (āt: ad), 𐰉𐰆𐰣𐰲𐰀 (bunça), 𐰋𐰃𐰼𐰠𐰀 (birle)" },
+      { char: "𐰃", latin: "I / İ", cat: "unlu", type: "Ünlü (Kalın/İnce)", origin: "Sözcükteki kalın veya ince ünsüzlerin eşliğinde 'ı' ya da 'i' olarak okunur.", examples: "𐰉𐰃𐰠𐰏 (bilig), 𐱃𐰃𐰏𐰤 (tigin), 𐰴𐰃𐰔 (kız)" },
+      { char: "𐰆", latin: "O / U", cat: "unlu", type: "Kalın Yuvarlak Ünlü", origin: "Kalın yuvarlak 'o' ve 'u' seslerini karşılar; bağlama ve sözcük anlamına göre seslendirilir.", examples: "𐰆𐰍𐰔 (Oğuz), 𐰉𐰆𐰑𐰣 (bodun), 𐰆𐰞 (ol)" },
+      { char: "𐰇", latin: "Ö / Ü", cat: "unlu", type: "İnce Yuvarlak Ünlü", origin: "İnce yuvarlak 'ö' ve 'ü' seslerini karşılar. Kül/Köl Tigin gibi adların çift okunuşu bu tamgadan kaynaklanır.", examples: "𐰇𐱅𐰜𐰤 (Ötüken), 𐰇𐰔𐰢 (özüm), 𐰜𐰇𐰤 (kün)" },
+      { char: "𐰂", latin: "Ė (Kapalı e)", cat: "unlu", type: "Kapalı e Ünlüsü", origin: "Orhun Yazıtları'ndan ziyade Yenisey Yazıtları'nda birkaç sözcükte kapalı 'ė' sesini ayırt etmek için kullanılmıştır.", examples: "𐰋𐰂𐰼 (bėr-: vermek), 𐰘𐰂𐰼 (yėr: yer)" },
 
       // Kalın Ünsüzler (10)
-      {{ char: "𐰉", latin: "B (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ab/ba)", origin: "Kalın ünlülerle (a, ı, o, u) birlikte kullanılan 'b' sesidir.", examples: "𐰉𐰆𐰑𐰣 (bodun), 𐰉𐰀𐰖 (bay), 𐰉𐰀𐰔 (baz)" }},
-      {{ char: "𐰑", latin: "D (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ad/da)", origin: "Kalın ünlülerle kullanılır; Eski Türkçedeki 'd' sesleri sonraki dönemlerde 'y'ye dönüşmüştür (adak → ayak).", examples: "𐰀𐰑𐰴 (adak: ayak), 𐰉𐰆𐰑 (bod: boy)" }},
-      {{ char: "𐰍", latin: "G / Ğ (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ag/ga)", origin: "Ayakta duran bir kişinin iki bacağı arasındaki boşluğu ('ağ') andırır; Dîvânu Lugâti't-Türk'te 'ağ' iki bacak arası boşluk olarak geçer.", examples: "𐱃𐰀𐰍 (tağ: dağ), 𐰴𐰀𐰍𐰣 (kağan)" }},
-      {{ char: "𐰴", latin: "K (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ak/ka)", origin: "Kalın ünlülerle kullanılan 'k' sesidir; sözcük başındaki kalın 'k'ler Göktürkçede korunmuştur.", examples: "𐰴𐰀𐰍𐰣 (kağan), 𐰴𐰀𐱃𐰆𐰣 (katun)" }},
-      {{ char: "𐰞", latin: "L (Kalın)", cat: "kalin", type: "Kalın Ünsüz (al/la)", origin: "Kalın ünlülerle birlikte kullanılan 'l' sesidir.", examples: "𐰀𐰞𐱃𐰆𐰣 (altun), 𐰖𐰀𐰉𐰞𐰴 (yablak)" }},
-      {{ char: "𐰣", latin: "N (Kalın)", cat: "kalin", type: "Kalın Ünsüz (an/na)", origin: "Kalın ünlülerle birlikte kullanılan 'n' sesidir.", examples: "𐰴𐰀𐰣 (kan: baba), 𐱃𐰆𐰣 (ton: elbise)" }},
-      {{ char: "𐰺", latin: "R (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ar/ra)", origin: "Kalın ünlülerle birlikte kullanılan 'r' sesidir.", examples: "𐰃𐰺𐰴 (ırak), 𐰉𐰀𐰺 (bar: var)" }},
-      {{ char: "𐰽", latin: "S (Kalın)", cat: "kalin", type: "Kalın Ünsüz (as/sa)", origin: "Bir yere asılmış nesneyi andırır; 'as-' eyleminden esinlenerek oluşturulmuştur.", examples: "𐰽𐰆𐰉 (sub: su), 𐰀𐰽𐰺𐰀 (asra: altta)" }},
-      {{ char: "𐱃", latin: "T (Kalın)", cat: "kalin", type: "Kalın Ünsüz (at/ta)", origin: "Tepesindeki yukarı bakan ok ucu bir 'at'ın başını veya kutsal 'tağ' (dağ) doruğunu andırır.", examples: "𐱃𐰀𐱁 (taş), 𐱃𐰀𐰉𐰍𐰲 (Tabgaç)" }},
-      {{ char: "𐰖", latin: "Y (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ay/ya)", origin: "Türk savaş sanatının temel silahı olan gerilmemiş bir 'yay'ın görünümünden doğmuştur.", examples: "𐰖𐰃𐰞 (yıl), 𐰖𐰀𐰍𐰃 (yağı: düşman)" }},
+      { char: "𐰉", latin: "B (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ab/ba)", origin: "Kalın ünlülerle (a, ı, o, u) birlikte kullanılan 'b' sesidir.", examples: "𐰉𐰆𐰑𐰣 (bodun), 𐰉𐰀𐰖 (bay), 𐰉𐰀𐰔 (baz)" },
+      { char: "𐰑", latin: "D (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ad/da)", origin: "Kalın ünlülerle kullanılır; Eski Türkçedeki 'd' sesleri sonraki dönemlerde 'y'ye dönüşmüştür (adak → ayak).", examples: "𐰀𐰑𐰴 (adak: ayak), 𐰉𐰆𐰑 (bod: boy)" },
+      { char: "𐰍", latin: "G / Ğ (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ag/ga)", origin: "Ayakta duran bir kişinin iki bacağı arasındaki boşluğu ('ağ') andırır; Dîvânu Lugâti't-Türk'te 'ağ' iki bacak arası boşluk olarak geçer.", examples: "𐱃𐰀𐰍 (tağ: dağ), 𐰴𐰀𐰍𐰣 (kağan)" },
+      { char: "𐰴", latin: "K (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ak/ka)", origin: "Kalın ünlülerle kullanılan 'k' sesidir; sözcük başındaki kalın 'k'ler Göktürkçede korunmuştur.", examples: "𐰴𐰀𐰍𐰣 (kağan), 𐰴𐰀𐱃𐰆𐰣 (katun)" },
+      { char: "𐰞", latin: "L (Kalın)", cat: "kalin", type: "Kalın Ünsüz (al/la)", origin: "Kalın ünlülerle birlikte kullanılan 'l' sesidir.", examples: "𐰀𐰞𐱃𐰆𐰣 (altun), 𐰖𐰀𐰉𐰞𐰴 (yablak)" },
+      { char: "𐰣", latin: "N (Kalın)", cat: "kalin", type: "Kalın Ünsüz (an/na)", origin: "Kalın ünlülerle birlikte kullanılan 'n' sesidir.", examples: "𐰴𐰀𐰣 (kan: baba), 𐱃𐰆𐰣 (ton: elbise)" },
+      { char: "𐰺", latin: "R (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ar/ra)", origin: "Kalın ünlülerle birlikte kullanılan 'r' sesidir.", examples: "𐰃𐰺𐰴 (ırak), 𐰉𐰀𐰺 (bar: var)" },
+      { char: "𐰽", latin: "S (Kalın)", cat: "kalin", type: "Kalın Ünsüz (as/sa)", origin: "Bir yere asılmış nesneyi andırır; 'as-' eyleminden esinlenerek oluşturulmuştur.", examples: "𐰽𐰆𐰉 (sub: su), 𐰀𐰽𐰺𐰀 (asra: altta)" },
+      { char: "𐱃", latin: "T (Kalın)", cat: "kalin", type: "Kalın Ünsüz (at/ta)", origin: "Tepesindeki yukarı bakan ok ucu bir 'at'ın başını veya kutsal 'tağ' (dağ) doruğunu andırır.", examples: "𐱃𐰀𐱁 (taş), 𐱃𐰀𐰉𐰍𐰲 (Tabgaç)" },
+      { char: "𐰖", latin: "Y (Kalın)", cat: "kalin", type: "Kalın Ünsüz (ay/ya)", origin: "Türk savaş sanatının temel silahı olan gerilmemiş bir 'yay'ın görünümünden doğmuştur.", examples: "𐰖𐰃𐰞 (yıl), 𐰖𐰀𐰍𐰃 (yağı: düşman)" },
 
       // İnce Ünsüzler (10)
-      {{ char: "𐰋", latin: "B (İnce)", cat: "ince", type: "İnce Ünsüz (eb/be)", origin: "Türklerin yaşadığı çadır/otağa ('eb' → ev) benzer; görsel ve ses olarak otağ nesnesinden doğmuştur.", examples: "𐰋𐰏 (beg: bey), 𐰋𐰃𐰼𐰠𐰀 (birle)" }},
-      {{ char: "𐰓", latin: "D (İnce)", cat: "ince", type: "İnce Ünsüz (ed/de)", origin: "İnce ünlülerle (e, i, ö, ü) kullanılan 'd' sesidir.", examples: "𐰓𐰏𐰇 (edgü: iyi), 𐰋𐰓𐰔 (bediz)" }},
-      {{ char: "𐰏", latin: "G (İnce)", cat: "ince", type: "İnce Ünsüz (eg/ge)", origin: "İnce ünlülerle birlikte kullanılan 'g' sesidir.", examples: "𐰋𐰃𐰠𐰏 (bilig), 𐰏𐰇𐰼 (kör-)" }},
-      {{ char: "𐰚", latin: "K (İnce)", cat: "ince", type: "İnce Ünsüz (ek/ke)", origin: "İnce ünlülerle birlikte kullanılan 'k' sesidir.", examples: "𐰚𐰃𐰤 (ekin), 𐰚𐰇𐰔 (köz: göz)" }},
-      {{ char: "𐰠", latin: "L (İnce)", cat: "ince", type: "İnce Ünsüz (el/le)", origin: "İnce ünlülerle birlikte kullanılan 'l' sesidir.", examples: "𐰃𐰠 (il: devlet), 𐰚𐰠 (kel-)" }},
-      {{ char: "𐰤", latin: "N (İnce)", cat: "ince", type: "İnce Ünsüz (en/ne)", origin: "İki basamaklı bir merdivene benzer; Eski Türkçede 'inmek' anlamındaki 'en-' eyleminden türemiştir.", examples: "𐰤𐰭 (neng), 𐱅𐰭𐰼𐰃 (Tengri)" }},
-      {{ char: "𐰼", latin: "R (İnce)", cat: "ince", type: "İnce Ünsüz (er/re)", origin: "Mızrağıyla ayakta duran bir askere ('er') benzer; 'er' sözcüğünün görüntüsünden doğmuştur.", examples: "𐰼 (er: asker), 𐱅𐰇𐰼𐰜 (Türük)" }},
-      {{ char: "𐰾", latin: "S (İnce)", cat: "ince", type: "İnce Ünsüz (es/se)", origin: "Göktürk savaşçılarının kullandığı ince ve uzun 'süngü'ye benzer.", examples: "𐰾𐰇 (sü: ordu), 𐰾𐰇𐰭𐰜 (süngük)" }},
-      {{ char: "𐱅", latin: "T (İnce)", cat: "ince", type: "İnce Ünsüz (et/te)", origin: "İnce ünlülerle birlikte kullanılan 't' sesidir.", examples: "𐱅𐰃𐰏𐰤 (tigin), 𐱅𐰇𐰼𐱅 (tört)" }},
-      {{ char: "𐰘", latin: "Y (İnce)", cat: "ince", type: "İnce Ünsüz (ey/ye)", origin: "İnce ünlülerle birlikte kullanılan 'y' sesidir.", examples: "𐰘𐰃𐰏𐰼𐰢𐰃 (yigirmi), 𐰘𐰃𐰼 (yir)" }},
+      { char: "𐰋", latin: "B (İnce)", cat: "ince", type: "İnce Ünsüz (eb/be)", origin: "Türklerin yaşadığı çadır/otağa ('eb' → ev) benzer; görsel ve ses olarak otağ nesnesinden doğmuştur.", examples: "𐰋𐰏 (beg: bey), 𐰋𐰃𐰼𐰠𐰀 (birle)" },
+      { char: "𐰓", latin: "D (İnce)", cat: "ince", type: "İnce Ünsüz (ed/de)", origin: "İnce ünlülerle (e, i, ö, ü) kullanılan 'd' sesidir.", examples: "𐰓𐰏𐰇 (edgü: iyi), 𐰋𐰓𐰔 (bediz)" },
+      { char: "𐰏", latin: "G (İnce)", cat: "ince", type: "İnce Ünsüz (eg/ge)", origin: "İnce ünlülerle birlikte kullanılan 'g' sesidir.", examples: "𐰋𐰃𐰠𐰏 (bilig), 𐰏𐰇𐰼 (kör-)" },
+      { char: "𐰚", latin: "K (İnce)", cat: "ince", type: "İnce Ünsüz (ek/ke)", origin: "İnce ünlülerle birlikte kullanılan 'k' sesidir.", examples: "𐰚𐰃𐰤 (ekin), 𐰚𐰇𐰔 (köz: göz)" },
+      { char: "𐰠", latin: "L (İnce)", cat: "ince", type: "İnce Ünsüz (el/le)", origin: "İnce ünlülerle birlikte kullanılan 'l' sesidir.", examples: "𐰃𐰠 (il: devlet), 𐰚𐰠 (kel-)" },
+      { char: "𐰤", latin: "N (İnce)", cat: "ince", type: "İnce Ünsüz (en/ne)", origin: "İki basamaklı bir merdivene benzer; Eski Türkçede 'inmek' anlamındaki 'en-' eyleminden türemiştir.", examples: "𐰤𐰭 (neng), 𐱅𐰭𐰼𐰃 (Tengri)" },
+      { char: "𐰼", latin: "R (İnce)", cat: "ince", type: "İnce Ünsüz (er/re)", origin: "Mızrağıyla ayakta duran bir askere ('er') benzer; 'er' sözcüğünün görüntüsünden doğmuştur.", examples: "𐰼 (er: asker), 𐱅𐰇𐰼𐰜 (Türük)" },
+      { char: "𐰾", latin: "S (İnce)", cat: "ince", type: "İnce Ünsüz (es/se)", origin: "Göktürk savaşçılarının kullandığı ince ve uzun 'süngü'ye benzer.", examples: "𐰾𐰇 (sü: ordu), 𐰾𐰇𐰭𐰜 (süngük)" },
+      { char: "𐱅", latin: "T (İnce)", cat: "ince", type: "İnce Ünsüz (et/te)", origin: "İnce ünlülerle birlikte kullanılan 't' sesidir.", examples: "𐱅𐰃𐰏𐰤 (tigin), 𐱅𐰇𐰼𐱅 (tört)" },
+      { char: "𐰘", latin: "Y (İnce)", cat: "ince", type: "İnce Ünsüz (ey/ye)", origin: "İnce ünlülerle birlikte kullanılan 'y' sesidir.", examples: "𐰘𐰃𐰏𐰼𐰢𐰃 (yigirmi), 𐰘𐰃𐰼 (yir)" },
 
       // Bütün Ünlülerle Kullanılan Ortak Ünsüzler (5)
-      {{ char: "𐰲", latin: "Ç", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Hem kalın hem ince ünlülerle değişmeden kullanılan 5 ortak ünsüzden biridir.", examples: "𐰇𐰲𐰇𐰤 (üçün), 𐰉𐰆𐰣𐰲𐰀 (bunça)" }},
-      {{ char: "𐰢", latin: "M", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Kalınlık-incelik ayrımı olmadan tüm ünlülerle kullanılan 'm' tamgasıdır.", examples: "𐰢𐰤 (men: ben), 𐰜𐰇𐰢𐱁 (kümüş)" }},
-      {{ char: "𐰯", latin: "P", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Kıvrılmış bir 'ip'e benzer; 'ip' sözcüğünden hareketle oluşturulmuştur.", examples: "𐰜𐰇𐰯 (köp: çok), 𐰀𐰯𐰀 (apa)" }},
-      {{ char: "𐱁", latin: "Ş", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Hem kalın hem ince ünlülerle ortak kullanılır; yazıtlarda bazen ince 's' (𐰾) ile nöbetleşebilir.", examples: "𐱁𐰀𐰑 (şad), 𐰉𐰃𐱁 (biş: beş)" }},
-      {{ char: "𐰔", latin: "Z", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Kalın ve ince bütün ünlülerle birlikte değişmeden kullanılır.", examples: "𐱅𐰃𐰔 (tiz: diz), 𐰉𐰀𐰔 (baz)" }},
+      { char: "𐰲", latin: "Ç", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Hem kalın hem ince ünlülerle değişmeden kullanılan 5 ortak ünsüzden biridir.", examples: "𐰇𐰲𐰇𐰤 (üçün), 𐰉𐰆𐰣𐰲𐰀 (bunça)" },
+      { char: "𐰢", latin: "M", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Kalınlık-incelik ayrımı olmadan tüm ünlülerle kullanılan 'm' tamgasıdır.", examples: "𐰢𐰤 (men: ben), 𐰜𐰇𐰢𐱁 (kümüş)" },
+      { char: "𐰯", latin: "P", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Kıvrılmış bir 'ip'e benzer; 'ip' sözcüğünden hareketle oluşturulmuştur.", examples: "𐰜𐰇𐰯 (köp: çok), 𐰀𐰯𐰀 (apa)" },
+      { char: "𐱁", latin: "Ş", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Hem kalın hem ince ünlülerle ortak kullanılır; yazıtlarda bazen ince 's' (𐰾) ile nöbetleşebilir.", examples: "𐱁𐰀𐰑 (şad), 𐰉𐰃𐱁 (biş: beş)" },
+      { char: "𐰔", latin: "Z", cat: "ortak", type: "Ortak Ünsüz (Kalın/İnce)", origin: "Kalın ve ince bütün ünlülerle birlikte değişmeden kullanılır.", examples: "𐱅𐰃𐰔 (tiz: diz), 𐰉𐰀𐰔 (baz)" },
 
       // Çift Sesliler & Sözcük Ayraç Tamgası (10)
-      {{ char: "𐰶", latin: "IK / KI", cat: "cift", type: "Çift Sesli Tamga", origin: "İçinde hem 'ı' ünlüsünü hem kalın 'k' ünsüzünü barındırır; yanına ayrıca 'ı' yazılmaz.", examples: "𐰴𐰃𐰺𐰶𐰔 (Kırkız), 𐰉𐰀𐰞𐰶 (balık: şehir)" }},
-      {{ char: "𐰱", latin: "İÇ / Çİ", cat: "cift", type: "Çift Sesli Tamga", origin: "İnce 'i' ünlüsü ile 'ç' ünsüzünü tek tamgada birleştirir.", examples: "𐰱𐰼𐰀 (içre), 𐰱𐰚 (içik-)" }},
-      {{ char: "𐰸", latin: "OK / UK / KO / KU", cat: "cift", type: "Çift Sesli Tamga", origin: "Türk savaş sanatının temelindeki 'ok'a tıpatıp benzer. Yanına 𐰆 yazılırsa ünlünün uzun (kō/kū) olduğunu gösterir.", examples: "𐰸 (ok), 𐰖𐰸 (yok), 𐰸𐰆𐱃 (kūt)" }},
-      {{ char: "𐰜", latin: "ÖK / ÜK / KÖ / KÜ", cat: "cift", type: "Çift Sesli Tamga", origin: "İnce yuvarlak 'ö/ü' ile 'k' sesini tek tamgada karşılar.", examples: "𐱅𐰇𐰼𐰜 (Türük), 𐰜𐰇𐰤 (kün)" }},
-      {{ char: "𐰡", latin: "LD / LT", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "Sözcük içindeki 'ld' ve 'lt' ünsüz çiftlerini tek tamgada karşılar.", examples: "𐰉𐰆𐰡𐰃 (boltı: oldu)" }},
-      {{ char: "𐰨", latin: "NÇ", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "'nç' ünsüz çiftini tek harfle karşılar.", examples: "𐰼𐰨 (erinç), 𐰉𐰆𐰞𐰍𐰨 (bulganç)" }},
-      {{ char: "𐰦", latin: "ND / NT", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "Türk töresinde içine kımız ve bir damla kan damlatılarak yemin edilen 'ant' kabına (tasa) benzer.", examples: "𐰦 (ant), 𐰴𐰃𐰞𐰦𐰢 (kılıntım)" }},
-      {{ char: "𐰭", latin: "NG (Damak n'si)", cat: "cift", type: "Genizsil n (ŋ) Tamgası", origin: "Ölçünlü Türkiye Türkçesinde bulunmayıp Anadolu ağızları ve Türk lehçelerinde yaşayan genizsil 'ŋ' sesini karşılar.", examples: "𐱅𐰭𐰼𐰃 (Tengri), 𐰚𐰇𐰭𐰠 (köngül)" }},
-      {{ char: "𐰪", latin: "NY", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "Damaksıl 'ny' sesini karşılayan çift ünsüz tamgasıdır.", examples: "𐰴𐰆𐰪 (kony: koyun), 𐰲𐰃𐰍𐰪 (çıgany: yoksul)" }},
-      {{ char: ":", latin: ": (Ayraç Tamgası)", cat: "cift", type: "Sözcük Ayırma Tamgası", origin: "Göktürk yazısındaki tek noktalama işaretidir. Taşa kazınan sözcük veya sözcük öbeklerini ayırmak için kullanılır.", examples: "𐰋𐰃𐰠𐰏𐰀 : 𐰴𐰀𐰍𐰣 (Bilge Kağan)" }}
+      { char: "𐰶", latin: "IK / KI", cat: "cift", type: "Çift Sesli Tamga", origin: "İçinde hem 'ı' ünlüsünü hem kalın 'k' ünsüzünü barındırır; yanına ayrıca 'ı' yazılmaz.", examples: "𐰴𐰃𐰺𐰶𐰔 (Kırkız), 𐰉𐰀𐰞𐰶 (balık: şehir)" },
+      { char: "𐰱", latin: "İÇ / Çİ", cat: "cift", type: "Çift Sesli Tamga", origin: "İnce 'i' ünlüsü ile 'ç' ünsüzünü tek tamgada birleştirir.", examples: "𐰱𐰼𐰀 (içre), 𐰱𐰚 (içik-)" },
+      { char: "𐰸", latin: "OK / UK / KO / KU", cat: "cift", type: "Çift Sesli Tamga", origin: "Türk savaş sanatının temelindeki 'ok'a tıpatıp benzer. Yanına 𐰆 yazılırsa ünlünün uzun (kō/kū) olduğunu gösterir.", examples: "𐰸 (ok), 𐰖𐰸 (yok), 𐰸𐰆𐱃 (kūt)" },
+      { char: "𐰜", latin: "ÖK / ÜK / KÖ / KÜ", cat: "cift", type: "Çift Sesli Tamga", origin: "İnce yuvarlak 'ö/ü' ile 'k' sesini tek tamgada karşılar.", examples: "𐱅𐰇𐰼𐰜 (Türük), 𐰜𐰇𐰤 (kün)" },
+      { char: "𐰡", latin: "LD / LT", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "Sözcük içindeki 'ld' ve 'lt' ünsüz çiftlerini tek tamgada karşılar.", examples: "𐰉𐰆𐰡𐰃 (boltı: oldu)" },
+      { char: "𐰨", latin: "NÇ", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "'nç' ünsüz çiftini tek harfle karşılar.", examples: "𐰼𐰨 (erinç), 𐰉𐰆𐰞𐰍𐰨 (bulganç)" },
+      { char: "𐰦", latin: "ND / NT", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "Türk töresinde içine kımız ve bir damla kan damlatılarak yemin edilen 'ant' kabına (tasa) benzer.", examples: "𐰦 (ant), 𐰴𐰃𐰞𐰦𐰢 (kılıntım)" },
+      { char: "𐰭", latin: "NG (Damak n'si)", cat: "cift", type: "Genizsil n (ŋ) Tamgası", origin: "Ölçünlü Türkiye Türkçesinde bulunmayıp Anadolu ağızları ve Türk lehçelerinde yaşayan genizsil 'ŋ' sesini karşılar.", examples: "𐱅𐰭𐰼𐰃 (Tengri), 𐰚𐰇𐰭𐰠 (köngül)" },
+      { char: "𐰪", latin: "NY", cat: "cift", type: "Çift Ünsüz Tamgası", origin: "Damaksıl 'ny' sesini karşılayan çift ünsüz tamgasıdır.", examples: "𐰴𐰆𐰪 (kony: koyun), 𐰲𐰃𐰍𐰪 (çıgany: yoksul)" },
+      { char: ":", latin: ": (Ayraç Tamgası)", cat: "cift", type: "Sözcük Ayırma Tamgası", origin: "Göktürk yazısındaki tek noktalama işaretidir. Taşa kazınan sözcük veya sözcük öbeklerini ayırmak için kullanılır.", examples: "𐰋𐰃𐰠𐰏𐰀 : 𐰴𐰀𐰍𐰣 (Bilge Kağan)" }
     ];
 
-    function renderAlphabet(filter = "all") {{
+    function renderAlphabet(filter = "all") {
       const grid = document.getElementById("tamgaGrid");
       const list = filter === "all" ? TAMGALAR : TAMGALAR.filter((t) => t.cat === filter);
       grid.innerHTML = list.map((item) => `
-        <div class="tamga-card" data-latin="${{escapeHtml(item.latin)}}">
-          <div class="tamga-char">${{item.char}}</div>
-          <div class="tamga-latin">${{escapeHtml(item.latin)}}</div>
-          <div class="tamga-type">${{escapeHtml(item.type)}}</div>
+        <div class="tamga-card" data-latin="${escapeHtml(item.latin)}">
+          <div class="tamga-char">${item.char}</div>
+          <div class="tamga-latin">${escapeHtml(item.latin)}</div>
+          <div class="tamga-type">${escapeHtml(item.type)}</div>
         </div>
       `).join("");
 
-      grid.querySelectorAll(".tamga-card").forEach((card, idx) => {{
-        card.addEventListener("click", () => {{
+      grid.querySelectorAll(".tamga-card").forEach((card, idx) => {
+        card.addEventListener("click", () => {
           grid.querySelectorAll(".tamga-card").forEach((c) => c.classList.remove("selected"));
           card.classList.add("selected");
           const item = list[idx];
           document.getElementById("detailGlyph").textContent = item.char;
-          document.getElementById("detailTitle").textContent = `${{item.latin}} (${{item.char}})`;
+          document.getElementById("detailTitle").textContent = `${item.latin} (${item.char})`;
           document.getElementById("detailBadge").textContent = item.type;
           document.getElementById("detailOrigin").textContent = item.origin;
           document.getElementById("detailExamples").textContent = "Örnekler: " + item.examples;
-        }});
-      }});
-    }}
+        });
+      });
+    }
 
-    document.getElementById("alphabetFilters").addEventListener("click", (e) => {{
+    document.getElementById("alphabetFilters").addEventListener("click", (e) => {
       const pill = e.target.closest(".pill");
       if (!pill) return;
       document.querySelectorAll("#alphabetFilters .pill").forEach((p) => p.classList.remove("active"));
       pill.classList.add("active");
       renderAlphabet(pill.dataset.filter);
-    }});
+    });
 
     /* =====================================================================
        TÜRKÇE → GÖKTÜRKÇE ÇEVİRİ MOTORU
@@ -1567,23 +1565,23 @@ html_content = f"""<!DOCTYPE html>
     const FRONT_VOWELS = new Set(["e", "i", "ö", "ü", "ė", "î"]);
     const ALL_VOWELS = new Set([...BACK_VOWELS, ...FRONT_VOWELS]);
 
-    function detectWordHarmony(word) {{
+    function detectWordHarmony(word) {
       let backCount = 0;
       let frontCount = 0;
-      for (const ch of word) {{
+      for (const ch of word) {
         if (BACK_VOWELS.has(ch)) backCount++;
         if (FRONT_VOWELS.has(ch)) frontCount++;
-      }}
+      }
       if (frontCount > 0 && backCount === 0) return "ince";
       if (backCount > 0 && frontCount === 0) return "kalin";
-      for (const ch of word) {{
+      for (const ch of word) {
         if (FRONT_VOWELS.has(ch)) return "ince";
         if (BACK_VOWELS.has(ch)) return "kalin";
-      }}
+      }
       return "kalin";
-    }}
+    }
 
-    function transliterateWord(rawWord, classicOrtho = true) {{
+    function transliterateWord(rawWord, classicOrtho = true) {
       const w = rawWord.toLocaleLowerCase("tr-TR").replace(/[^a-zçğıöşüâîûė]/g, "");
       if (!w) return "";
       const harmony = detectWordHarmony(w);
@@ -1594,113 +1592,113 @@ html_content = f"""<!DOCTYPE html>
       let lastWrittenVowelGroup = null;
       let vowelIndex = 0;
 
-      while (i < w.length) {{
+      while (i < w.length) {
         const rest = w.slice(i);
         const isStart = i === 0;
         const isEnd = i === w.length - 1;
 
-        if (rest.startsWith("nç")) {{
+        if (rest.startsWith("nç")) {
           out += "𐰨";
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("nd") || rest.startsWith("nt")) {{
+        }
+        if (rest.startsWith("nd") || rest.startsWith("nt")) {
           out += "𐰦";
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("ng") || rest.startsWith("nğ")) {{
+        }
+        if (rest.startsWith("ng") || rest.startsWith("nğ")) {
           out += "𐰭";
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("ny")) {{
+        }
+        if (rest.startsWith("ny")) {
           out += "𐰪";
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("ld") || rest.startsWith("lt")) {{
+        }
+        if (rest.startsWith("ld") || rest.startsWith("lt")) {
           out += "𐰡";
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("ık") || rest.startsWith("kı")) {{
+        }
+        if (rest.startsWith("ık") || rest.startsWith("kı")) {
           out += "𐰶";
           lastWrittenVowelGroup = "ıi";
           vowelIndex++;
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("iç") || rest.startsWith("çi")) {{
+        }
+        if (rest.startsWith("iç") || rest.startsWith("çi")) {
           out += "𐰱";
           lastWrittenVowelGroup = "ıi";
           vowelIndex++;
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("ok") || rest.startsWith("uk") || rest.startsWith("ko") || rest.startsWith("ku")) {{
+        }
+        if (rest.startsWith("ok") || rest.startsWith("uk") || rest.startsWith("ko") || rest.startsWith("ku")) {
           out += "𐰸";
           lastWrittenVowelGroup = "ou";
           vowelIndex++;
           i += 2;
           continue;
-        }}
-        if (rest.startsWith("ök") || rest.startsWith("ük") || rest.startsWith("kö") || rest.startsWith("kü")) {{
+        }
+        if (rest.startsWith("ök") || rest.startsWith("ük") || rest.startsWith("kö") || rest.startsWith("kü")) {
           out += "𐰜";
           lastWrittenVowelGroup = "öü";
           vowelIndex++;
           i += 2;
           continue;
-        }}
+        }
 
         const ch = w[i];
 
-        if (!ALL_VOWELS.has(ch) && i + 1 < w.length && w[i + 1] === ch) {{
+        if (!ALL_VOWELS.has(ch) && i + 1 < w.length && w[i + 1] === ch) {
           i++;
           continue;
-        }}
+        }
 
-        if (ALL_VOWELS.has(ch)) {{
+        if (ALL_VOWELS.has(ch)) {
           let glyph = "𐰀";
           let group = "ae";
-          if (ch === "ė") {{
+          if (ch === "ė") {
             glyph = "𐰂";
             group = "ae";
-          }} else if (ch === "a" || ch === "e" || ch === "â") {{
+          } else if (ch === "a" || ch === "e" || ch === "â") {
             glyph = "𐰀";
             group = "ae";
-          }} else if (ch === "ı" || ch === "i" || ch === "î") {{
+          } else if (ch === "ı" || ch === "i" || ch === "î") {
             glyph = "𐰃";
             group = "ıi";
-          }} else if (ch === "o" || ch === "u" || ch === "û") {{
+          } else if (ch === "o" || ch === "u" || ch === "û") {
             glyph = "𐰆";
             group = "ou";
-          }} else if (ch === "ö" || ch === "ü") {{
+          } else if (ch === "ö" || ch === "ü") {
             glyph = "𐰇";
             group = "öü";
-          }}
+          }
 
           const atWordEnd = i === w.length - 1;
           let shouldWrite = true;
 
-          if (classicOrtho && !atWordEnd && !isStart) {{
-            if (group === "ae" && ch !== "â") {{
+          if (classicOrtho && !atWordEnd && !isStart) {
+            if (group === "ae" && ch !== "â") {
               shouldWrite = false;
-            }} else if (lastWrittenVowelGroup === group) {{
+            } else if (lastWrittenVowelGroup === group) {
               shouldWrite = false;
-            }}
-          }}
+            }
+          }
 
-          if (shouldWrite) {{
+          if (shouldWrite) {
             out += glyph;
             lastWrittenVowelGroup = group;
-          }}
+          }
           vowelIndex++;
           i++;
           continue;
-        }}
+        }
 
-        switch (ch) {{
+        switch (ch) {
           case "b":
           case "v":
             out += isKalin ? "𐰉" : "𐰋";
@@ -1752,102 +1750,102 @@ html_content = f"""<!DOCTYPE html>
           case "z":
             out += "𐰔";
             break;
-        }}
+        }
         i++;
-      }}
+      }
 
       return out;
-    }}
+    }
 
-    function transliterateText(text, classicOrtho = true) {{
-      const tokens = text.trim().split(/\\s+/).filter(Boolean);
+    function transliterateText(text, classicOrtho = true) {
+      const tokens = text.trim().split(/\s+/).filter(Boolean);
       if (!tokens.length) return "";
       const converted = tokens.map((tok) => transliterateWord(tok, classicOrtho)).filter(Boolean);
-      return converted.join(" :\\u200B ");
-    }}
+      return converted.join(" :\u200B ");
+    }
 
-    function updateWorkshop() {{
+    function updateWorkshop() {
       const text = document.getElementById("latinInput").value;
       const classic = document.getElementById("classicOrthoChk").checked;
       const vertical = document.getElementById("verticalStoneChk").checked;
       const outEl = document.getElementById("stoneOutput");
       outEl.classList.toggle("vertical-mode", vertical);
       outEl.textContent = transliterateText(text, classic);
-    }}
+    }
 
     document.getElementById("latinInput").addEventListener("input", updateWorkshop);
     document.getElementById("classicOrthoChk").addEventListener("change", updateWorkshop);
     document.getElementById("verticalStoneChk").addEventListener("change", updateWorkshop);
 
-    document.getElementById("sampleTextBtn").addEventListener("click", () => {{
+    document.getElementById("sampleTextBtn").addEventListener("click", () => {
       document.getElementById("latinInput").value = "Türük Oğuz begleri bodun eşiding üze tengri basmasar asra yir telinmeser Türük bodun ilingin törüngin kim artatı udaçı erti";
       updateWorkshop();
-    }});
+    });
 
-    document.getElementById("clearWorkshopBtn").addEventListener("click", () => {{
+    document.getElementById("clearWorkshopBtn").addEventListener("click", () => {
       document.getElementById("latinInput").value = "";
       updateWorkshop();
-    }});
+    });
 
-    document.getElementById("copyRunicBtn").addEventListener("click", async () => {{
-      const txt = document.getElementById("stoneOutput").textContent.replace(/\\u200B/g, "");
+    document.getElementById("copyRunicBtn").addEventListener("click", async () => {
+      const txt = document.getElementById("stoneOutput").textContent.replace(/\u200B/g, "");
       if (!txt) return;
-      try {{
+      try {
         await navigator.clipboard.writeText(txt);
         const btn = document.getElementById("copyRunicBtn");
         const old = btn.textContent;
         btn.textContent = "✓ Kopyalandı!";
         setTimeout(() => (btn.textContent = old), 1500);
-      }} catch (e) {{}}
-    }});
+      } catch (e) {}
+    });
 
-    function buildVirtualKeyboard() {{
+    function buildVirtualKeyboard() {
       const vk = document.getElementById("virtualKeyboard");
       vk.innerHTML = TAMGALAR.map((t) => `
-        <button type="button" class="vk-key" data-char="${{t.char}}" title="${{escapeHtml(t.latin)}}">
-          <span>${{t.char}}</span>
-          <span>${{escapeHtml(t.latin.split(" ")[0])}}</span>
+        <button type="button" class="vk-key" data-char="${t.char}" title="${escapeHtml(t.latin)}">
+          <span>${t.char}</span>
+          <span>${escapeHtml(t.latin.split(" ")[0])}</span>
         </button>
       `).join("");
 
-      vk.querySelectorAll(".vk-key").forEach((btn) => {{
-        btn.addEventListener("click", () => {{
+      vk.querySelectorAll(".vk-key").forEach((btn) => {
+        btn.addEventListener("click", () => {
           const outEl = document.getElementById("stoneOutput");
           outEl.textContent += btn.dataset.char;
-        }});
-      }});
-    }}
+        });
+      });
+    }
 
     /* =====================================================================
        VERİ SETİ 2: 11 İMLÂ KURALI & SAYI SİSTEMİ
        ===================================================================== */
     const RULES = [
-      {{ title: "1. Sözcük Sonu Ünlüleri Her Zaman Yazılır", body: "İlk ve orta hecede ünlüler düşebilse de sözcük sonundaki ünlü mutlaka yazılır: 𐰉𐰆𐰣𐰲𐰀 (bunça), 𐰋𐰃𐰼𐰠𐰀 (birle), 𐰓𐰏𐰇 (edgü), 𐱅𐰭𐰼𐰃 (Tengri)." }},
-      {{ title: "2. İlk ve Orta Hecede 'a / e' Genellikle Yazılmaz", body: "Ünsüzler zaten 'a/e' sesini barındırdığı için ilk/orta hecede 𐰀 yazılmaz: 𐱅𐰭𐰼𐰃 (Tengri), 𐰴𐰀𐰍𐰣 (kağan). Yazılmışsa uzun 'ā' gösterir: 𐰀𐱃 (āt: ad)." }},
-      {{ title: "3. Ardışık Aynı Ünlülerden Yalnızca İlki Yazılır", body: "Bir sözcüğün art arda iki hecesinde aynı ünlü varsa ikincisi yazılmaz: 𐰇𐰲𐰇𐰤 yerine 𐰇𐰲𐰤 (üçün), 𐱅𐰃𐰏𐰤 (tigin)." }},
-      {{ title: "4. Çift Sesli Tamgaların Yanına Tekrar Ünlü Yazılmaz", body: "𐰶 (ık/kı), 𐰱 (iç/çi), 𐰸 (ok/uk), 𐰜 (ök/ük) tamgaları ünlü içerdiğinden yanlarına ayrıca ünlü konulmaz: 𐱅𐰇𐰼𐰜 (Türük), 𐰉𐰀𐰞𐰶 (balık)." }},
-      {{ title: "5. Düz Ünlüden Sonra Gelen Yuvarlak Ünlü Yazılır", body: "İlk hecedeki 'a, e, ı, i' düz ünlülerinden sonra gelen 'o, u, ö, ü' yuvarlak ünlüleri gösterilir: 𐰀𐰞𐱃𐰆𐰣 (altun)." }},
-      {{ title: "6. Yuvarlak Ünlüden Sonra Gelen Düz Ünlü Yazılır", body: "İlk hecedeki 'o, u, ö, ü' yuvarlak ünlülerinden sonra gelen düz ünlüler yazılır: 𐰾𐰇𐰲𐰃𐰏 (süçig)." }},
-      {{ title: "7. Yuvarlak Ünlüden Sonra Gelen Yuvarlak Ünlü Yazılmaz", body: "İlk hecedeki yuvarlak ünlüden sonra gelen ikinci yuvarlak ünlü gösterilmez: 𐰉𐰆𐰑𐰣 (bodun), 𐰚𐰇𐰭𐰠 (köngül)." }},
-      {{ title: "8. İnce 's' (𐰾) ile 'ş' (𐱁) Nöbetleşmesi", body: "İnce ünlülerle kullanılan 𐰾 (s) tamgası bazen 𐱁 (ş) yerine, 𐱁 tamgası da 𐰾 yerine kullanılabilir: 𐰃𐰠𐱅𐰼𐰾 (İlteriş), 𐰚𐰃𐰾𐰃 (kişi)." }},
-      {{ title: "9. 𐰸 + 𐰆 Yan Yana Gelirse Uzun Ünlü (ō / ū) Bildirir", body: "'ok/uk' tamgası olan 𐰸 ile 𐰆 ünlüsü birlikte kullanılmışsa uzun ünlü okunur: 𐰸𐰆𐰯 (kōp), 𐰸𐰆𐱃 (kūt)." }},
-      {{ title: "10. İkiz Ünsüzler Tek Tamga ile Gösterilir", body: "Sözcük içindeki yan yana aynı ünsüzler tek tamga ile yazılır: 𐰉𐰀𐰞𐰴𐰀 (balıkka), 𐰖𐰆𐰞𐰍 (Yollug)." }},
-      {{ title: "11. Sözcük Ayıracı Olarak İki Nokta (:) Kullanılır", body: "Boşluk yerine her sözcük veya sözcük öbeğinden sonra ':' tamgası konulur: 𐰋𐰃𐰠𐰏𐰀 : 𐰴𐰀𐰍𐰣 : 𐰋𐰃𐱅𐰃𐰏𐰤 :" }}
+      { title: "1. Sözcük Sonu Ünlüleri Her Zaman Yazılır", body: "İlk ve orta hecede ünlüler düşebilse de sözcük sonundaki ünlü mutlaka yazılır: 𐰉𐰆𐰣𐰲𐰀 (bunça), 𐰋𐰃𐰼𐰠𐰀 (birle), 𐰓𐰏𐰇 (edgü), 𐱅𐰭𐰼𐰃 (Tengri)." },
+      { title: "2. İlk ve Orta Hecede 'a / e' Genellikle Yazılmaz", body: "Ünsüzler zaten 'a/e' sesini barındırdığı için ilk/orta hecede 𐰀 yazılmaz: 𐱅𐰭𐰼𐰃 (Tengri), 𐰴𐰀𐰍𐰣 (kağan). Yazılmışsa uzun 'ā' gösterir: 𐰀𐱃 (āt: ad)." },
+      { title: "3. Ardışık Aynı Ünlülerden Yalnızca İlki Yazılır", body: "Bir sözcüğün art arda iki hecesinde aynı ünlü varsa ikincisi yazılmaz: 𐰇𐰲𐰇𐰤 yerine 𐰇𐰲𐰤 (üçün), 𐱅𐰃𐰏𐰤 (tigin)." },
+      { title: "4. Çift Sesli Tamgaların Yanına Tekrar Ünlü Yazılmaz", body: "𐰶 (ık/kı), 𐰱 (iç/çi), 𐰸 (ok/uk), 𐰜 (ök/ük) tamgaları ünlü içerdiğinden yanlarına ayrıca ünlü konulmaz: 𐱅𐰇𐰼𐰜 (Türük), 𐰉𐰀𐰞𐰶 (balık)." },
+      { title: "5. Düz Ünlüden Sonra Gelen Yuvarlak Ünlü Yazılır", body: "İlk hecedeki 'a, e, ı, i' düz ünlülerinden sonra gelen 'o, u, ö, ü' yuvarlak ünlüleri gösterilir: 𐰀𐰞𐱃𐰆𐰣 (altun)." },
+      { title: "6. Yuvarlak Ünlüden Sonra Gelen Düz Ünlü Yazılır", body: "İlk hecedeki 'o, u, ö, ü' yuvarlak ünlülerinden sonra gelen düz ünlüler yazılır: 𐰾𐰇𐰲𐰃𐰏 (süçig)." },
+      { title: "7. Yuvarlak Ünlüden Sonra Gelen Yuvarlak Ünlü Yazılmaz", body: "İlk hecedeki yuvarlak ünlüden sonra gelen ikinci yuvarlak ünlü gösterilmez: 𐰉𐰆𐰑𐰣 (bodun), 𐰚𐰇𐰭𐰠 (köngül)." },
+      { title: "8. İnce 's' (𐰾) ile 'ş' (𐱁) Nöbetleşmesi", body: "İnce ünlülerle kullanılan 𐰾 (s) tamgası bazen 𐱁 (ş) yerine, 𐱁 tamgası da 𐰾 yerine kullanılabilir: 𐰃𐰠𐱅𐰼𐰾 (İlteriş), 𐰚𐰃𐰾𐰃 (kişi)." },
+      { title: "9. 𐰸 + 𐰆 Yan Yana Gelirse Uzun Ünlü (ō / ū) Bildirir", body: "'ok/uk' tamgası olan 𐰸 ile 𐰆 ünlüsü birlikte kullanılmışsa uzun ünlü okunur: 𐰸𐰆𐰯 (kōp), 𐰸𐰆𐱃 (kūt)." },
+      { title: "10. İkiz Ünsüzler Tek Tamga ile Gösterilir", body: "Sözcük içindeki yan yana aynı ünsüzler tek tamga ile yazılır: 𐰉𐰀𐰞𐰴𐰀 (balıkka), 𐰖𐰆𐰞𐰍 (Yollug)." },
+      { title: "11. Sözcük Ayıracı Olarak İki Nokta (:) Kullanılır", body: "Boşluk yerine her sözcük veya sözcük öbeğinden sonra ':' tamgası konulur: 𐰋𐰃𐰠𐰏𐰀 : 𐰴𐰀𐰍𐰣 : 𐰋𐰃𐱅𐰃𐰏𐰤 :" }
     ];
 
-    function renderRules() {{
+    function renderRules() {
       document.getElementById("rulesList").innerHTML = RULES.map((r) => `
         <div class="rule-item">
-          <strong>${{escapeHtml(r.title)}}</strong>
-          <div style="color:var(--text-muted);">${{escapeHtml(r.body)}}</div>
+          <strong>${escapeHtml(r.title)}</strong>
+          <div style="color:var(--text-muted);">${escapeHtml(r.body)}</div>
         </div>
       `).join("");
-    }}
+    }
 
     const ONES_GT = ["", "bir", "eki", "üç", "tört", "biş", "altı", "yiti", "sekiz", "tokuz"];
     const TENS_GT = ["", "on", "yigirmi", "otuz", "kırk", "ellig", "altmış", "yitmiş", "sekiz on", "toksan"];
 
-    function numberToGokturk(n) {{
+    function numberToGokturk(n) {
       n = Math.max(1, Math.min(9999, Math.floor(Number(n) || 1)));
       const bin = Math.floor(n / 1000);
       const yuz = Math.floor((n % 1000) / 100);
@@ -1862,288 +1860,288 @@ html_content = f"""<!DOCTYPE html>
       let upperTenForm = "";
       let artukiForm = "";
 
-      if (rem === 0) {{
+      if (rem === 0) {
         upperTenForm = prefix.join(" ");
         artukiForm = prefix.join(" ");
-      }} else if (rem < 10) {{
+      } else if (rem < 10) {
         const base = prefix.length ? [...prefix, "artukı", ONES_GT[bir]] : [ONES_GT[bir]];
         upperTenForm = base.join(" ");
         artukiForm = base.join(" ");
-      }} else if (bir === 0) {{
+      } else if (bir === 0) {
         const base = prefix.length ? [...prefix, "artukı", TENS_GT[on]] : [TENS_GT[on]];
         upperTenForm = base.join(" ");
         artukiForm = base.join(" ");
-      }} else {{
-        if (on < 9) {{
+      } else {
+        if (on < 9) {
           const uParts = [...prefix];
           if (prefix.length) uParts.push("artukı");
           uParts.push(ONES_GT[bir], TENS_GT[on + 1]);
           upperTenForm = uParts.join(" ");
-        }} else {{
+        } else {
           upperTenForm = [...prefix, "toksan artukı", ONES_GT[bir]].join(" ");
-        }}
+        }
 
         const aParts = [...prefix];
         if (prefix.length) aParts.push("artukı");
         aParts.push(TENS_GT[on], "artukı", ONES_GT[bir]);
         artukiForm = aParts.join(" ");
-      }}
+      }
 
-      return {{
+      return {
         n,
         upperTenForm,
         upperTenRunic: transliterateText(upperTenForm, true),
         artukiForm,
         artukiRunic: transliterateText(artukiForm, true)
-      }};
-    }}
+      };
+    }
 
-    function updateNumberBox(val) {{
+    function updateNumberBox(val) {
       const res = numberToGokturk(val);
       document.getElementById("numResultBox").innerHTML = `
         <div>
           <span style="font-size:0.75rem;color:var(--turquoise);font-weight:700;">1. Üst Onluk Sistemi (Klasik Orhun)</span>
-          <div style="font-size:1.05rem;font-weight:700;color:var(--text-main);margin:0.2rem 0;">${{escapeHtml(res.upperTenForm)}}</div>
-          <div class="runic" style="font-size:1.55rem;color:var(--gold-light);">${{res.upperTenRunic}}</div>
+          <div style="font-size:1.05rem;font-weight:700;color:var(--text-main);margin:0.2rem 0;">${escapeHtml(res.upperTenForm)}</div>
+          <div class="runic" style="font-size:1.55rem;color:var(--gold-light);">${res.upperTenRunic}</div>
         </div>
         <div>
           <span style="font-size:0.75rem;color:var(--gold-light);font-weight:700;">2. "Artukı" Bağlaçlı Sistem</span>
-          <div style="font-size:1.05rem;font-weight:700;color:var(--text-main);margin:0.2rem 0;">${{escapeHtml(res.artukiForm)}}</div>
-          <div class="runic" style="font-size:1.55rem;color:var(--turquoise);">${{res.artukiRunic}}</div>
+          <div style="font-size:1.05rem;font-weight:700;color:var(--text-main);margin:0.2rem 0;">${escapeHtml(res.artukiForm)}</div>
+          <div class="runic" style="font-size:1.55rem;color:var(--turquoise);">${res.artukiRunic}</div>
         </div>
       `;
-    }}
+    }
 
     document.getElementById("numberInput").addEventListener("input", (e) => updateNumberBox(e.target.value));
-    document.querySelectorAll("[data-num]").forEach((btn) => {{
-      btn.addEventListener("click", () => {{
+    document.querySelectorAll("[data-num]").forEach((btn) => {
+      btn.addEventListener("click", () => {
         document.getElementById("numberInput").value = btn.dataset.num;
         updateNumberBox(btn.dataset.num);
-      }});
-    }});
+      });
+    });
 
     /* =====================================================================
        VERİ SETİ 3: YAZIT OKUMA ATÖLYESİ (8 PASAJ — TAŞMASIZ)
        ===================================================================== */
     const INSCRIPTIONS = [
-      {{
+      {
         title: "1. Kül Tigin Yazıtı (Doğu Yüzü — Yaratılış ve İlk Kağanlar)",
         date: "MS 732 · Yollug Tigin",
         runic: "𐰇𐰔𐰀 : 𐰚𐰇𐰚 : 𐱅𐰭𐰼𐰃 : 𐰀𐰽𐰺𐰀 : 𐰖𐰀𐰍𐰔 : 𐰘𐰃𐰼 : 𐰶𐰃𐰞𐰦𐰸𐰑𐰀 : 𐰚𐰃𐰤 : 𐰀𐰺𐰀 : 𐰚𐰃𐰾𐰃 : 𐰆𐰍𐰞𐰃 : 𐰶𐰃𐰞𐰣𐰢𐱁 : 𐰚𐰃𐰾𐰃 : 𐰆𐰍𐰞𐰃𐰦𐰀 : 𐰇𐰔𐰀 : 𐰲𐰇𐰢 : 𐰀𐰯𐰀𐰢 : 𐰉𐰆𐰢𐰣 : 𐰴𐰀𐰍𐰣 : 𐰃𐰾𐱅𐰢𐰃 : 𐰴𐰀𐰍𐰣 : 𐰆𐰞𐰆𐰺𐰢𐱁",
         latin: "Üze kök Tengri asra yağız yir kılındukda ikin ara kişi oğlı kılınmış. Kişi oğlında üze eçüm apam Bumın Kağan İstemi Kağan olurmış.",
         tr: "Üstte mavi gök, altta yağız yer kılındıkta, ikisi arasında insanoğlu yaratılmış. İnsanoğlunun üzerine atalarım Bumın Kağan ve İstemi Kağan tahta oturmuş."
-      }},
-      {{
+      },
+      {
         title: "2. Kül Tigin Yazıtı (Doğu Yüzü — Ey Türk Oğuz Beyleri!)",
         date: "MS 732 · Bilge Kağan'ın Seslenişi",
         runic: "𐱅𐰇𐰼𐰜 : 𐰆𐰍𐰔 : 𐰋𐰏𐰠𐰼𐰃 : 𐰉𐰆𐰑𐰣 : 𐰾𐰃𐰓𐰭 : 𐰇𐰔𐰀 : 𐱅𐰭𐰼𐰃 : 𐰉𐰀𐰽𐰢𐰀𐰽𐰺 : 𐰀𐰽𐰺𐰀 : 𐰘𐰃𐰼 : 𐱅𐰠𐰤𐰢𐰾𐰼 : 𐱅𐰇𐰼𐰜 : 𐰉𐰆𐰑𐰣 : 𐰃𐰠𐰭𐰤 : 𐱅𐰇𐰼𐰇𐰭𐰤 : 𐰚𐰢 : 𐰀𐰺𐱃𐱃𐰃 : 𐰆𐰑𐰀𐰲𐰃 : 𐰼𐱅𐰃 : 𐱅𐰇𐰼𐰜 : 𐰉𐰆𐰑𐰣 : 𐰼𐱅𐰤 : 𐰇𐰜𐰤",
         latin: "Türük Oğuz begleri bodun eşiding! Üze Tengri basmasar, asra yir telinmeser, Türük bodun, ilingin törüngin kim artatı udaçı erti? Türük bodun ertin, ökün!",
         tr: "Türk, Oğuz beyleri ve milleti, işitin! Üstte gök çökmedikçe, altta yer delinmedikçe, Türk milleti, senin ilini ve töreni kim bozabilirdi? Türk milleti, kendine dön ve pişman ol!"
-      }},
-      {{
+      },
+      {
         title: "3. Kül Tigin Yazıtı (Kuzey Yüzü — Kardeşinin Vefatı ve Yası)",
         date: "MS 732 · Lirik Hitabet Örneği",
         runic: "𐰃𐰤𐰢 : 𐰜𐰇𐰠 : 𐱅𐰃𐰏𐰤 : 𐰚𐰼𐰏𐰚 : 𐰉𐰆𐰡𐰃 : 𐰇𐰔𐰢 : 𐰽𐰀𐰶𐰦𐰢 : 𐰚𐰇𐰼𐰼 : 𐰚𐰇𐰔𐰢 : 𐰚𐰇𐰼𐰢𐰔 : 𐱅𐰏 : 𐰋𐰃𐰠𐰼 : 𐰋𐰃𐰠𐰏𐰢 : 𐰋𐰃𐰠𐰢𐰔 : 𐱅𐰏 : 𐰉𐰆𐰡𐰃 : 𐰇𐰑 : 𐱅𐰭𐰼𐰃 : 𐰖𐰀𐰽𐰺 : 𐰚𐰃𐰾𐰃 : 𐰆𐰍𐰞𐰃 : 𐰸𐰆𐰯 : 𐰇𐰠𐰏𐰠𐰃 : 𐱅𐰇𐰼𐰃𐰢𐱁",
         latin: "İnim Kül Tigin kergek boltı, özüm sakıntım. Körür közüm körmez teg, bilir biligim bilmez teg boltı. Öd Tengri yasar, kişi oğlı kop ölgeli törimiş.",
         tr: "Kardeşim Kül Tigin vefat etti, kendim derin yasa daldım. Gören gözlerim görmez gibi, eren aklım ermez gibi oldu. Zamanı Tanrı tayin eder; insanoğlu hep ölmek için yaratılmış."
-      }},
-      {{
+      },
+      {
         title: "4. Bilge Kağan Yazıtı (Doğu Yüzü — Aç Milleti Doyurmak)",
         date: "MS 735 · Sosyal Devlet Anlayışı",
         runic: "𐱅𐰭𐰼𐰃 : 𐰖𐰀𐰺𐰞𐰃𐰴𐰑𐰸 : 𐰇𐰲𐰤 : 𐰸𐰆𐱃𐰢 : 𐰇𐰠𐰏𐰢 : 𐰉𐰀𐰺 : 𐰇𐰲𐰤 : 𐰇𐰠𐱅𐰲𐰃 : 𐰉𐰆𐰑𐰣𐰍 : 𐱅𐰃𐰼𐰏𐰼𐰇 : 𐰃𐰏𐱅𐰢 : 𐰖𐰀𐰞𐰭 : 𐰉𐰆𐰑𐰣𐰍 : 𐱃𐰆𐰣𐰞𐰍 : 𐰶𐰃𐰡𐰢 : 𐰲𐰃𐰍𐰪 : 𐰉𐰆𐰑𐰣𐰍 : 𐰉𐰀𐰖 : 𐰶𐰃𐰡𐰢 : 𐰀𐰔 : 𐰉𐰆𐰑𐰣𐰍 : 𐰇𐰜𐱁 : 𐰶𐰃𐰡𐰢",
         latin: "Tengri yarlıkaduk üçün, kutum ülügüm bar üçün, ölteçi bodunug tirgürü igittim. Yalang bodunug tonlug kıltım, çıgany bodunug bay kıltım, az bodunug üküş kıltım.",
         tr: "Tanrı buyurduğu için ve benim de talihim, kısmetim olduğu için ölmek üzere olan milleti diriltip besledim. Çıplak milleti giyimli, yoksul milleti zengin, az milleti çok kıldım."
-      }},
-      {{
+      },
+      {
         title: "5. Bilge Kağan Yazıtı (Gece Uyumadım, Gündüz Oturmadım)",
         date: "MS 735 · Devlet Adamlığı Sorumluluğu",
         runic: "𐱅𐰇𐰼𐰜 : 𐰉𐰆𐰑𐰣 : 𐰇𐰲𐰤 : 𐱅𐰇𐰤 : 𐰆𐰑𐰃𐰢𐰑𐰢 : 𐰜𐰇𐰦𐰔 : 𐰆𐰞𐰆𐰺𐰢𐰑𐰢 : 𐰃𐰤𐰢 : 𐰜𐰇𐰠 : 𐱅𐰃𐰏𐰤 : 𐰋𐰃𐰼𐰠𐰀 : 𐰇𐰠𐰇 : 𐰘𐰃𐱅𐰇 : 𐰴𐰀𐰔𐰍𐰦𐰢 : 𐰀𐰣𐰲𐰀 : 𐰴𐰀𐰔𐰍𐰣𐰯 : 𐰋𐰃𐰼𐰚𐰃 : 𐰉𐰆𐰑𐰣𐰍 : 𐰆𐱃 : 𐰽𐰆𐰉 : 𐰶𐰃𐰞𐰢𐰑𐰢",
         latin: "Türük bodun üçün tün udımadım, küntüz olurmadım. İnim Kül Tigin birle ölü yitü kazgantım. Ança kazganıp biriki bodunug ot sub kılmadım.",
         tr: "Türk milleti için gece uyumadım, gündüz oturmadım. Kardeşim Kül Tigin ile birlikte ölesiye yitesiye çalışıp kazandım. Böyle kazanıp birleşik milleti ateş ile su gibi birbirine düşman etmedim."
-      }},
-      {{
+      },
+      {
         title: "6. Bilge Kağan Yazıtı (Kül Tigin'in Vefat Tarihi ve Yas Töreni)",
         date: "MS 735 · Göktürk Sayı Sistemine Örnek",
         runic: "𐰜𐰇𐰠 : 𐱅𐰃𐰏𐰤 : 𐰴𐰆𐰪 : 𐰖𐰃𐰞𐰴𐰀 : 𐰘𐰃𐱅𐰃 : 𐰘𐰃𐰏𐰼𐰢𐰃𐰚𐰀 : 𐰆𐰲𐰑𐰃 : 𐱃𐰆𐰸𐰆𐰔𐰨 : 𐰀𐰖 : 𐰘𐰃𐱅𐰃 : 𐰆𐱃𐰔𐰴𐰀 : 𐰖𐰆𐰍 : 𐰼𐱅𐰼𐱅𐰢𐰔 : 𐰉𐰀𐰺𐰶𐰣 : 𐰋𐰓𐰔𐰤 : 𐰋𐰃𐱅𐰏 : 𐱃𐰀𐱁𐰣 : 𐰉𐰃𐰲𐰤 : 𐰖𐰃𐰞𐰴𐰀 : 𐰘𐰃𐱅𐰨 : 𐰀𐰖 : 𐰘𐰃𐱅𐰃 : 𐰆𐱃𐰔𐰴𐰀 : 𐰸𐰆𐰯 : 𐰀𐰞𐰶𐰑𐰢𐰔",
         latin: "Kül Tigin kony yılka yiti yigirmike uçdı. Tokuzunç ay yiti otuzka yog ertürtimiz; barkın bedizin bitig taşın biçin yılka yitinç ay yiti otuzka kop alkdımız.",
         tr: "Kül Tigin koyun yılının on yedinci gününde vefat etti. Dokuzuncu ayın yirmi yedisinde yas töreni düzenledik; türbesini, resimlerini ve yazıt taşını maymun yılının yedinci ayının yirmi yedisinde tamamen bitirdik."
-      }},
-      {{
+      },
+      {
         title: "7. Tonyukuk Yazıtı (I. Taş — Bilge Tonyukuk'un Kendini Tanıtması)",
         date: "MS 716–734 · Hatıra Türünün İlk Örneği",
         runic: "𐰋𐰃𐰠𐰏𐰀 : 𐱃𐰆𐰪𐰸𐰸 : 𐰋𐰤 : 𐰇𐰔𐰢 : 𐱃𐰀𐰉𐰍𐰲 : 𐰃𐰠𐰭𐰀 : 𐰶𐰃𐰞𐰦𐰢 : 𐱅𐰇𐰼𐰜 : 𐰉𐰆𐰑𐰣 : 𐱃𐰀𐰉𐰍𐰲𐰴𐰀 : 𐰚𐰇𐰼𐰼 : 𐰼𐱅𐰃",
         latin: "Bilge Tonyukuk ben özüm Tabgaç ilinge kılıntım. Türük bodun Tabgaçka körür erti.",
         tr: "Ben Bilge Tonyukuk'um; Çin ülkesinde doğdum. Ben doğduğumda Türk milleti Çin egemenliği altında idi."
-      }},
-      {{
+      },
+      {
         title: "8. Tonyukuk Yazıtı (II. Taş — İlteriş Kağan ve Tonyukuk'un Emeği)",
         date: "MS 716–734 · Devlet ve Milletin Yeniden Doğuşu",
         runic: "𐰃𐰠𐱅𐰼𐰾 : 𐰴𐰀𐰍𐰣 : 𐰴𐰀𐰔𐰍𐰣𐰢𐰽𐰺 : 𐰆𐰑𐰆 : 𐰋𐰤 : 𐰇𐰔𐰢 : 𐰴𐰀𐰔𐰍𐰣𐰢𐰽𐰺 : 𐰃𐰠 : 𐰘𐰢𐰀 : 𐰉𐰆𐰑𐰣 : 𐰘𐰢𐰀 : 𐰖𐰸 : 𐰼𐱅𐰲𐰃 : 𐰼𐱅𐰃 : 𐰴𐰀𐰔𐰍𐰦𐰸𐰣 : 𐰇𐰲𐰤 : 𐰃𐰠 : 𐰘𐰢𐰀 : 𐰃𐰠 : 𐰉𐰆𐰡𐰃 : 𐰉𐰆𐰑𐰣 : 𐰘𐰢𐰀 : 𐰉𐰆𐰑𐰣 : 𐰉𐰆𐰡𐰃",
         latin: "İlteriş Kağan kazganmasar, udu ben özüm kazganmasar, il yeme bodun yeme yok erteçi erti. Kazgantukın üçün il yeme il boltı, bodun yeme bodun boltı.",
         tr: "İlteriş Kağan kazanmasaydı ve ardından ben kendim kazanmasaydım, devlet de millet de yok olacaktı. Kazandığı için devlet yeniden devlet oldu, millet yeniden millet oldu."
-      }}
+      }
     ];
 
     let showLatinLayer = true;
     let showTrLayer = true;
     let runicScale = 1.0;
 
-    function formatRunicWithBreaks(runicStr) {{
+    function formatRunicWithBreaks(runicStr) {
       return escapeHtml(runicStr).replace(/:/g, ":<wbr>");
-    }}
+    }
 
-    function renderInscriptions() {{
+    function renderInscriptions() {
       const container = document.getElementById("inscriptionsContainer");
       container.innerHTML = INSCRIPTIONS.map((ins) => `
         <article class="inscription-card">
           <div class="inscription-meta">
-            <strong style="color:var(--gold-light);font-size:0.96rem;">${{escapeHtml(ins.title)}}</strong>
-            <span class="inscription-badge">${{escapeHtml(ins.date)}}</span>
+            <strong style="color:var(--gold-light);font-size:0.96rem;">${escapeHtml(ins.title)}</strong>
+            <span class="inscription-badge">${escapeHtml(ins.date)}</span>
           </div>
-          <div class="inscription-runic">${{formatRunicWithBreaks(ins.runic)}}</div>
-          <div class="inscription-latin ${{showLatinLayer ? "" : "hidden-layer"}}">
+          <div class="inscription-runic">${formatRunicWithBreaks(ins.runic)}</div>
+          <div class="inscription-latin ${showLatinLayer ? "" : "hidden-layer"}">
             <strong style="color:var(--turquoise);font-size:0.78rem;display:block;margin-bottom:0.15rem;">Latin Transkripsiyon:</strong>
-            ${{escapeHtml(ins.latin)}}
+            ${escapeHtml(ins.latin)}
           </div>
-          <div class="inscription-tr ${{showTrLayer ? "" : "hidden-layer"}}">
+          <div class="inscription-tr ${showTrLayer ? "" : "hidden-layer"}">
             <strong style="color:var(--gold-light);font-size:0.78rem;display:block;margin-bottom:0.15rem;">Günümüz Türkçesi:</strong>
-            ${{escapeHtml(ins.tr)}}
+            ${escapeHtml(ins.tr)}
           </div>
         </article>
       `).join("");
-    }}
+    }
 
-    document.getElementById("fontIncBtn").addEventListener("click", () => {{
+    document.getElementById("fontIncBtn").addEventListener("click", () => {
       runicScale = Math.min(1.45, +(runicScale + 0.1).toFixed(2));
       document.documentElement.style.setProperty("--runic-scale", runicScale);
       document.getElementById("fontScaleLabel").textContent = "%" + Math.round(runicScale * 100);
-    }});
+    });
 
-    document.getElementById("fontDecBtn").addEventListener("click", () => {{
+    document.getElementById("fontDecBtn").addEventListener("click", () => {
       runicScale = Math.max(0.75, +(runicScale - 0.1).toFixed(2));
       document.documentElement.style.setProperty("--runic-scale", runicScale);
       document.getElementById("fontScaleLabel").textContent = "%" + Math.round(runicScale * 100);
-    }});
+    });
 
-    document.getElementById("toggleLatinBtn").addEventListener("click", (e) => {{
+    document.getElementById("toggleLatinBtn").addEventListener("click", (e) => {
       showLatinLayer = !showLatinLayer;
       e.target.textContent = showLatinLayer ? "👁 Latin Okunuş: Açık" : "🙈 Latin Okunuş: Gizli";
       renderInscriptions();
-    }});
+    });
 
-    document.getElementById("toggleTrBtn").addEventListener("click", (e) => {{
+    document.getElementById("toggleTrBtn").addEventListener("click", (e) => {
       showTrLayer = !showTrLayer;
       e.target.textContent = showTrLayer ? "👁 Günümüz Türkçesi: Açık" : "🙈 Günümüz Türkçesi: Gizli";
       renderInscriptions();
-    }});
+    });
 
     /* =====================================================================
        VERİ SETİ 4: SÖZLÜK (~95 SÖZCÜK)
        ===================================================================== */
     const DICTIONARY = [
-      {{ latin: "alk-", runic: "𐰀𐰞𐰶", meaning: "bitirmek, tamamlamak, tüketmek" }},
-      {{ latin: "altun", runic: "𐰀𐰞𐱃𐰆𐰣", meaning: "altın" }},
-      {{ latin: "ança", runic: "𐰀𐰣𐰲𐰀", meaning: "öyle, öylece, o kadar, çok" }},
-      {{ latin: "ançula-", runic: "𐰀𐰣𐰲𐰆𐰞𐰀", meaning: "takdim etmek, arz etmek, sunmak" }},
-      {{ latin: "apa", runic: "𐰀𐰯𐰀", meaning: "ecdat, ata, büyük baba" }},
-      {{ latin: "artuk", runic: "𐰀𐰺𐱃𐰸", meaning: "fazla, ziyade, artık" }},
-      {{ latin: "aşsız", runic: "𐰀𐱁𐰽𐰔", meaning: "yemeksiz, aç" }},
-      {{ latin: "balık", runic: "𐰉𐰀𐰞𐰶", meaning: "şehir, kale; çamur, balçık" }},
-      {{ latin: "bark", runic: "𐰉𐰀𐰺𐰶", meaning: "ev, mabet, türbe, anıt mezar" }},
-      {{ latin: "bay", runic: "𐰉𐰀𐰖", meaning: "zengin, varlıklı" }},
-      {{ latin: "baz", runic: "𐰉𐰀𐰔", meaning: "tâbi, barışık, boyun eğmiş" }},
-      {{ latin: "bediz", runic: "𐰋𐰓𐰔", meaning: "resim, heykel, nakış, süs" }},
-      {{ latin: "bedizçi", runic: "𐰋𐰓𐰔𐰲𐰃", meaning: "ressam, nakkaş, heykeltıraş" }},
-      {{ latin: "bengü", runic: "𐰋𐰭𐰇", meaning: "ebedî, daimî, ölümsüz, sonsuz" }},
-      {{ latin: "bilig", runic: "𐰋𐰃𐰠𐰏", meaning: "bilgi, akıl, fikir, bilgelik" }},
-      {{ latin: "birle", runic: "𐰋𐰃𐰼𐰠𐰀", meaning: "ile, birlikte" }},
-      {{ latin: "biti-", runic: "𐰋𐰃𐱅𐰃", meaning: "yazmak, kazımak" }},
-      {{ latin: "bitig", runic: "𐰋𐰃𐱅𐰏", meaning: "yazı, kitabe, kitap, mektup" }},
-      {{ latin: "bodun", runic: "𐰉𐰆𐰑𐰣", meaning: "millet, ulus, halk, boylar birliği" }},
-      {{ latin: "bulung", runic: "𐰉𐰆𐰞𐰭", meaning: "taraf, yön, köşe, bucak" }},
-      {{ latin: "bunça", runic: "𐰉𐰆𐰣𐰲𐰀", meaning: "bunca, bu kadar, böyle" }},
-      {{ latin: "bung", runic: "𐰉𐰆𐰭", meaning: "keder, sıkıntı, dert, zahmet" }},
-      {{ latin: "çıgany", runic: "𐰲𐰃𐰍𐰪", meaning: "yoksul, fakir" }},
-      {{ latin: "eçi", runic: "𐰲𐰃", meaning: "amca, ağabey" }},
-      {{ latin: "edgü", runic: "𐰓𐰏𐰇", meaning: "iyi, güzel, hayırlı" }},
-      {{ latin: "erinç", runic: "𐰼𐰨", meaning: "olacak, olmalı, şüphesiz, elbette" }},
-      {{ latin: "ertür-", runic: "𐰼𐱅𐰼", meaning: "erdirmek, yaptırmak, geçirmek" }},
-      {{ latin: "ıduk", runic: "𐰃𐰑𐰸", meaning: "mukaddes, kutsal, mübarek" }},
-      {{ latin: "ıgar", runic: "𐰃𐰍𐰺", meaning: "ağır, değerli, güçlü, önemli" }},
-      {{ latin: "ırak", runic: "𐰃𐰺𐰴", meaning: "uzak" }},
-      {{ latin: "igit-", runic: "𐰃𐰏𐱅", meaning: "beslemek, doyurmak, yetiştirmek" }},
-      {{ latin: "illig", runic: "𐰃𐰠𐰏", meaning: "devletli, ülkeli, bağımsız" }},
-      {{ latin: "ilsire-", runic: "𐰃𐰠𐰾𐰼𐰀", meaning: "devletsizleşmek, ülkesini kaybetmek" }},
-      {{ latin: "ini", runic: "𐰃𐰤𐰃", meaning: "küçük erkek kardeş" }},
-      {{ latin: "kagan", runic: "𐰴𐰀𐰍𐰣", meaning: "hakan, hükümdar, kağan" }},
-      {{ latin: "kaganlıg", runic: "𐰴𐰀𐰍𐰣𐰞𐰍", meaning: "kağanı olan, bağımsız" }},
-      {{ latin: "kang", runic: "𐰴𐰀𐰭", meaning: "baba, peder" }},
-      {{ latin: "kapıg", runic: "𐰴𐰀𐰯𐰍", meaning: "kapı, geçit" }},
-      {{ latin: "kazgan-", runic: "𐰴𐰀𐰔𐰍𐰣", meaning: "kazanmak, fethetmek, elde etmek" }},
-      {{ latin: "kedimlig", runic: "𐰚𐰓𐰢𐰠𐰏", meaning: "giyimli, zırhlı, donanımlı" }},
-      {{ latin: "kelür-", runic: "𐰚𐰠𐰼", meaning: "getirmek" }},
-      {{ latin: "kergek bol-", runic: "𐰚𐰼𐰏𐰚 : 𐰉𐰆𐰞", meaning: "vefat etmek, ölmek (gerek olmak)" }},
-      {{ latin: "kılın-", runic: "𐰶𐰃𐰞𐰣", meaning: "yaratılmak, yapılmak, meydana gelmek" }},
-      {{ latin: "Kırkız", runic: "𐰴𐰃𐰺𐰶𐰔", meaning: "Kırgız Türkleri" }},
-      {{ latin: "kisre", runic: "𐰚𐰃𐰾𐰼𐰀", meaning: "sonra, ondan sonra" }},
-      {{ latin: "kony", runic: "𐰴𐰆𐰪", meaning: "koyun" }},
-      {{ latin: "kop", runic: "𐰸𐰆𐰯", meaning: "çok, hep, bütün, tamamen" }},
-      {{ latin: "kögmen", runic: "𐰜𐰇𐰏𐰢𐰤", meaning: "Kögmen Dağı ve ormanı (Sayan Dağları)" }},
-      {{ latin: "köngül", runic: "𐰚𐰇𐰭𐰠", meaning: "gönül, kalp, yürek, düşünce" }},
-      {{ latin: "kurıgaru", runic: "𐰸𐰆𐰺𐰍𐰺𐰆", meaning: "batıya doğru, batıda" }},
-      {{ latin: "kut", runic: "𐰸𐰆𐱃", meaning: "devlet, saadet, talih, ilahî lütuf" }},
-      {{ latin: "kutay", runic: "𐰸𐰆𐱃𐰀𐰖", meaning: "ipek, ipekli kumaş" }},
-      {{ latin: "kü", runic: "𐰜𐰇", meaning: "ses, ün, şan, şöhret" }},
-      {{ latin: "küntüz", runic: "𐰜𐰇𐰦𐰔", meaning: "gündüz" }},
-      {{ latin: "men", runic: "𐰢𐰤", meaning: "ben" }},
-      {{ latin: "neng", runic: "𐰤𐰭", meaning: "nesne, şey, mal; hiç, asla" }},
-      {{ latin: "olur-", runic: "𐰆𐰞𐰆𐰺", meaning: "oturmak, tahta çıkmak, kağan olmak" }},
-      {{ latin: "ot", runic: "𐰆𐱃", meaning: "ateş" }},
-      {{ latin: "ög", runic: "𐰇𐰏", meaning: "anne; akıl, düşünce" }},
-      {{ latin: "ögüz", runic: "𐰇𐰏𐰔", meaning: "ırmak, nehir" }},
-      {{ latin: "ökün-", runic: "𐰇𐰜𐰤", meaning: "pişman olmak, kendine gelmek" }},
-      {{ latin: "ötün-", runic: "𐰇𐱅𐰤", meaning: "arz etmek, sunmak, rica etmek" }},
-      {{ latin: "sakın-", runic: "𐰽𐰀𐰶𐰣", meaning: "düşünmek, endişelenmek, yas tutmak" }},
-      {{ latin: "sıgıt", runic: "𐰽𐰃𐰍𐱃", meaning: "ağlama, feryat, matem" }},
-      {{ latin: "sökür-", runic: "𐰾𐰇𐰜𐰼", meaning: "diz çöktürmek, dize getirmek" }},
-      {{ latin: "sub", runic: "𐰽𐰆𐰉", meaning: "su, nehir" }},
-      {{ latin: "süçig", runic: "𐰾𐰇𐰲𐰃𐰏", meaning: "tatlı, lezzetli" }},
-      {{ latin: "süle-", runic: "𐰾𐰇𐰠𐰀", meaning: "ordu sevk etmek, akın düzenlemek" }},
-      {{ latin: "süngük", runic: "𐰾𐰇𐰭𐰜", meaning: "kemik" }},
-      {{ latin: "süngüş-", runic: "𐰾𐰇𐰭𐱁", meaning: "mızraklaşmak, çarpışmak, savaşmak" }},
-      {{ latin: "şad", runic: "𐱁𐰀𐰑", meaning: "hanedan üyesi yüksek komutan / vali" }},
-      {{ latin: "Tabgaç", runic: "𐱃𐰀𐰉𐰍𐰲", meaning: "Çin, Çinli" }},
-      {{ latin: "teg", runic: "𐱅𐰏", meaning: "gibi" }},
-      {{ latin: "Tengri", runic: "𐱅𐰭𐰼𐰃", meaning: "Gök, Tanrı, İlah" }},
-      {{ latin: "tigin", runic: "𐱅𐰃𐰏𐰤", meaning: "kağanın oğlu, şehzade, prens" }},
-      {{ latin: "tirgür-", runic: "𐱅𐰃𐰼𐰏𐰼", meaning: "diriltmek, yaşatmak, canlandırmak" }},
-      {{ latin: "tiyin", runic: "𐱅𐰃𐰘𐰤", meaning: "diye, diyerek" }},
-      {{ latin: "tiz", runic: "𐱅𐰃𐰔", meaning: "diz" }},
-      {{ latin: "tokı-", runic: "𐱃𐰆𐰶𐰃", meaning: "vurmak, dövmek, yontmak, dokumak" }},
-      {{ latin: "tonsuz", runic: "𐱃𐰆𐰣𐰽𐰔", meaning: "elbisesiz, çıplak" }},
-      {{ latin: "torug", runic: "𐱃𐰆𐰺𐰍", meaning: "doru (at rengi)" }},
-      {{ latin: "törü", runic: "𐱅𐰇𐰼𐰇", meaning: "töre, kanun, devlet nizamı, gelenek" }},
-      {{ latin: "tün", runic: "𐱅𐰇𐰤", meaning: "gece" }},
-      {{ latin: "uça bar-", runic: "𐰆𐰲𐰀 : 𐰉𐰀𐰺", meaning: "uçup gitmek, vefat etmek" }},
-      {{ latin: "udı-", runic: "𐰆𐰑𐰃", meaning: "uyumak" }},
-      {{ latin: "Umay", runic: "𐰆𐰢𐰀𐰖", meaning: "çocukları ve kadınları koruyan kutsal varlık" }},
-      {{ latin: "üçün", runic: "𐰇𐰲𐰤", meaning: "için, dolayı, yüzünden" }},
-      {{ latin: "üküş", runic: "𐰇𐰜𐱁", meaning: "çok, fazla, kalabalık" }},
-      {{ latin: "ülüg", runic: "𐰇𐰠𐰏", meaning: "kısmet, pay, nasip, baht" }},
-      {{ latin: "yabız", runic: "𐰖𐰀𐰉𐰔", meaning: "kötü, fena, perişan" }},
-      {{ latin: "yablak", runic: "𐰖𐰀𐰉𐰞𐰴", meaning: "kötü, berbat, sefil" }},
-      {{ latin: "yadag", runic: "𐰖𐰀𐰑𐰍", meaning: "yaya" }},
-      {{ latin: "yagı", runic: "𐰖𐰀𐰍𐰃", meaning: "düşman" }},
-      {{ latin: "yarlıka-", runic: "𐰖𐰀𐰺𐰞𐰃𐰴𐰀", meaning: "buyurmak, lütfetmek, bağışlamak" }},
-      {{ latin: "yaşıl", runic: "𐰖𐰀𐱁𐰞", meaning: "yeşil" }},
-      {{ latin: "yeltür-", runic: "𐰘𐰠𐱅𐰼", meaning: "koşturmak, dört nala sürmek" }},
-      {{ latin: "yış", runic: "𐰖𐰃𐱁", meaning: "orman, ağaçlıklı dağ" }},
-      {{ latin: "yig", runic: "𐰘𐰃𐰏", meaning: "iyi, üstün, daha iyi" }},
-      {{ latin: "yog", runic: "𐰖𐰆𐰍", meaning: "matem, yas, cenaze töreni" }},
-      {{ latin: "yügürt-", runic: "𐰘𐰇𐰏𐰼𐱅", meaning: "koşturmak, akıtmak" }}
+      { latin: "alk-", runic: "𐰀𐰞𐰶", meaning: "bitirmek, tamamlamak, tüketmek" },
+      { latin: "altun", runic: "𐰀𐰞𐱃𐰆𐰣", meaning: "altın" },
+      { latin: "ança", runic: "𐰀𐰣𐰲𐰀", meaning: "öyle, öylece, o kadar, çok" },
+      { latin: "ançula-", runic: "𐰀𐰣𐰲𐰆𐰞𐰀", meaning: "takdim etmek, arz etmek, sunmak" },
+      { latin: "apa", runic: "𐰀𐰯𐰀", meaning: "ecdat, ata, büyük baba" },
+      { latin: "artuk", runic: "𐰀𐰺𐱃𐰸", meaning: "fazla, ziyade, artık" },
+      { latin: "aşsız", runic: "𐰀𐱁𐰽𐰔", meaning: "yemeksiz, aç" },
+      { latin: "balık", runic: "𐰉𐰀𐰞𐰶", meaning: "şehir, kale; çamur, balçık" },
+      { latin: "bark", runic: "𐰉𐰀𐰺𐰶", meaning: "ev, mabet, türbe, anıt mezar" },
+      { latin: "bay", runic: "𐰉𐰀𐰖", meaning: "zengin, varlıklı" },
+      { latin: "baz", runic: "𐰉𐰀𐰔", meaning: "tâbi, barışık, boyun eğmiş" },
+      { latin: "bediz", runic: "𐰋𐰓𐰔", meaning: "resim, heykel, nakış, süs" },
+      { latin: "bedizçi", runic: "𐰋𐰓𐰔𐰲𐰃", meaning: "ressam, nakkaş, heykeltıraş" },
+      { latin: "bengü", runic: "𐰋𐰭𐰇", meaning: "ebedî, daimî, ölümsüz, sonsuz" },
+      { latin: "bilig", runic: "𐰋𐰃𐰠𐰏", meaning: "bilgi, akıl, fikir, bilgelik" },
+      { latin: "birle", runic: "𐰋𐰃𐰼𐰠𐰀", meaning: "ile, birlikte" },
+      { latin: "biti-", runic: "𐰋𐰃𐱅𐰃", meaning: "yazmak, kazımak" },
+      { latin: "bitig", runic: "𐰋𐰃𐱅𐰏", meaning: "yazı, kitabe, kitap, mektup" },
+      { latin: "bodun", runic: "𐰉𐰆𐰑𐰣", meaning: "millet, ulus, halk, boylar birliği" },
+      { latin: "bulung", runic: "𐰉𐰆𐰞𐰭", meaning: "taraf, yön, köşe, bucak" },
+      { latin: "bunça", runic: "𐰉𐰆𐰣𐰲𐰀", meaning: "bunca, bu kadar, böyle" },
+      { latin: "bung", runic: "𐰉𐰆𐰭", meaning: "keder, sıkıntı, dert, zahmet" },
+      { latin: "çıgany", runic: "𐰲𐰃𐰍𐰪", meaning: "yoksul, fakir" },
+      { latin: "eçi", runic: "𐰲𐰃", meaning: "amca, ağabey" },
+      { latin: "edgü", runic: "𐰓𐰏𐰇", meaning: "iyi, güzel, hayırlı" },
+      { latin: "erinç", runic: "𐰼𐰨", meaning: "olacak, olmalı, şüphesiz, elbette" },
+      { latin: "ertür-", runic: "𐰼𐱅𐰼", meaning: "erdirmek, yaptırmak, geçirmek" },
+      { latin: "ıduk", runic: "𐰃𐰑𐰸", meaning: "mukaddes, kutsal, mübarek" },
+      { latin: "ıgar", runic: "𐰃𐰍𐰺", meaning: "ağır, değerli, güçlü, önemli" },
+      { latin: "ırak", runic: "𐰃𐰺𐰴", meaning: "uzak" },
+      { latin: "igit-", runic: "𐰃𐰏𐱅", meaning: "beslemek, doyurmak, yetiştirmek" },
+      { latin: "illig", runic: "𐰃𐰠𐰏", meaning: "devletli, ülkeli, bağımsız" },
+      { latin: "ilsire-", runic: "𐰃𐰠𐰾𐰼𐰀", meaning: "devletsizleşmek, ülkesini kaybetmek" },
+      { latin: "ini", runic: "𐰃𐰤𐰃", meaning: "küçük erkek kardeş" },
+      { latin: "kagan", runic: "𐰴𐰀𐰍𐰣", meaning: "hakan, hükümdar, kağan" },
+      { latin: "kaganlıg", runic: "𐰴𐰀𐰍𐰣𐰞𐰍", meaning: "kağanı olan, bağımsız" },
+      { latin: "kang", runic: "𐰴𐰀𐰭", meaning: "baba, peder" },
+      { latin: "kapıg", runic: "𐰴𐰀𐰯𐰍", meaning: "kapı, geçit" },
+      { latin: "kazgan-", runic: "𐰴𐰀𐰔𐰍𐰣", meaning: "kazanmak, fethetmek, elde etmek" },
+      { latin: "kedimlig", runic: "𐰚𐰓𐰢𐰠𐰏", meaning: "giyimli, zırhlı, donanımlı" },
+      { latin: "kelür-", runic: "𐰚𐰠𐰼", meaning: "getirmek" },
+      { latin: "kergek bol-", runic: "𐰚𐰼𐰏𐰚 : 𐰉𐰆𐰞", meaning: "vefat etmek, ölmek (gerek olmak)" },
+      { latin: "kılın-", runic: "𐰶𐰃𐰞𐰣", meaning: "yaratılmak, yapılmak, meydana gelmek" },
+      { latin: "Kırkız", runic: "𐰴𐰃𐰺𐰶𐰔", meaning: "Kırgız Türkleri" },
+      { latin: "kisre", runic: "𐰚𐰃𐰾𐰼𐰀", meaning: "sonra, ondan sonra" },
+      { latin: "kony", runic: "𐰴𐰆𐰪", meaning: "koyun" },
+      { latin: "kop", runic: "𐰸𐰆𐰯", meaning: "çok, hep, bütün, tamamen" },
+      { latin: "kögmen", runic: "𐰜𐰇𐰏𐰢𐰤", meaning: "Kögmen Dağı ve ormanı (Sayan Dağları)" },
+      { latin: "köngül", runic: "𐰚𐰇𐰭𐰠", meaning: "gönül, kalp, yürek, düşünce" },
+      { latin: "kurıgaru", runic: "𐰸𐰆𐰺𐰍𐰺𐰆", meaning: "batıya doğru, batıda" },
+      { latin: "kut", runic: "𐰸𐰆𐱃", meaning: "devlet, saadet, talih, ilahî lütuf" },
+      { latin: "kutay", runic: "𐰸𐰆𐱃𐰀𐰖", meaning: "ipek, ipekli kumaş" },
+      { latin: "kü", runic: "𐰜𐰇", meaning: "ses, ün, şan, şöhret" },
+      { latin: "küntüz", runic: "𐰜𐰇𐰦𐰔", meaning: "gündüz" },
+      { latin: "men", runic: "𐰢𐰤", meaning: "ben" },
+      { latin: "neng", runic: "𐰤𐰭", meaning: "nesne, şey, mal; hiç, asla" },
+      { latin: "olur-", runic: "𐰆𐰞𐰆𐰺", meaning: "oturmak, tahta çıkmak, kağan olmak" },
+      { latin: "ot", runic: "𐰆𐱃", meaning: "ateş" },
+      { latin: "ög", runic: "𐰇𐰏", meaning: "anne; akıl, düşünce" },
+      { latin: "ögüz", runic: "𐰇𐰏𐰔", meaning: "ırmak, nehir" },
+      { latin: "ökün-", runic: "𐰇𐰜𐰤", meaning: "pişman olmak, kendine gelmek" },
+      { latin: "ötün-", runic: "𐰇𐱅𐰤", meaning: "arz etmek, sunmak, rica etmek" },
+      { latin: "sakın-", runic: "𐰽𐰀𐰶𐰣", meaning: "düşünmek, endişelenmek, yas tutmak" },
+      { latin: "sıgıt", runic: "𐰽𐰃𐰍𐱃", meaning: "ağlama, feryat, matem" },
+      { latin: "sökür-", runic: "𐰾𐰇𐰜𐰼", meaning: "diz çöktürmek, dize getirmek" },
+      { latin: "sub", runic: "𐰽𐰆𐰉", meaning: "su, nehir" },
+      { latin: "süçig", runic: "𐰾𐰇𐰲𐰃𐰏", meaning: "tatlı, lezzetli" },
+      { latin: "süle-", runic: "𐰾𐰇𐰠𐰀", meaning: "ordu sevk etmek, akın düzenlemek" },
+      { latin: "süngük", runic: "𐰾𐰇𐰭𐰜", meaning: "kemik" },
+      { latin: "süngüş-", runic: "𐰾𐰇𐰭𐱁", meaning: "mızraklaşmak, çarpışmak, savaşmak" },
+      { latin: "şad", runic: "𐱁𐰀𐰑", meaning: "hanedan üyesi yüksek komutan / vali" },
+      { latin: "Tabgaç", runic: "𐱃𐰀𐰉𐰍𐰲", meaning: "Çin, Çinli" },
+      { latin: "teg", runic: "𐱅𐰏", meaning: "gibi" },
+      { latin: "Tengri", runic: "𐱅𐰭𐰼𐰃", meaning: "Gök, Tanrı, İlah" },
+      { latin: "tigin", runic: "𐱅𐰃𐰏𐰤", meaning: "kağanın oğlu, şehzade, prens" },
+      { latin: "tirgür-", runic: "𐱅𐰃𐰼𐰏𐰼", meaning: "diriltmek, yaşatmak, canlandırmak" },
+      { latin: "tiyin", runic: "𐱅𐰃𐰘𐰤", meaning: "diye, diyerek" },
+      { latin: "tiz", runic: "𐱅𐰃𐰔", meaning: "diz" },
+      { latin: "tokı-", runic: "𐱃𐰆𐰶𐰃", meaning: "vurmak, dövmek, yontmak, dokumak" },
+      { latin: "tonsuz", runic: "𐱃𐰆𐰣𐰽𐰔", meaning: "elbisesiz, çıplak" },
+      { latin: "torug", runic: "𐱃𐰆𐰺𐰍", meaning: "doru (at rengi)" },
+      { latin: "törü", runic: "𐱅𐰇𐰼𐰇", meaning: "töre, kanun, devlet nizamı, gelenek" },
+      { latin: "tün", runic: "𐱅𐰇𐰤", meaning: "gece" },
+      { latin: "uça bar-", runic: "𐰆𐰲𐰀 : 𐰉𐰀𐰺", meaning: "uçup gitmek, vefat etmek" },
+      { latin: "udı-", runic: "𐰆𐰑𐰃", meaning: "uyumak" },
+      { latin: "Umay", runic: "𐰆𐰢𐰀𐰖", meaning: "çocukları ve kadınları koruyan kutsal varlık" },
+      { latin: "üçün", runic: "𐰇𐰲𐰤", meaning: "için, dolayı, yüzünden" },
+      { latin: "üküş", runic: "𐰇𐰜𐱁", meaning: "çok, fazla, kalabalık" },
+      { latin: "ülüg", runic: "𐰇𐰠𐰏", meaning: "kısmet, pay, nasip, baht" },
+      { latin: "yabız", runic: "𐰖𐰀𐰉𐰔", meaning: "kötü, fena, perişan" },
+      { latin: "yablak", runic: "𐰖𐰀𐰉𐰞𐰴", meaning: "kötü, berbat, sefil" },
+      { latin: "yadag", runic: "𐰖𐰀𐰑𐰍", meaning: "yaya" },
+      { latin: "yagı", runic: "𐰖𐰀𐰍𐰃", meaning: "düşman" },
+      { latin: "yarlıka-", runic: "𐰖𐰀𐰺𐰞𐰃𐰴𐰀", meaning: "buyurmak, lütfetmek, bağışlamak" },
+      { latin: "yaşıl", runic: "𐰖𐰀𐱁𐰞", meaning: "yeşil" },
+      { latin: "yeltür-", runic: "𐰘𐰠𐱅𐰼", meaning: "koşturmak, dört nala sürmek" },
+      { latin: "yış", runic: "𐰖𐰃𐱁", meaning: "orman, ağaçlıklı dağ" },
+      { latin: "yig", runic: "𐰘𐰃𐰏", meaning: "iyi, üstün, daha iyi" },
+      { latin: "yog", runic: "𐰖𐰆𐰍", meaning: "matem, yas, cenaze töreni" },
+      { latin: "yügürt-", runic: "𐰘𐰇𐰏𐰼𐱅", meaning: "koşturmak, akıtmak" }
     ];
 
-    function renderDictionary(query = "") {{
+    function renderDictionary(query = "") {
       const q = query.trim().toLocaleLowerCase("tr-TR");
       const filtered = q
         ? DICTIONARY.filter((d) =>
@@ -2153,17 +2151,17 @@ html_content = f"""<!DOCTYPE html>
           )
         : DICTIONARY;
 
-      document.getElementById("dictCountBadge").textContent = `${{filtered.length}} Sözcük`;
+      document.getElementById("dictCountBadge").textContent = `${filtered.length} Sözcük`;
       document.getElementById("dictGrid").innerHTML = filtered.map((d) => `
         <div class="dict-item">
           <div class="dict-top">
-            <span class="dict-latin">${{escapeHtml(d.latin)}}</span>
-            <span class="dict-runic">${{d.runic}}</span>
+            <span class="dict-latin">${escapeHtml(d.latin)}</span>
+            <span class="dict-runic">${d.runic}</span>
           </div>
-          <div class="dict-meaning">${{escapeHtml(d.meaning)}}</div>
+          <div class="dict-meaning">${escapeHtml(d.meaning)}</div>
         </div>
       `).join("");
-    }}
+    }
 
     document.getElementById("dictSearchInput").addEventListener("input", (e) => renderDictionary(e.target.value));
 
@@ -2175,84 +2173,84 @@ html_content = f"""<!DOCTYPE html>
     let quizStreak = 0;
     let currentQuestion = null;
 
-    function shuffle(arr) {{
+    function shuffle(arr) {
       const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {{
+      for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [copy[i], copy[j]] = [copy[j], copy[i]];
-      }}
+      }
       return copy;
-    }}
+    }
 
-    function generateQuestion() {{
+    function generateQuestion() {
       const poolTamga = TAMGALAR.filter((t) => t.char !== ":");
-      if (quizMode === "tamga") {{
+      if (quizMode === "tamga") {
         const target = poolTamga[Math.floor(Math.random() * poolTamga.length)];
         const distractors = shuffle(poolTamga.filter((t) => t.latin !== target.latin)).slice(0, 3);
         const options = shuffle([target, ...distractors]).map((o) => o.latin);
-        return {{
+        return {
           prompt: "Aşağıdaki Göktürk tamgasının ses değeri nedir?",
           displayRunic: target.char,
           options,
           answer: target.latin,
-          explain: `${{target.char}} tamgası "${{target.latin}}" (${{target.type}}) sesini karşılar.`
-        }};
-      }}
+          explain: `${target.char} tamgası "${target.latin}" (${target.type}) sesini karşılar.`
+        };
+      }
 
-      if (quizMode === "kelime") {{
+      if (quizMode === "kelime") {
         const target = DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)];
         const distractors = shuffle(DICTIONARY.filter((d) => d.latin !== target.latin)).slice(0, 3);
         const options = shuffle([target, ...distractors]).map((o) => o.latin);
-        return {{
+        return {
           prompt: "Sağdan sola okunduğunda bu Göktürkçe sözcük hangisidir?",
           displayRunic: target.runic,
           options,
           answer: target.latin,
-          explain: `${{target.runic}} → "${{target.latin}}" (${{target.meaning}})`
-        }};
-      }}
+          explain: `${target.runic} → "${target.latin}" (${target.meaning})`
+        };
+      }
 
-      if (quizMode === "sayi") {{
+      if (quizMode === "sayi") {
         const sampleNums = [12, 15, 17, 21, 24, 25, 27, 32, 35, 43, 56, 74, 81];
         const n = sampleNums[Math.floor(Math.random() * sampleNums.length)];
         const res = numberToGokturk(n);
         const wrongNums = shuffle(sampleNums.filter((x) => x !== n)).slice(0, 3);
         const options = shuffle([n, ...wrongNums]).map((x) => String(x));
-        return {{
-          prompt: `Göktürkçede "${{res.upperTenForm}}" biçiminde okunan sayı kaçtır?`,
+        return {
+          prompt: `Göktürkçede "${res.upperTenForm}" biçiminde okunan sayı kaçtır?`,
           displayRunic: res.upperTenRunic,
           options,
           answer: String(n),
-          explain: `"${{res.upperTenForm}}" üst onluk kuralına göre ${{n}} sayısını ifade eder.`
-        }};
-      }}
+          explain: `"${res.upperTenForm}" üst onluk kuralına göre ${n} sayısını ifade eder.`
+        };
+      }
 
       const target = DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)];
       const distractors = shuffle(DICTIONARY.filter((d) => d.meaning !== target.meaning)).slice(0, 3);
       const options = shuffle([target, ...distractors]).map((o) => o.meaning);
-      return {{
-        prompt: `"${{target.latin}}" (${{target.runic}}) sözcüğünün günümüz Türkçesindeki anlamı nedir?`,
+      return {
+        prompt: `"${target.latin}" (${target.runic}) sözcüğünün günümüz Türkçesindeki anlamı nedir?`,
         displayRunic: target.runic,
         options,
         answer: target.meaning,
-        explain: `${{target.latin}}: ${{target.meaning}}`
-      }};
-    }}
+        explain: `${target.latin}: ${target.meaning}`
+      };
+    }
 
-    function renderQuizQuestion() {{
+    function renderQuizQuestion() {
       currentQuestion = generateQuestion();
       const area = document.getElementById("quizArea");
       area.innerHTML = `
         <div style="background:var(--bg-navy);border:1px solid var(--gold-dim);border-radius:12px;padding:1rem;margin-bottom:0.85rem;text-align:center;">
-          <div style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.4rem;">${{escapeHtml(currentQuestion.prompt)}}</div>
-          <div class="runic" style="font-size:2.4rem;color:var(--gold-light);">${{currentQuestion.displayRunic}}</div>
+          <div style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.4rem;">${escapeHtml(currentQuestion.prompt)}</div>
+          <div class="runic" style="font-size:2.4rem;color:var(--gold-light);">${currentQuestion.displayRunic}</div>
         </div>
         <div id="quizOptions">
-          ${{currentQuestion.options.map((opt) => `
-            <button type="button" class="quiz-option" data-opt="${{escapeHtml(opt)}}">
-              <span>${{escapeHtml(opt)}}</span>
+          ${currentQuestion.options.map((opt) => `
+            <button type="button" class="quiz-option" data-opt="${escapeHtml(opt)}">
+              <span>${escapeHtml(opt)}</span>
             </button>
-          `).join("")}}
+          `).join("")}
         </div>
         <div id="quizFeedback" style="font-size:0.85rem;min-height:1.4em;margin-top:0.5rem;"></div>
         <div style="margin-top:0.65rem;text-align:right;">
@@ -2260,45 +2258,45 @@ html_content = f"""<!DOCTYPE html>
         </div>
       `;
 
-      area.querySelectorAll(".quiz-option").forEach((btn) => {{
-        btn.addEventListener("click", () => {{
+      area.querySelectorAll(".quiz-option").forEach((btn) => {
+        btn.addEventListener("click", () => {
           const chosen = btn.dataset.opt;
           const isCorrect = chosen === currentQuestion.answer;
-          area.querySelectorAll(".quiz-option").forEach((b) => {{
+          area.querySelectorAll(".quiz-option").forEach((b) => {
             b.disabled = true;
             if (b.dataset.opt === currentQuestion.answer) b.classList.add("correct");
-          }});
+          });
           if (!isCorrect) btn.classList.add("wrong");
 
           const fb = document.getElementById("quizFeedback");
-          if (isCorrect) {{
+          if (isCorrect) {
             quizStreak++;
             const earned = 10 + (quizStreak >= 3 ? 5 : 0);
             quizScore += earned;
             fb.style.color = "var(--success)";
-            fb.textContent = `✓ Doğru! (+${{earned}} Puan) — ${{currentQuestion.explain}}`;
+            fb.textContent = `✓ Doğru! (+${earned} Puan) — ${currentQuestion.explain}`;
             syncScoreToCloud(earned, true);
-          }} else {{
+          } else {
             quizStreak = 0;
             fb.style.color = "var(--danger)";
-            fb.textContent = `✕ Yanlış. Doğrusu: ${{currentQuestion.explain}}`;
+            fb.textContent = `✕ Yanlış. Doğrusu: ${currentQuestion.explain}`;
             syncScoreToCloud(0, false);
-          }}
-          document.getElementById("quizScoreBadge").textContent = `Puan: ${{quizScore}} · Seri: ${{quizStreak}}`;
-        }});
-      }});
+          }
+          document.getElementById("quizScoreBadge").textContent = `Puan: ${quizScore} · Seri: ${quizStreak}`;
+        });
+      });
 
       document.getElementById("nextQuestionBtn").addEventListener("click", renderQuizQuestion);
-    }}
+    }
 
-    document.getElementById("quizModeRow").addEventListener("click", (e) => {{
+    document.getElementById("quizModeRow").addEventListener("click", (e) => {
       const pill = e.target.closest(".pill");
       if (!pill) return;
       document.querySelectorAll("#quizModeRow .pill").forEach((p) => p.classList.remove("active"));
       pill.classList.add("active");
       quizMode = pill.dataset.qmode;
       renderQuizQuestion();
-    }});
+    });
 
     /* =====================================================================
        BAŞLANGIÇ ÇALIŞTIRMA
@@ -2316,10 +2314,3 @@ html_content = f"""<!DOCTYPE html>
   </script>
 </body>
 </html>
-"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html_content.strip() + "\n")
-
-assert "905309082276" in html_content
-print("index.html başarıyla güncellendi. Boyut:", len(html_content), "karakter")
